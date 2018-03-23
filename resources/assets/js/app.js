@@ -8,6 +8,9 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.BootstrapVue = require('bootstrap-vue');
+
+Vue.use(BootstrapVue);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -16,6 +19,28 @@ window.Vue = require('vue');
  */
 
 Vue.component('example', require('./components/Example.vue'));
+
+//Passport Components
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue')
+);
+
+Vue.component(
+    'passportauthorizedclients',
+    require('./components/passport/AuthorizedClients.vue')
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue')
+);
+
+//Verbos Components
+Vue.component(
+    'verbos-create',
+    require('./components/verbos/Create.vue')
+);
 
 const app = new Vue({
     el: '#app'

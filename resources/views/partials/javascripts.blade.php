@@ -13,7 +13,7 @@
 <script src="{{ url('adminlte/js') }}/bootstrap.min.js"></script>
 <script src="{{ url('adminlte/js') }}/select2.full.min.js"></script>
 <script src="{{ url('adminlte/js') }}/main.js"></script>
-
+<script src="{{ mix('js/app.js') }}"></script>
 <script src="{{ url('adminlte/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ url('adminlte/plugins/fastclick/fastclick.js') }}"></script>
 <script src="{{ url('adminlte/js/app.min.js') }}"></script>

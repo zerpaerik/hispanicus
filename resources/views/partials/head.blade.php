@@ -23,6 +23,7 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
 <link href="{{ url('adminlte/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 <link rel="stylesheet"
       href="{{ url('adminlte/css') }}/select2.min.css"/>
@@ -40,3 +41,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.4.5/jquery-ui-timepicker-addon.min.css"/>
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.standalone.min.css"/>
+        <script>
+          window.Laravel = <?php echo json_encode([
+              'csrfToken' => csrf_token(),
+          ]); ?>
+        </script>      

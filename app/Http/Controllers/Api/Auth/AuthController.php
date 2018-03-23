@@ -62,6 +62,7 @@ class AuthController extends Controller
 		$id= (new \Lcobucci\JWT\Parser())->parse($value)->getHeader('jti');
 		$token= $request->user()->tokens->find($id);
 		$token->delete(); 		
- 		return response()->json(["message" => "Logged Out", 200]);
+ 		return response()->json(["message" => "Logged Out"], 200);
     }
+
 }
