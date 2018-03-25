@@ -13,12 +13,14 @@ class TipoDesinenciaSeeder extends Seeder
     public function run()
     {
        $data = [
-	   		"indicativo",
-	   		"subjuntivo",
-	   		"imperativo",
-	   		"infinitivo",
-	   		"gerundio",
-	   		"participio"
+        "Afirmativo informal",
+        "Negativo informal",
+        "Afirmativo reflexivo informal",
+        "Negativo reflexivo informal",
+        "Afirmativo formal",
+        "Negativo formal",
+        "Afirmativo reflexivo formal",
+        "Negativo reflexivo formal"
        ];
 
        foreach ($data as $key => $value) {

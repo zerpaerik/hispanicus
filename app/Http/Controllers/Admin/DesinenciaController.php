@@ -15,7 +15,7 @@ class DesinenciaController extends Controller
 	public static function storeDesinencia($data = array()){
 
 	$dataDesinencias = array();
-	array_shift($data);	
+	array_shift($data);
 	$inDb = Desinencia::all(['desinencia'])->toArray();
 	$inDb = Verbo::all(['raiz', 'id'])->toArray();
 
@@ -24,13 +24,13 @@ class DesinenciaController extends Controller
 		$SSraiz     = $data[$key]["A"];
 		$desinencia = $data[$key]["B"];
 		$SSmodo     = $data[$key]["C"];
-		$SSRegion	= $data[$key]["D"];
+		$SSRegion		= $data[$key]["D"];
 		$cambiaRaiz = $data[$key]["E"];
 		$SSpronom   = $data[$key]["F"];
 		$tiempo     = $data[$key]["G"];
 		$cambiaNeg  = $data[$key]["H"];
-		$SSpronom  = explode("/", $SSpronom);
 
+		$SSpronom   = explode("/", $SSpronom);
 
 		$SSpronom =  json_encode($SSpronom);
 
@@ -51,6 +51,7 @@ class DesinenciaController extends Controller
 
 	$dataDesinencias = VerbosController::unique_multidim_array($dataDesinencias, 'desinencia');
 	$res = false;
+
 	try {
 		foreach ($dataDesinencias as $key => $value) {
 			$v = in_array(["desinencia" => $dataDesinencias[$key]["desinencia"]], $inDb);
@@ -65,6 +66,7 @@ class DesinenciaController extends Controller
 	} catch (QueryException $e) {
 		return $res;
 	}
+	
 	return $res;		
 
 	}

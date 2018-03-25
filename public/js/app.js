@@ -11484,8 +11484,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -11603,17 +11601,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        var _ref;
-
-        return _ref = {
+        return {
             file: '',
             pc: 0,
             uploading: false,
             data: new FormData(),
             datatable: [],
             new_verbs: false,
-            new_types: false
-        }, _defineProperty(_ref, 'new_types', false), _defineProperty(_ref, 'saved', false), _ref;
+            new_types: false,
+            new_des: false,
+            saved: false
+        };
     },
 
     methods: {
@@ -51482,7 +51480,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Desktop\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51520,7 +51518,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Desktop\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] AuthorizedClients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51558,7 +51556,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Desktop\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Clients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51596,7 +51594,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Desktop\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PersonalAccessTokens.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51634,7 +51632,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Desktop\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Create.vue: functional components are not supported with templates, they should use render functions.")}
 

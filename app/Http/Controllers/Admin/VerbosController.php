@@ -11,12 +11,15 @@ use hispanicus\TipoVerbo;
 use Illuminate\Database\QueryException;
 use Validator;
 use hispanicus\Http\Controllers\Admin\DesinenciaController;
+use hispanicus\Http\Controllers\Admin\PersonasGramaticalController;
 
 class VerbosController extends Controller
 {
     public function upload(Request $request){
 
     	$data = $this->loadFile($request)["data"];
+
+    		return PersonasGramaticalController::getStaticData($data);
 
         return response()->json(["data" => $data]);
 	}
@@ -131,7 +134,16 @@ class VerbosController extends Controller
 	        $i++; 
 	    } 
 	    return $temp_array; 
-	} 
+	}
+
+  public static function quitarSe($value){
+      
+      $len = strlen($value);
+      $pos = strrpos($value, "se");
+      if ($pos == ($len - 2)) $value = substr_replace($value, "", $pos);
+      return $value;
+
+  }	
 
 	public function showUploadView(){
 

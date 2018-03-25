@@ -58,7 +58,7 @@
 
                     <!-- Name -->
                     <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.C }}{{ d.D }}
+                        {{ d.D }}
                     </td>
 
                     <!-- Name -->
@@ -123,7 +123,7 @@
                 datatable: [],
                 new_verbs: false,
                 new_types: false,
-                new_types: false,
+                new_des: false,
                 saved: false
             }
         },

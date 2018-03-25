@@ -9,30 +9,14 @@ class PersonasGramaticalSeeder extends Seeder
   public function run()
   {
 		$data = [
-
-			["pronombre" => json_encode(['yo']),
-			'persona_gramatical' => 1, "region_id" => 1, "plural" => false, "formal" => false],
-			
-			["pronombre" => json_encode(['el','ella','usted']),
-			'persona_gramatical' => 3, "region_id" => 1, "plural" => false, "formal" => false],
-			
-			["pronombre" => json_encode(['ustedes']),
-			'persona_gramatical' => 2, "region_id" => 1, "plural" => true, "formal" => true],
-
-			["pronombre" => json_encode(['nosotros','nosotras']),
-			'persona_gramatical' => 1, "region_id" => 1, "plural" => true, "formal" => false],
-			
-			["pronombre" => json_encode(['vos']),
-			'persona_gramatical' => 2, "region_id" => 3, "plural" => false, "formal" => false],
-
-			["pronombre" => json_encode(['vosotros','vosotras']),
-			'persona_gramatical' => 2, "region_id" => 4, "plural" => true, "formal" => false],		
-
-			["pronombre" => json_encode(['tu']),
-			'persona_gramatical' => 2, "region_id" => 5, "plural" => false, "formal" => false],
-
-			["pronombre" => json_encode(['ellos','ellas']),
-			'persona_gramatical' => 3, "region_id" => 1, "plural" => true, "formal" => false],
+			json_encode(["yo"]),
+			json_encode(["t\u00fa"]),
+			json_encode(["\u00e9l"," ella"]),
+			json_encode(["nosotros"," nosotras"]),
+			json_encode(["vosotros"," vosotras"]),
+			json_encode(["ellos"," ellas"]),
+			json_encode(["usted "]),
+			json_encode(["ustedes"])
 		]; 
 
       foreach ($data as $key) {

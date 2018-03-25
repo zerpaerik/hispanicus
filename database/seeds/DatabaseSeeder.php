@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoDesinenciaSeeder::class);
         $this->call(PersonasGramaticalSeeder::class);
         $this->call(TipoVerboSeed::class);
+        $this->call(TiempoVerbalSeeder::class);
         //$this->call(VerboSeed::class);
 
     }

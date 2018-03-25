@@ -9,7 +9,7 @@ class Desinencia extends Model
     protected $fillable = [
     	'desinencia',
     	'pronombre_id',
-			'tipo_desinencia_id',
+		'tipo_desinencia_id',
     	'verbo_id',
     	'tiempo',
     	'region_id',
