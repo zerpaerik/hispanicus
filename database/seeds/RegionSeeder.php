@@ -15,8 +15,8 @@ class RegionSeeder extends Seeder
 		 		json_encode(["lan"]),
 		 		json_encode(["las"]),
 		 		json_encode(["esp"]),
-		 		json_encode(["lan,esp")],
-		 		json_encode(["lan,las")]];
+		 		json_encode(["lan,esp"]),
+		 		json_encode(["lan,las"])];
         
         foreach ($data as $key => $value) {
         	ConfigRegion::create([

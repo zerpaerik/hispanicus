@@ -15,6 +15,7 @@
 
 	Route::group(['prefix' => '/v1'], function () {
     	Route::post('upload_verbos', 'Admin\VerbosController@upload');
+    	Route::post('verbos_mass', 'Admin\VerbosController@storeVerboData');
     	Route::post('verbos', 'Admin\VerbosController@store');
 	});
 

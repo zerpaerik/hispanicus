@@ -19,8 +19,6 @@ class CreatePersonasGramaticalsTable extends Migration
             $table->boolean('plural');
             $table->boolean('formal');
             $table->integer('persona_gramatical');
-            $table->integer('region_id')->unsigned()->index();
-            $table->foreign('region_id')->references('id')->on('config_regions');
             $table->timestamps();
         });
     }

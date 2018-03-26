@@ -13,7 +13,7 @@ class CreateTiempoVerbalTable extends Migration
      */
     public function up()
     {
-        Schema::create('tiempo_verbal', function (Blueprint $table) {
+        Schema::create('tiempo_verbals', function (Blueprint $table) {
             $table->increments('id');
             $table->string('tiempo');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateTiempoVerbalTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tiempo_verbal');
+        Schema::dropIfExists('tiempo_verbals');
     }
 }

@@ -9,18 +9,18 @@ class PersonasGramaticalSeeder extends Seeder
   public function run()
   {
 		$data = [
-			json_encode(["yo"]),
-			json_encode(["t\u00fa"]),
-			json_encode(["\u00e9l"," ella"]),
-			json_encode(["nosotros"," nosotras"]),
-			json_encode(["vosotros"," vosotras"]),
-			json_encode(["ellos"," ellas"]),
-			json_encode(["usted "]),
-			json_encode(["ustedes"])
+			["pronombre" => json_encode(["yo"]), "plural" => false, "formal" => false, "persona_gramatical" => 1],
+			["pronombre" => json_encode(["t\u00fa"]), "plural" => false, "formal" => false, "persona_gramatical" => 2],
+			["pronombre" => json_encode(["\u00e9l"," ella"]), "plural" => false, "formal" => false, "persona_gramatical" => 3],
+			["pronombre" => json_encode(["nosotros"," nosotras"]), "plural" => true, "formal" => false, "persona_gramatical" => 1],
+			["pronombre" => json_encode(["vosotros"," vosotras"]), "plural" => true, "formal" => false, "persona_gramatical" => 2],
+			["pronombre" => json_encode(["ellos"," ellas"]), "plural" => true, "formal" => false, "persona_gramatical" => 3],
+			["pronombre" => json_encode(["usted "]), "plural" => false, "formal" => true, "persona_gramatical" => 3],
+			["pronombre" => json_encode(["ustedes"]), "plural" => true, "formal" => true, "persona_gramatical" => 3]
 		]; 
 
-      foreach ($data as $key) {
-      	PersonasGramatical::create($key);
+      foreach ($data as $key => $value) {
+      	PersonasGramatical::create($value);
       }
   }
 }

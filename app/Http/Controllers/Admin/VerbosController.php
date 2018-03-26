@@ -19,23 +19,23 @@ class VerbosController extends Controller
 
     	$data = $this->loadFile($request)["data"];
 
-    		return PersonasGramaticalController::getStaticData($data);
+    	//return self::storeVerboData($data);
 
-        return response()->json(["data" => $data]);
+      return response()->json(["data" => $data]);
 	}
 
 	public function store(Request $request){
 
-		$sheetData = $this->loadFile($request)["sheet"];
+		$sheetData = $this->loadFile($request)["data"];
 
-		$s  = $this->storeTipoVerboData($sheetData);
+		//$s  = $this->storeTipoVerboData($sheetData);
 		$ss = $this->storeVerboData($sheetData);
-		$sss = DesinenciaController::storeDesinencia($sheetData);
+		//$sss = DesinenciaController::storeDesinencia($sheetData);
 
         return response()->json([
-        	"new_types" => $s,
+        //"new_types" => $s,
         	"new_verbs" => $ss,
-        	"new_des"   => $sss,
+       //	"new_des"   => $sss,
         ]);
 
 	}
@@ -73,53 +73,88 @@ class VerbosController extends Controller
 
 	public function storeVerboData($data = array()){
 
+
+		$InfIdx = array_search('Verbo', $data[0]);
+		$RaizIdx = array_search('Raíz ', $data[0]);
+			
 		$dataVerbo = array();
-		array_shift($data);	
-		$tv = [''];
-		$inDb = Verbo::all(['nombre'])->toArray();
+		$insertPrev = array();
+
+		array_shift($data);
+
+		$inDb = Verbo::all(['infinitivo'])->toArray();
+		$keepRoot = "";
 
 		foreach ($data as $key => $value) {
-			
-			$raiz   	= $data[$key]["A"];
-			$tipo   	= $data[$key]["K"];
-			$modo   	= $data[$key]["C"];
-			$cambio 	= $data[$key]["E"];
-			$desinencia = $data[$key]["B"];
 
-			$tv = TipoVerbo::where('nombre', $tipo)->get(["id"]);
-			
-			$nombre = $cambio ? $desinencia : $raiz . $desinencia;
+			if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
-			if(!$tv || $modo != 'infinitivo') continue;
+			$infinitivo	= self::quitarSe($data[$key][$InfIdx]);
+			$raiz   		= $data[$key][$RaizIdx];
 
-			array_push($dataVerbo, [
-				'infinitivo' => strtolower($nombre),
-				'raiz' => strtolower($raiz),
-				'tipo_verbo_id' => $tipo_id->id,
-				'created_at'=>date('Y-m-d H:i:s'),
-				'updated_at'=> date('Y-m-d H:i:s')
-			]);
+			$raiz_2 		= "";
+
+				
+			if ($key > 0 && array_key_exists($RaizIdx, $data[$key - 1])) {
+
+				$infinitivoPrev	= self::quitarSe($data[$key - 1][$InfIdx]);
+				$raizPrev   		= $data[$key - 1][$RaizIdx];			
+
+				$insertPrev = [
+					'infinitivo' => utf8_encode(strtolower($infinitivoPrev)),
+					'raiz' 			 => utf8_encode(strtolower($raizPrev)),
+					'tipo_verbo_id' => 1,
+					'raiz_2' 		 => utf8_encode(strtolower($raiz_2)),
+					'created_at' => date('Y-m-d H:i:s'),
+					'updated_at' => date('Y-m-d H:i:s')
+				];
+
+			}
+
+			$insert = [
+				'infinitivo' => utf8_encode(strtolower($infinitivo)),
+				'raiz' 			 => utf8_encode(strtolower($raiz)),
+				'tipo_verbo_id' => 1,
+				'raiz_2' 		 => utf8_encode(strtolower($raiz_2)),
+				'created_at' => date('Y-m-d H:i:s'),
+				'updated_at' => date('Y-m-d H:i:s')
+			];
+
+			if (!empty($insertPrev)) {
+				if (
+
+					$insert["infinitivo"] == $insertPrev["infinitivo"]
+					&& $insertPrev["raiz_2"] == "" 
+					&& strpos($insert["raiz"], "[")
+					&& !strpos($insertPrev["raiz"], "[")) {
+
+					$insertPrev["raiz_2"] = $insert["raiz"];
+					array_push($dataVerbo, $insertPrev);
+				
+				}
+			}
 		}
 
-		$dataVerbo = self::unique_multidim_array($dataVerbo, 'nombre');
+		$dataVerbo = self::unique_multidim_array($dataVerbo, 'infinitivo');		
 		$res = false;
 
 		try {
 			foreach ($dataVerbo as $key => $value) {
-				$v = in_array(["nombre" => $dataVerbo[$key]["nombre"]], $inDb);
+				$v = in_array(["infinitivo" => $dataVerbo[$key]["infinitivo"]], $inDb);
 				if($v){
 					continue;
 				}else{
 					Verbo::insert($dataVerbo[$key]);
-					array_push($inDb, $dataVerbo[$key]["nombre"]);
+					array_push($inDb, $dataVerbo[$key]["infinitivo"]);
 					$res = true;
 				}
 			}
 		} catch (QueryException $e) {
 			return $res;
 		}
-		return $res;		
+		return $dataVerbo;		
 	}
+
 
 	public static function unique_multidim_array($array, $key) { 
 	    $temp_array = array(); 
