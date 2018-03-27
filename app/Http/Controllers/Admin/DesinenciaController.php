@@ -14,60 +14,59 @@ class DesinenciaController extends Controller
 {
 	public static function storeDesinencia($data = array()){
 
-	$dataDesinencias = array();
-	array_shift($data);
-	$inDb = Desinencia::all(['desinencia'])->toArray();
-	$inDb = Verbo::all(['raiz', 'id'])->toArray();
+		$DesIdx = array_search("Desinencia ", $data[0]);
 
-	foreach ($data as $key => $value) {
+		try {
 
-		$SSraiz     = $data[$key]["A"];
-		$desinencia = $data[$key]["B"];
-		$SSmodo     = $data[$key]["C"];
-		$SSRegion		= $data[$key]["D"];
-		$cambiaRaiz = $data[$key]["E"];
-		$SSpronom   = $data[$key]["F"];
-		$tiempo     = $data[$key]["G"];
-		$cambiaNeg  = $data[$key]["H"];
+			$DesIdx = array_search('Desinencia ', $data[0]);
 
-		$SSpronom   = explode("/", $SSpronom);
-
-		$SSpronom =  json_encode($SSpronom);
-
-		$pronom = PersonasGramatical::where('pronombre', $SSpronom)->get(['id', 'region_id'])->first();
-		$modo = TipoDesinencia::where('modo', $SSmodo)->get(['id'])->first();
-
-		array_push($dataDesinencias, [
-			'desinencia' => utf8_encode(strtolower($desinencia)),
-			'pronombre_id' => $pronom->id,
-			'verbo_id' => $verbo->id,
-			'tiempo' => $tiempo,
-			'tipo_desinencia_id' => $modo->id,
-			'region_id' => $pronom->region_id,
-			'created_at'=>date('Y-m-d H:i:s'),
-			'updated_at'=> date('Y-m-d H:i:s')
-		]);
-	}
-
-	$dataDesinencias = VerbosController::unique_multidim_array($dataDesinencias, 'desinencia');
-	$res = false;
-
-	try {
-		foreach ($dataDesinencias as $key => $value) {
-			$v = in_array(["desinencia" => $dataDesinencias[$key]["desinencia"]], $inDb);
-			if($v){
-				continue;
-			}else{
-				Desinencia::insert($dataDesinencias[$key]);
-				array_push($inDb, $dataDesinencias[$key]["desinencia"]);
-				$res = true;
-			}
+		} catch (Exception $e) {
+			return response()->json(["exception" => $e->getMessage]);			
 		}
-	} catch (QueryException $e) {
-		return $res;
-	}
-	
-	return $res;		
+
+		array_shift($data);
+		$insert = array();
+		$dataDesinencia = array();		
+
+		$inDb = Desinencia::get(['desinencia'])->toArray();
+
+		foreach ($data as $key => $value) {
+			if (!array_key_exists($DesIdx, $data[$key])) continue;
+		
+			$desinencia = $data[$key][$DesIdx];
+
+			$insert = [
+				"desinencia" => utf8_encode($desinencia),
+			];
+
+			if (!in_array(["desinencia" => $data[$key][$DesIdx]], $inDb)) {
+				array_push($dataDesinencia, $insert);
+			}		
+
+		}
+
+		return (self::save($dataDesinencia, $inDb));
 
 	}
+
+	public static function save($dataDesinencia, $inDb){
+		$dataDesinencia = VerbosController::unique_multidim_array($dataDesinencia, 'desinencia');		
+		$res = false;
+
+		try {
+			foreach ($dataDesinencia as $key => $value) {
+				$v = in_array(["desinencia" => $dataDesinencia[$key]["desinencia"]], $inDb);
+				if($v){
+					continue;
+				}else{
+					Desinencia::insert($dataDesinencia[$key]);
+					array_push($inDb, $dataDesinencia[$key]["desinencia"]);
+				}
+			}
+		} catch (QueryException $e) {
+			return $res;
+		}
+		return $dataDesinencia;				
+	}	
+
 }

@@ -16,8 +16,6 @@ class CreateVerbosTable extends Migration
         Schema::create('verbos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('infinitivo');
-            $table->string('raiz');
-            $table->string('raiz_2');
             $table->integer('tipo_verbo_id')->unsigned()->index();
             $table->foreign('tipo_verbo_id')->references('id')->on('tipo_verbos');
             $table->timestamps();
