@@ -16,6 +16,8 @@
 	Route::group(['prefix' => '/v1'], function () {
     	Route::post('upload_verbos', 'Admin\VerbosController@upload');
     	Route::post('verbos_mass', 'Admin\VerbosController@storeVerboData');
-    	Route::post('verbos', 'Admin\VerbosController@store');
+    	Route::post('verbos/regular', 'Admin\VerbosController@storeRegular');
+    	Route::post('verbos/regular_oc', 'Admin\VerbosController@storeRegularOrthChange');
+    	Route::get( 'verbos', 'Admin\VerbosController@listVerbs');
 	});
 

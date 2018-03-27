@@ -24,12 +24,22 @@ class VerbosController extends Controller
       return response()->json(["data" => $data]);
 	}
 
-	public function store(Request $request){
+	public function storeRegular(Request $request){
+		$sheetData = $this->loadFile($request)["data"];
+
+		$ss = $this->regularVerb($sheetData);
+
+		return response()->json([
+			"new_verbs" => $ss
+		]);		
+	}
+
+	public function storeRegularOrthChange(Request $request){
 
 		$sheetData = $this->loadFile($request)["data"];
 
-		//$s  = $this->storeTipoVerboData($sheetData);
-		$ss = $this->storeVerboData($sheetData);
+		//$s  = $this->storeTipoVerboData($sheetData);	
+		$ss = $this->regularOrthChange($sheetData);
 		//$sss = DesinenciaController::storeDesinencia($sheetData);
 
         return response()->json([
@@ -38,6 +48,11 @@ class VerbosController extends Controller
        //	"new_des"   => $sss,
         ]);
 
+	}
+
+	public function listVerbs(){
+		$verbs = Verbo::all();
+		return response()->json($verbs);
 	}
 
 	public function loadFile(Request $request){
@@ -71,7 +86,41 @@ class VerbosController extends Controller
 
 	}
 
-	public function storeVerboData($data = array()){
+	public function regularVerb($data = array()){
+
+		$InfIdx = array_search('Verbo', $data[0]);
+		$RaizIdx = array_search('Raíz ', $data[0]);		
+
+		array_shift($data);
+
+		$dataVerbo = array();
+
+		$inDb = Verbo::get(['infinitivo'])->where('tipo_verbo_id', '=', 1)->toArray();
+
+		foreach ($data as $key => $value) {
+
+			if (!array_key_exists($RaizIdx, $data[$key])) continue;
+
+			$infinitivo	= self::quitarSe($data[$key][$InfIdx]);
+			$raiz   		= $data[$key][$RaizIdx];
+			$raiz_2 		= "";			
+
+			$insert = [
+				'infinitivo' => utf8_encode(strtolower($infinitivo)),
+				'raiz' 			 => utf8_encode(strtolower($raiz)),
+				'tipo_verbo_id' => 1,
+				'raiz_2' 		 => utf8_encode(strtolower($raiz_2)),
+				'created_at' => date('Y-m-d H:i:s'),
+				'updated_at' => date('Y-m-d H:i:s')
+			];
+
+			array_push($dataVerbo, $insert);
+
+		}
+		self::save($dataVerbo, $inDb);
+	}
+
+	public function regularOrthChange($data = array()){
 
 
 		$InfIdx = array_search('Verbo', $data[0]);
@@ -82,8 +131,7 @@ class VerbosController extends Controller
 
 		array_shift($data);
 
-		$inDb = Verbo::all(['infinitivo'])->toArray();
-		$keepRoot = "";
+		$inDb = Verbo::get(['infinitivo'])->where('tipo_verbo_id', '=', 3)->toArray();
 
 		foreach ($data as $key => $value) {
 
@@ -134,7 +182,11 @@ class VerbosController extends Controller
 				}
 			}
 		}
+		self::save($dataVerbo, $inDb);
+	}
 
+
+	public static function save($dataVerbo, $inDb){
 		$dataVerbo = self::unique_multidim_array($dataVerbo, 'infinitivo');		
 		$res = false;
 
@@ -152,9 +204,8 @@ class VerbosController extends Controller
 		} catch (QueryException $e) {
 			return $res;
 		}
-		return $dataVerbo;		
+		return $dataVerbo;				
 	}
-
 
 	public static function unique_multidim_array($array, $key) { 
 	    $temp_array = array(); 
