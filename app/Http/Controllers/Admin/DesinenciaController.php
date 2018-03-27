@@ -33,13 +33,13 @@ class DesinenciaController extends Controller
 		foreach ($data as $key => $value) {
 			if (!array_key_exists($DesIdx, $data[$key])) continue;
 		
-			$desinencia = $data[$key][$DesIdx];
+			$desinencia = str_replace(" ", "", $data[$key][$DesIdx]);
 
 			$insert = [
 				"desinencia" => utf8_encode($desinencia),
 			];
 
-			if (!in_array(["desinencia" => $data[$key][$DesIdx]], $inDb)) {
+			if (!in_array(["desinencia" => utf8_encode($data[$key][$DesIdx])], $inDb)) {
 				array_push($dataDesinencia, $insert);
 			}		
 

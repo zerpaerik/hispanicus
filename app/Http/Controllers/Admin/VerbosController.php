@@ -59,12 +59,12 @@ class VerbosController extends Controller
 		$insert = array();
 		$dataVerbo = array();
 
-		$inDb = Verbo::get(['infinitivo'])->where('tipo_verbo_id', '=', 1)->toArray();
+		$inDb = Verbo::get(['infinitivo'])->toArray();
 
 		foreach ($data as $key => $value) {
 			if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
-			$infinitivo = self::quitarSe($data[$key][$InfIdx]);
+			$infinitivo = str_replace(" ", "", self::quitarSe($data[$key][$InfIdx]));
 			$tipo_verbo = 1;
 
 			$insert = [
