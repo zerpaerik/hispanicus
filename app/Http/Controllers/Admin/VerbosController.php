@@ -14,6 +14,7 @@ use Validator;
 use hispanicus\Http\Controllers\Admin\DesinenciaController;
 use hispanicus\Http\Controllers\Admin\RaizController;
 use hispanicus\Http\Controllers\Admin\PersonasGramaticalController;
+use hispanicus\Http\Controllers\Admin\DataStatica;
 
 class VerbosController extends Controller
 {
@@ -23,10 +24,12 @@ class VerbosController extends Controller
 		$ss = $this->storeVerbs($sheetData);
 		$s  = RaizController::storeRaiz($sheetData);
 		$sss = DesinenciaController::storeDesinencia($sheetData);
+		$ssss = DataStatica::storeStaticData($sheetData);
 		return response()->json([
-			"new_verbs" => $ss,
-			"new_roots" => $s,
-			"new_des"   => $sss
+			//"new_verbs" => $ss,
+			//"new_roots" => $s,
+			//"new_des"   => $sss
+			"new_etc" => $ssss
 		]);
 	}
 
