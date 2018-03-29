@@ -13,8 +13,8 @@ class RaizController extends Controller
     public static function storeRaiz($data){
 			try {
 
-				$RaizIdx = array_search('Raíz ', $data[0]);
-				$InfIdx  = array_search('Verbo', $data[0]);				
+				$RaizIdx = array_search('Raíz', str_replace(" ", "", $data[0]));
+				$InfIdx  = array_search('Verbo', str_replace(" ", "", $data[0]));				
 
 			} catch (Exception $e) {
 				return response()->json(["exception" => $e->getMessage]);			

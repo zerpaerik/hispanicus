@@ -15,21 +15,25 @@ use hispanicus\Http\Controllers\Admin\DesinenciaController;
 use hispanicus\Http\Controllers\Admin\RaizController;
 use hispanicus\Http\Controllers\Admin\PersonasGramaticalController;
 use hispanicus\Http\Controllers\Admin\DataStatica;
+use hispanicus\Http\Controllers\Admin\RaizDesinenciaController;
 
 class VerbosController extends Controller
 {
 	public function storeRegular(Request $request){
 		$sheetData = $this->loadFile($request)["data"];
 
-		$ss = $this->storeVerbs($sheetData);
-		$s  = RaizController::storeRaiz($sheetData);
-		$sss = DesinenciaController::storeDesinencia($sheetData);
-		$ssss = DataStatica::storeStaticData($sheetData);
+		$s1 = $this->storeVerbs($sheetData);
+		$s2 = RaizController::storeRaiz($sheetData);
+		$s3 = DesinenciaController::storeDesinencia($sheetData);
+		$s4 = DataStatica::storeStaticData($sheetData);
+		$s5 = RaizDesinenciaController::makeRelations($sheetData);
+
 		return response()->json([
-			//"new_verbs" => $ss,
-			//"new_roots" => $s,
-			//"new_des"   => $sss
-			"new_etc" => $ssss
+			"new_verbs" 		=> $s1,
+			"new_roots" 		=> $s2,
+			"new_des"   		=> $s3,
+			"new_static" 	  => $s4,
+			"merges" 				=> $s5
 		]);
 	}
 
@@ -51,8 +55,8 @@ class VerbosController extends Controller
 		
 		try {
 
-			$InfIdx = array_search('Verbo', $data[0]);
-			$RaizIdx = array_search('Raíz ', $data[0]);
+			$InfIdx = array_search('Verbo', str_replace(" ", "", $data[0]));
+			$RaizIdx = array_search('Raíz', str_replace(" ", "", $data[0]));
 
 		} catch (Exception $e) {
 			return response()->json(["exception" => $e->getMessage]);			

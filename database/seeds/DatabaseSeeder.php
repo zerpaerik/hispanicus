@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeed::class);
         $this->call(UserSeed::class);
         $this->call(RegionSeeder::class);
-        $this->call(TipoDesinenciaSeeder::class);
         $this->call(PersonasGramaticalSeeder::class);
         $this->call(TipoVerboSeed::class);
         $this->call(TiempoVerbalSeeder::class);

@@ -32,7 +32,7 @@ class TiempoVerbalSeeder extends Seeder
 
        foreach ($data as $key => $value) {
        		TiempoVerbal::create([
-       			"tiempo" => $value,
+       			"tiempo" => utf8_encode($value),
        		]);
        }
 

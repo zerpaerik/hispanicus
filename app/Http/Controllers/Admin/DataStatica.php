@@ -55,7 +55,7 @@ class DataStatica extends Controller
 			}
 			
 
-			$forma_verbal = str_replace(" ", "", $data[$key][$FvIdx]);
+			$forma_verbal = $data[$key][$FvIdx];
 
 			$insert = [
 				"forma_verbal" => utf8_encode($forma_verbal),
@@ -73,9 +73,8 @@ class DataStatica extends Controller
 			}else{
 				break;
 			}
-			
-
-			$tiempo = str_replace(" ", "", $data[$key][$TvIdx]);
+		
+			$tiempo = $data[$key][$TvIdx];
 
 			$insert = [
 				"tiempo" => utf8_encode($tiempo),
@@ -135,7 +134,7 @@ class DataStatica extends Controller
 			}	
 
 
-			$regla = str_replace(" ", "", $data[$key][$RuleIdx]);
+			$regla = $data[$key][$RuleIdx];
 
 			$insert = [
 				"regla" => utf8_encode($regla),

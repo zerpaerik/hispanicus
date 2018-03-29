@@ -14,11 +14,9 @@ class DesinenciaController extends Controller
 {
 	public static function storeDesinencia($data = array()){
 
-		$DesIdx = array_search("Desinencia ", $data[0]);
-
 		try {
 
-			$DesIdx = array_search('Desinencia ', $data[0]);
+			$DesIdx = array_search('Desinencia', str_replace(" ", "", $data[0]));
 
 		} catch (Exception $e) {
 			return response()->json(["exception" => $e->getMessage]);			
