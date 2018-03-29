@@ -18,6 +18,7 @@
     	Route::post('verbos_mass', 'Admin\VerbosController@storeVerboData');
     	Route::post('verbos/', 'Admin\VerbosController@storeRegular');
     	Route::post('verbos/regular_oc', 'Admin\VerbosController@storeRegularOrthChange');
-    	Route::get( 'verbos', 'Admin\VerbosController@listVerbs');
+    	Route::get('verbos', 'Admin\VerbosController@listVerbs');
+    	Route::get('verbo/{id}', 'Admin\VerbosController@getVerb');
 	});
 

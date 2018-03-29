@@ -3,7 +3,7 @@
 namespace hispanicus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use hispanicus\RaizDesinencias;
+use hispanicus\DesinenciaRaiz;
 use hispanicus\Raiz;
 use hispanicus\Verbo;
 use hispanicus\Desinencia;
@@ -37,7 +37,7 @@ class RaizDesinenciaController extends Controller
 			}
 
 			$raiz_desinencia_data = array();
-			$inDb = RaizDesinencias::all()->toArray();
+			$inDb = DesinenciaRaiz::all()->toArray();
 			array_shift($data);
 
 			foreach ($data as $key => $value) {
@@ -49,10 +49,16 @@ class RaizDesinenciaController extends Controller
 				$raiz = (array_key_exists($RaizIdx, $data[$key]))
 				? self::getFromDb(new Raiz, ['id'], 'nombre', utf8_encode($r)) : null;
 
-				$d = str_replace(" ", "", $data[$key][$DesIdx]);
 
-				$desinencia = (array_key_exists($DesIdx, $data[$key]))
-				? self::getFromDb(new Desinencia, ['id'], 'desinencia', utf8_encode($d)) : null;
+				if (array_key_exists($DesIdx, $data[$key])) {
+
+					$d = str_replace(" ", "", $data[$key][$DesIdx]);
+
+					$desinencia = self::getFromDb(new Desinencia, ['id'], 'desinencia', utf8_encode($d));
+					
+				}else{
+					$desinencia = null;
+				}
 				
 				$fv = (array_key_exists($FvIdx, $data[$key]))
 				? self::getFromDb(new FormaVerbal, ['id'], 'forma_verbal', utf8_encode($data[$key][$FvIdx])) : null;
@@ -62,9 +68,7 @@ class RaizDesinenciaController extends Controller
 				$tv = (array_key_exists($TvIdx, $data[$key]))
 				? self::getFromDb(new TiempoVerbal, ['id'], 'tiempo', utf8_encode($tiempo)) : null;
 
-				if (array_key_exists($PiIdx, $data[$key]) || array_key_exists($PfIdx, $data[$key])){
-
-					if ($PiIdx) {
+				if ($PiIdx){
 
 						$p1 = $PiIdx;
 
@@ -76,35 +80,36 @@ class RaizDesinenciaController extends Controller
 							$pronombre1 = array_filter($pronombre1);
 							$pronombre1 = json_encode($pronombre1);							
 
-						}else{ $pronombre1 = null; }
+							$pi = self::getFromDb(new PersonasGramatical, ['id', 'persona_gramatical'], 'pronombre', $pronombre1);
 
-					}else{
-						$pronombre1 = null;
-					}
+						}else{ $pi = null; }
+
+				}else{
+					$pi = null;
+				}
 
 					if ($PfIdx){
+
+						if (array_key_exists($PfIdx, $data[$key])) {
+
 						$p2 = $PfIdx;
 
-						if (array_key_exists($p2, $data[$key])) {
-							
-							$pronombre2 = str_replace(" ", "", $data[$key][$p2]);
-							$pronombre2 = utf8_encode($pronombre2);
-							$pronombre2 = explode(",", $pronombre2);
-							$pronombre2 = array_filter($pronombre2);
-							$pronombre2 = json_encode($pronombre2);
+						$pronombre2 = str_replace(" ", "", $data[$key][$p2]);
+						$pronombre2 = utf8_encode($pronombre2);
+						$pronombre2 = explode(",", $pronombre2);
+						$pronombre2 = array_filter($pronombre2);
+						$pronombre2 = json_encode($pronombre2);
 
-						}else{ $pronombre2 = null; }
+						$pf = self::getFromDb(new PersonasGramatical, ['id', 'persona_gramatical'], 'pronombre', $pronombre2);
 
 					}else{
-						$pronombre2 = null;
+						$pf = null;
 					}
 
-					$pi = self::getFromDb(new PersonasGramatical, ['id', 'persona_gramatical'], 'pronombre', $pronombre1);
-
-
-					$pf = self::getFromDb(new PersonasGramatical, ['id', 'persona_gramatical'], 'pronombre', $pronombre2);
-
+				}else{
+					$pf = null;
 				}
+
 
 			if ($PrIdx) {
 			
@@ -186,6 +191,43 @@ class RaizDesinenciaController extends Controller
 
     }
 
+    public static function getData($id){
+    	$desra = DesinenciaRaiz::where('raiz_id', $id)->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id']);
+    	$a = array();
+    	foreach ($desra as $dr) {
+	    	array_push($a, [
+
+    		"desinencia" => self::getValue($dr->desinencia_id, new Desinencia, ['desinencia']),
+    		"tiempo_verbal" => self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']),
+    		"forma_verbal" => self::getValue($dr->forma_verbal_id, new FormaVerbal, ['forma_verbal']),
+    		'verbo_auxiliar' => self::getValue($dr->verbo_auxiliar_id, new VerboAuxiliar, ['verbo_auxiliar']),
+    		"pronombre_reflex" => self::getValue($dr->pronombre_reflex_id, new PronombreReflex, ['pronombre_reflex']),
+    		"pronombre" => self::getValue($dr->pronombre_id, new PersonasGramatical, ['pronombre', 'plural', 'persona_gramatical']),
+    		"pronombre_formal_id" => self::getValue($dr->pronombre_formal_id, new PersonasGramatical, ['pronombre', 'plural', 'persona_gramatical']),
+    		'regla' => self::getValue($dr->regla_id, new Regla, ['regla']),
+    		"negativo" => $dr->negativo,
+
+    	]);
+			}
+
+    	return $a;
+    }
+
+    public static function getValue($id, $Obj, $values = ['*'], $utf8 = true){
+    	
+    	if (is_null($id)) return $id;
+    	
+    	$r = $Obj::where('id', $id)->get($values)->first();
+
+    	if ($utf8) {
+    		$r[$values[0]] = utf8_decode($r[$values[0]]);
+    		if (sizeof($values) > 1) {
+    			$r[$values[0]] = utf8_decode(implode(",", json_decode($r[$values[0]])));
+    		}
+    	}
+
+    	return $r;
+    }
 
     public static function save($data, $inDb){
 			$res = false;
@@ -196,7 +238,7 @@ class RaizDesinenciaController extends Controller
 					if($v){
 						continue;
 					}else{
-						RaizDesinencias::insert($data[$key]);
+						DesinenciaRaiz::insert($data[$key]);
 						array_push($inDb, $data[$key]);
 						$res = true;
 					}
@@ -204,7 +246,7 @@ class RaizDesinenciaController extends Controller
 			} catch (QueryException $e) {
 				return $res;
 			}
-			return $data;	    	    	
+			return $res;	    	    	
     }
 
     public static function getFromDb($obj, $getFields, $where, $cVal){

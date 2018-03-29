@@ -16,4 +16,12 @@ class Desinencia extends Model
     	'negativo',
     	'cambia_neg'
     ];
+
+public function raices()
+{
+    return $this->belongsToMany("hispanicus\Raiz", $table="desinencia_raizs");
+    
+}    
+
+
 }

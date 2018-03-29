@@ -4,7 +4,7 @@ namespace hispanicus;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RaizDesinencias extends Model
+class DesinenciaRaiz extends Model
 {
     protected $fillable = [
 

@@ -37,17 +37,27 @@ class VerbosController extends Controller
 		]);
 	}
 
-  public function upload(Request $request){
+	public function getVerb($id){
+		$v = Verbo::where('id', $id)->get(['infinitivo'])->first();
+		$raices = Raiz::where('verbo_id', $id)->get(['id', 'nombre']);
+		$desinencias = array();
 
-  	$data = $this->loadFile($request)["data"];
+		foreach ($raices as $raiz) {
+			array_push($desinencias, [
+				"raiz" => $raiz->nombre,
+				"data" => RaizDesinenciaController::getData($raiz->id),
+			]);	
+		}
 
-  	//return self::storeVerboData($data);
-
-    return response()->json(["data" => $data]);
-	}
+		return response()->json([
+			"verbo" => $v->infinitivo,
+			"data" => $desinencias
+		]);
+	}	
 
 	public function listVerbs(){
-		$verbs = Verbo::all();
+		$verbs = \DB::table('verbos')->orderBy('infinitivo')->get(['id','infinitivo']);
+		$verbs = self::AlphaOrder($verbs);
 		return response()->json($verbs);
 	}
 
@@ -84,37 +94,6 @@ class VerbosController extends Controller
 			}
 		}
 		return (self::save($dataVerbo, $inDb));
-	}
-
-	public function loadFile(Request $request){
-		$file = $request->file('file') ?: '';
-		
-		/*
-	    $validator = Validator::make($request->all(), [
-	        'file' => 'required|mimes:xls,xlsx,ods,csv'
-	    ]);
-
-	    if ($validator->fails()) 
-	        return response()->json(['error'=>$validator->errors()], 422);
-        
-        $file->store('files');
-		*/
-
-		try {
-			$spreadsheet = IOFactory::load($file);
-			$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-			
-			$data = array();
-			
-			foreach ($sheetData as $key => $value) {
-				$d = array_filter($sheetData[$key]);
-				array_push($data, $d);
-			}
-			return ["data" => $data, "sheet" => $sheetData];
-		} catch (Exception $e) {
-		    return response()->json($e->getMessage());
-		}
-
 	}
 
 	public static function save($dataVerbo, $inDb){
@@ -166,4 +145,80 @@ class VerbosController extends Controller
 
         return view('admin.verbos.create');
 	}
+
+	public static function extractVal($data, $value, $utf8 = false){
+		
+		$d = array();
+
+		for ($i = 0; $i < sizeof($data); $i++) {
+
+			$v = $utf8 ? utf8_decode($data[$i][$value]) : $data[$i][$value];	
+			
+			array_push($d, $v);	
+		
+		}
+		error_log(sizeof($d));
+		return array_values($d);
+	}
+
+	public function loadFile(Request $request){
+		$file = $request->file('file') ?: '';
+		
+		/*
+	    $validator = Validator::make($request->all(), [
+	        'file' => 'required|mimes:xls,xlsx,ods,csv'
+	    ]);
+
+	    if ($validator->fails()) 
+	        return response()->json(['error'=>$validator->errors()], 422);
+        
+        $file->store('files');
+		*/
+
+		try {
+			$spreadsheet = IOFactory::load($file);
+			$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+			
+			$data = array();
+			
+			foreach ($sheetData as $key => $value) {
+				$d = array_filter($sheetData[$key]);
+				array_push($data, $d);
+			}
+			return ["data" => $data, "sheet" => $sheetData];
+		} catch (Exception $e) {
+		    return response()->json($e->getMessage());
+		}
+
+	}
+
+  public function upload(Request $request){
+
+  	$data = $this->loadFile($request)["data"];
+
+  	//return self::storeVerboData($data);
+
+    return response()->json(["data" => $data]);
+	}
+
+	public static function AlphaOrder($data){
+
+		$ordered = array();
+
+    foreach($data as $d){
+        if(array_key_exists($d->infinitivo[0], $ordered)){
+          continue;
+        }else{
+          $ordered[$d->infinitivo[0]] = [];
+        }
+		}
+
+		foreach ($data as $d) {
+			array_push($ordered[$d->infinitivo[0]], $d);
+		}
+
+		return $ordered;
+
+	}
+
 }

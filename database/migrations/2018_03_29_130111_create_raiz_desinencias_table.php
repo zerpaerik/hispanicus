@@ -13,7 +13,7 @@ class CreateRaizDesinenciasTable extends Migration
      */
     public function up()
     {
-        Schema::create('raiz_desinencias', function (Blueprint $table) {
+        Schema::create('desinencia_raizs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('desinencia_id')->unsigned()->index();
             $table->foreign('desinencia_id')->references('id')->on('desinencias');
@@ -45,6 +45,6 @@ class CreateRaizDesinenciasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('raiz_desinenecias');
+        Schema::dropIfExists('desinencia_raizs');
     }
 }

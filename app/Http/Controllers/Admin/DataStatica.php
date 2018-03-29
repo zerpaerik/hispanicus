@@ -173,6 +173,6 @@ class DataStatica extends Controller
 			} catch (QueryException $e) {
 				return $res;
 			}
-			return $data;	    	
+			return $res;	    	
     }
 }
