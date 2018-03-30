@@ -194,11 +194,24 @@ class RaizDesinenciaController extends Controller
     public static function getData($id){
     	$desra = DesinenciaRaiz::where('raiz_id', $id)->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id']);
     	$a = array();
+
     	foreach ($desra as $dr) {
-	    	array_push($a, [
+    		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
+
+	        if(array_key_exists($tiempo, $a)){
+	          continue;
+	        }else{
+	          $a[$tiempo] = [];
+	        }
+    	}
+
+    	foreach ($desra as $dr) {
+
+    		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
+
+	    	array_push($a[$tiempo], [
 
     		"desinencia" => self::getValue($dr->desinencia_id, new Desinencia, ['desinencia']),
-    		"tiempo_verbal" => self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']),
     		"forma_verbal" => self::getValue($dr->forma_verbal_id, new FormaVerbal, ['forma_verbal']),
     		'verbo_auxiliar' => self::getValue($dr->verbo_auxiliar_id, new VerboAuxiliar, ['verbo_auxiliar']),
     		"pronombre_reflex" => self::getValue($dr->pronombre_reflex_id, new PronombreReflex, ['pronombre_reflex']),
@@ -221,6 +234,7 @@ class RaizDesinenciaController extends Controller
 
     	if ($utf8) {
     		$r[$values[0]] = utf8_decode($r[$values[0]]);
+    		$r = $r[$values[0]];
     		if (sizeof($values) > 1) {
     			$r[$values[0]] = utf8_decode(implode(",", json_decode($r[$values[0]])));
     		}

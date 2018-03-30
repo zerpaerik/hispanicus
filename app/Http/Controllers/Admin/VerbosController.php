@@ -45,10 +45,10 @@ class VerbosController extends Controller
 		foreach ($raices as $raiz) {
 			array_push($desinencias, [
 				"raiz" => $raiz->nombre,
-				"data" => RaizDesinenciaController::getData($raiz->id),
+				"data" => RaizDesinenciaController::getData($raiz->id)
 			]);	
 		}
-
+		
 		return response()->json([
 			"verbo" => $v->infinitivo,
 			"data" => $desinencias
