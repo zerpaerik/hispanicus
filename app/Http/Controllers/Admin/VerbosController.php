@@ -29,11 +29,11 @@ class VerbosController extends Controller
 		$s5 = RaizDesinenciaController::makeRelations($sheetData);
 
 		return response()->json([
-			"new_verbs" 		=> $s1,
-			"new_roots" 		=> $s2,
-			"new_des"   		=> $s3,
-			"new_static" 	  => $s4,
-			"merges" 				=> $s5
+			"new_verbs" 	=> $s1,
+			"new_roots" 	=> $s2,
+			"new_des"   	=> $s3,
+			"new_static" 	=> $s4,
+			"merges" 		=> $s5
 		]);
 	}
 
@@ -132,14 +132,14 @@ class VerbosController extends Controller
 	    return $temp_array; 
 	}
 
-  public static function quitarSe($value){
-      
-      $len = strlen($value);
-      $pos = strrpos($value, "se");
-      if ($pos == ($len - 2)) $value = substr_replace($value, "", $pos);
-      return $value;
+	public static function quitarSe($value){
+	  
+	  $len = strlen($value);
+	  $pos = strrpos($value, "se");
+	  if ($pos == ($len - 2)) $value = substr_replace($value, "", $pos);
+	  return $value;
 
-  }	
+	}	
 
 	public function showUploadView(){
 
@@ -189,21 +189,19 @@ class VerbosController extends Controller
 		} catch (Exception $e) {
 		    return response()->json($e->getMessage());
 		}
-
 	}
 
-  public function upload(Request $request){
+  	public function upload(Request $request){
 
   	$data = $this->loadFile($request)["data"];
-
-  	//return self::storeVerboData($data);
-
+  	
     return response()->json(["data" => $data]);
+
 	}
 
 	public static function AlphaOrder($data){
 
-		$ordered = array();
+	$ordered = array();
 
     foreach($data as $d){
         if(array_key_exists($d->infinitivo[0], $ordered)){

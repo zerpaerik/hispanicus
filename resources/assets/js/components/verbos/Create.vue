@@ -28,17 +28,6 @@
                 </div>
             </div>
         <table class="table table-borderless m-b-none" v-if="datatable.length > 0">
-            <thead>
-                <tr>
-                    <th>Infinitivo</th>
-                    <th>{{datatable[0].B}}</th>
-                    <th>{{datatable[0].G}}</th>
-                    <th>Verbo</th>
-                    <th>{{datatable[0].E}}</th>
-                    <th>{{datatable[0].F}}</th>
-                </tr>
-            </thead>
-
             <tbody>
                 <tr v-for="(d, index) in datatable">
                     <!-- ID -->
@@ -53,7 +42,7 @@
                     
                     <!-- Name -->
                     <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.G }}
+                        {{ d.C }}
                     </td>    
 
                     <!-- Name -->
@@ -70,7 +59,22 @@
                     <td v-if="index > 0" style="vertical-align: middle;">
                         {{ d.F }}
                     </td>
+                    
+                    <td v-if="index > 0" style="vertical-align: middle;">
+                        {{ d.G }}
+                    </td>
 
+                    <td v-if="index > 0" style="vertical-align: middle;">
+                        {{ d.H }}
+                    </td>
+
+                    <td v-if="index > 0" style="vertical-align: middle;">
+                        {{ d.I }}
+                    </td>
+
+                    <td v-if="index > 0" style="vertical-align: middle;">
+                        {{ d.J }}
+                    </td>
        
                 </tr>
                 <tr>

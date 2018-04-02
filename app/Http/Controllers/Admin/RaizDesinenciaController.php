@@ -20,17 +20,17 @@ class RaizDesinenciaController extends Controller
     public static function makeRelations($data = array()){
 			try {
 
-				$RaizIdx = array_search('Raíz', 			   		 str_replace(" ", "", $data[0]));
-				$DesIdx  = array_search('Desinencia',  		   str_replace(" ", "", $data[0]));
-				$FvIdx   = array_search('Formaverbal', 		   str_replace(" ", "", $data[0]));	
-				$TvIdx   = array_search('Tiempoverbal', 		 str_replace(" ", "", $data[0]));			
+				$RaizIdx = array_search('Raíz', str_replace(" ", "", $data[0]));
+				$DesIdx  = array_search('Desinencia', str_replace(" ", "", $data[0]));
+				$FvIdx   = array_search('Formaverbal', str_replace(" ", "", $data[0]));	
+				$TvIdx   = array_search('Tiempoverbal', str_replace(" ", "", $data[0]));			
 				$PiIdx   = array_search('Pronombreinformal', str_replace(" ", "", $data[0]));	
-				$PfIdx   = array_search('Pronombreformal',	 str_replace(" ", "", $data[0]));
-				$PrIdx   = array_search('Pronombrereflexivo',str_replace(" ", "", $data[0]));
-				$NegIdx  = array_search('Negación', 				 str_replace(" ", "", $data[0]));
-				$PgIdx   = array_search('Pers.gram.', 			 str_replace(" ", "", $data[0]));
-				$VaIdx	 = array_search('Verboauxiliar', 		 str_replace(" ", "", $data[0]));
-				$RuleIdx = array_search('Regla', 						 str_replace(" ", "", $data[0]));
+				$PfIdx   = array_search('Pronombreformal', str_replace(" ", "", $data[0]));
+				$PrIdx   = array_search('Pronombrereflexivo', str_replace(" ", "", $data[0]));
+				$NegIdx  = array_search('Negación', str_replace(" ", "", $data[0]));
+				$PgIdx   = array_search('Pers.gram.', str_replace(" ", "", $data[0]));
+				$VaIdx	 = array_search('Verboauxiliar', str_replace(" ", "", $data[0]));
+				$RuleIdx = array_search('Regla', str_replace(" ", "", $data[0]));
 
 			} catch (Exception $e) {
 				return response()->json(["exception" => $e->getMessage]);			
@@ -236,7 +236,7 @@ class RaizDesinenciaController extends Controller
     		$r[$values[0]] = utf8_decode($r[$values[0]]);
     		$r = $r[$values[0]];
     		if (sizeof($values) > 1) {
-    			$r[$values[0]] = utf8_decode(implode(",", json_decode($r[$values[0]])));
+    			$r = utf8_decode(implode(",", json_decode($r)));
     		}
     	}
 

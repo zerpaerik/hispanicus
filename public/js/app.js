@@ -11598,6 +11598,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -51480,7 +51484,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51518,7 +51522,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] AuthorizedClients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51556,7 +51560,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Clients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51594,7 +51598,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PersonalAccessTokens.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51632,7 +51636,7 @@ var Component = __webpack_require__(19)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Create.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52258,7 +52262,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("\n                        " + _vm._s(_vm.pc) + "%\n                    ")])])])]), _vm._v(" "), (_vm.datatable.length > 0) ? _c('table', {
     staticClass: "table table-borderless m-b-none"
-  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Infinitivo")]), _vm._v(" "), _c('th', [_vm._v(_vm._s(_vm.datatable[0].B))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(_vm.datatable[0].G))]), _vm._v(" "), _c('th', [_vm._v("Verbo")]), _vm._v(" "), _c('th', [_vm._v(_vm._s(_vm.datatable[0].E))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(_vm.datatable[0].F))])])]), _vm._v(" "), _c('tbody', [_vm._l((_vm.datatable), function(d, index) {
+  }, [_c('tbody', [_vm._l((_vm.datatable), function(d, index) {
     return _c('tr', [(index > 0) ? _c('td', {
       staticStyle: {
         "vertical-align": "middle"
@@ -52271,11 +52275,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticStyle: {
         "vertical-align": "middle"
       }
-    }, [_vm._v("\n                    " + _vm._s(d.G) + "\n                ")]) : _vm._e(), _vm._v(" "), (index > 0) ? _c('td', {
+    }, [_vm._v("\n                    " + _vm._s(d.C) + "\n                ")]) : _vm._e(), _vm._v(" "), (index > 0) ? _c('td', {
       staticStyle: {
         "vertical-align": "middle"
       }
-    }, [_vm._v("\n                    " + _vm._s(d.C) + _vm._s(d.D) + "\n                ")]) : _vm._e(), _vm._v(" "), (index > 0) ? _c('td', {
+    }, [_vm._v("\n                    " + _vm._s(d.D) + "\n                ")]) : _vm._e(), _vm._v(" "), (index > 0) ? _c('td', {
       staticStyle: {
         "vertical-align": "middle"
       }
@@ -52283,7 +52287,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticStyle: {
         "vertical-align": "middle"
       }
-    }, [_vm._v("\n                    " + _vm._s(d.F) + "\n                ")]) : _vm._e()])
+    }, [_vm._v("\n                    " + _vm._s(d.F) + "\n                ")]) : _vm._e(), _vm._v(" "), (index > 0) ? _c('td', {
+      staticStyle: {
+        "vertical-align": "middle"
+      }
+    }, [_vm._v("\n                    " + _vm._s(d.G) + "\n                ")]) : _vm._e(), _vm._v(" "), (index > 0) ? _c('td', {
+      staticStyle: {
+        "vertical-align": "middle"
+      }
+    }, [_vm._v("\n                    " + _vm._s(d.H) + "\n                ")]) : _vm._e(), _vm._v(" "), (index > 0) ? _c('td', {
+      staticStyle: {
+        "vertical-align": "middle"
+      }
+    }, [_vm._v("\n                    " + _vm._s(d.I) + "\n                ")]) : _vm._e(), _vm._v(" "), (index > 0) ? _c('td', {
+      staticStyle: {
+        "vertical-align": "middle"
+      }
+    }, [_vm._v("\n                    " + _vm._s(d.J) + "\n                ")]) : _vm._e()])
   }), _vm._v(" "), _c('tr', [_c('td', [_c('button', {
     staticClass: "btn btn-primary",
     on: {
