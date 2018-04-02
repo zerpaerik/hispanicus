@@ -210,7 +210,7 @@ class RaizDesinenciaController extends Controller
     		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
 
 	    	array_push($a[$tiempo], [
-
+	    	"raiz" => self::getValue($dr->raiz_id, new Raiz, ['nombre']),
     		"desinencia" => self::getValue($dr->desinencia_id, new Desinencia, ['desinencia']),
     		"forma_verbal" => self::getValue($dr->forma_verbal_id, new FormaVerbal, ['forma_verbal']),
     		'verbo_auxiliar' => self::getValue($dr->verbo_auxiliar_id, new VerboAuxiliar, ['verbo_auxiliar']),

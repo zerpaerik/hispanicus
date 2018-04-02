@@ -38,20 +38,20 @@ class VerbosController extends Controller
 	}
 
 	public function getVerb($id){
-		$v = Verbo::where('id', $id)->get(['infinitivo'])->first();
+		$v = Verbo::where('id', $id)->get()->first();
+		if (!$v) return response()->json(["message" => "not_found"], 404);
 		$raices = Raiz::where('verbo_id', $id)->get(['id', 'nombre']);
 		$desinencias = array();
 
-		foreach ($raices as $raiz) {
-			array_push($desinencias, [
-				"raiz" => $raiz->nombre,
-				"data" => RaizDesinenciaController::getData($raiz->id)
-			]);	
-		}
+		//foreach ($raices as $raiz) {
+			//array_push($desinencias, [
+				//RaizDesinenciaController::getData($raiz->id)
+			//]);	
+		//}
 		
 		return response()->json([
 			"verbo" => $v->infinitivo,
-			"data" => $desinencias
+			"data" => RaizDesinenciaController::getData($raices[0]->id)
 		]);
 	}	
 
