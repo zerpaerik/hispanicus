@@ -237,6 +237,10 @@ class RaizDesinenciaController extends Controller
     		$r = $r[$values[0]];
     		if (sizeof($values) > 1) {
     			$r = utf8_decode(implode(",", json_decode($r)));
+    			$r = ($r == 'nosotros,nosotras') ? "nosotros/as" : $r;
+    			$r = ($r == 'ellos,ellas') ? "ellos/as" : $r;
+    			$r = ($r == 'vosotros,vosotras') ? "vosotros/as" : $r;
+    			$r = str_replace(",", "/", $r);
     		}
     	}
 
