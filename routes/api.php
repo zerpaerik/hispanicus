@@ -22,3 +22,6 @@
     	Route::get('verbo/{id}', 'Admin\VerbosController@getVerb');
 	});
 
+Route::group(['prefix' => '/v1', 'middleware' => 'auth:api'], function() {
+	Route::get('myuser', 'Admin\FavoritosController@authuser');
+});
