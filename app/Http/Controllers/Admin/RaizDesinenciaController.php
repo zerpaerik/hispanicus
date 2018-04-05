@@ -192,7 +192,7 @@ class RaizDesinenciaController extends Controller
     }
 
     public static function getData($id){
-    	$desra = DesinenciaRaiz::where('raiz_id', $id)->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id']);
+    	$desra = DesinenciaRaiz::where('raiz_id', $id)->where('negativo', '=', '0')->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id']);
     	$a = array();
 
     	foreach ($desra as $dr) {

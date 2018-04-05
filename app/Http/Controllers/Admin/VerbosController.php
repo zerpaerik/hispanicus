@@ -40,7 +40,8 @@ class VerbosController extends Controller
 	public function getVerb($id){
 		$v = Verbo::where('id', $id)->get()->first();
 		if (!$v) return response()->json(["message" => "not_found"], 404);
-		$raices = Raiz::where('verbo_id', $id)->get(['id', 'nombre']);
+		$raices = Raiz::where('verbo_id', $id)
+		->get(['id', 'nombre']);
 		$desinencias = array();
 
 		//foreach ($raices as $raiz) {

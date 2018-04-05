@@ -56,7 +56,6 @@ class AuthController extends Controller
 
 	public function logout(Request $request)
     {
-	 	
  		$request->user()->token()->revoke();
 		$value = $request->bearerToken();
 		$id= (new \Lcobucci\JWT\Parser())->parse($value)->getHeader('jti');
