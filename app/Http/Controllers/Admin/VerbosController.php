@@ -37,7 +37,16 @@ class VerbosController extends Controller
 		]);
 	}
 
-	public function getVerb($id){
+	public function storeDict(Request $request){
+		$sheetData = $this->loadFile($request)["data"];	
+		$s1 = $this->setDictionaries($sheetData);
+
+		return response()->json([
+			"Dicts" => $s1,
+		]);
+	}
+
+	public function getVerb($id, Request $request){
 		$v = Verbo::where('id', $id)->get()->first();
 		if (!$v) return response()->json(["message" => "not_found"], 404);
 		$raices = Raiz::where('verbo_id', $id)
@@ -52,12 +61,12 @@ class VerbosController extends Controller
 		
 		return response()->json([
 			"verbo" => $v->infinitivo,
-			"data" => RaizDesinenciaController::getData($raices[0]->id)
+			"data" => RaizDesinenciaController::getData($raices[0]->id, json_decode($request["region"]))
 		]);
 	}	
 
 	public function listVerbs(){
-		$verbs = \DB::table('verbos')->orderBy('infinitivo')->get(['id','infinitivo']);
+		$verbs = \DB::table('verbos')->orderBy('infinitivo')->get(['id','infinitivo', 'def']);
 		$verbs = self::AlphaOrder($verbs);
 		return response()->json($verbs);
 	}
@@ -164,17 +173,6 @@ class VerbosController extends Controller
 
 	public function loadFile(Request $request){
 		$file = $request->file('file') ?: '';
-		
-		/*
-	    $validator = Validator::make($request->all(), [
-	        'file' => 'required|mimes:xls,xlsx,ods,csv'
-	    ]);
-
-	    if ($validator->fails()) 
-	        return response()->json(['error'=>$validator->errors()], 422);
-        
-        $file->store('files');
-		*/
 
 		try {
 			$spreadsheet = IOFactory::load($file);
@@ -213,10 +211,53 @@ class VerbosController extends Controller
 		}
 
 		foreach ($data as $d) {
-			array_push($ordered[$d->infinitivo[0]], $d);
+			array_push($ordered[$d->infinitivo[0]], [
+				"id" => $d->id,
+				"infinitivo" => $d->infinitivo,
+				"def" => str_replace('"', " ", $d->def),
+			]);
 		}
 
 		return $ordered;
+
+	}
+
+	public function setDictionaries($data = array()){
+		try {
+
+			$DefIdx = array_search('definiciónapp', str_replace(" ", "", $data[0]));
+			$VerboIdx = array_search('Verbo', str_replace(" ", "", $data[0]));
+			$ModelIdx = array_search('Modelo', str_replace(" ", "", $data[0]));
+
+		} catch (Exception $e) {}
+		
+		array_shift($data);
+		$data = array_filter($data);
+		$r  = false;
+
+		foreach ($data as $key => $value) {
+
+			if (!array_key_exists($VerboIdx, $data[$key])) continue;
+
+				$vl = $data[$key][$VerboIdx];
+				$v  = Verbo::where('infinitivo', '=', $vl)->get()->first();
+
+				if ($v) {
+					
+					$v->def = $data[$key][$DefIdx];
+
+					if (array_key_exists($ModelIdx, $data[$key])) {
+						$v->modelo = str_replace(" ", "", $data[$key][$ModelIdx]);
+					}
+
+					$r = $v->save();
+
+				}else{
+					continue;
+				}
+		}
+		
+		return $r;
 
 	}
 

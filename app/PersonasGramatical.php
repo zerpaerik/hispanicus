@@ -11,6 +11,6 @@ class PersonasGramatical extends Model
     	'persona_gramatical',
     	'region_id',
     	'plural',
-    	'formal',
+    	'formal'
     ];
 }

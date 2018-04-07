@@ -10,6 +10,7 @@ class PersonasGramaticalSeeder extends Seeder
   {
 
   	$yo = explode(",", utf8_encode("yo"));
+    $vos = explode(",", utf8_encode("vos"));
   	$tu = explode(",", utf8_encode("tú"));
   	$ella = explode(",", utf8_encode("él,ella"));
   	$nos = explode(",", utf8_encode("nosotros,nosotras"));
@@ -20,6 +21,7 @@ class PersonasGramaticalSeeder extends Seeder
 
 		$data = [
 			["pronombre" => json_encode($yo), "plural" => false, "formal" => false,   "persona_gramatical" => 1],
+      ["pronombre" => json_encode($vos), "plural" => false, "formal" => false,  "persona_gramatical" => 1],
 			["pronombre" => json_encode($tu), "plural" => false, "formal" => false,   "persona_gramatical" => 2],
 			["pronombre" => json_encode($ella), "plural" => false, "formal" => false, "persona_gramatical" => 3],
 			["pronombre" => json_encode($nos), "plural" => true, "formal" => false,   "persona_gramatical" => 1],

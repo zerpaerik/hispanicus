@@ -17,9 +17,11 @@
     	Route::post('upload_verbos', 'Admin\VerbosController@upload');
     	Route::post('verbos_mass', 'Admin\VerbosController@storeVerboData');
     	Route::post('verbos/', 'Admin\VerbosController@storeRegular');
+    	Route::post('dicts/', 'Admin\VerbosController@storeDict');
     	Route::post('verbos/regular_oc', 'Admin\VerbosController@storeRegularOrthChange');
-    	Route::get('verbos', 'Admin\VerbosController@listVerbs');
-    	Route::get('verbo/{id}', 'Admin\VerbosController@getVerb');
+    	Route::get('verbos/', 'Admin\VerbosController@listVerbs');
+    	Route::post('verbo/{id}', 'Admin\VerbosController@getVerb');
+
 	});
 
 Route::group(['prefix' => '/v1', 'middleware' => 'auth:api'], function() {

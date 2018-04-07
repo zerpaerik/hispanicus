@@ -18,5 +18,6 @@ class DesinenciaRaiz extends Model
     	'pronombre_reflex_id',
     	'verbo_auxiliar_id',
     	'regla_id',
+        'region'
     ]; 
 }

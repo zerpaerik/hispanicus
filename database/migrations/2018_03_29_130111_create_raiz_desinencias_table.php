@@ -34,6 +34,7 @@ class CreateRaizDesinenciasTable extends Migration
             $table->foreign('regla_id')->references('id')->on('reglas');
             $table->integer('verbo_auxiliar_id')->unsigned()->index()->nullable();
             $table->foreign('verbo_auxiliar_id')->references('id')->on('verbo_auxiliars');
+            $table->integer('region')->default(0);
             $table->timestamps();
         });
     }

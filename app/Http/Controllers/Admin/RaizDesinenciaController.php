@@ -46,6 +46,18 @@ class RaizDesinenciaController extends Controller
 
 				$r = str_replace(" ", "", $data[$key][$RaizIdx]);
 
+				$reg = 0;
+				if ($PgIdx) {
+					if (json_encode($data[$key][$PgIdx]) == '"{2\u00aa}"') {
+					 	$reg = 1;
+					}elseif (json_encode($data[$key][$PgIdx]) == '"[2\u00aa]"') {
+					 	$reg = 2;
+					}else{
+						$reg = 0;
+					} 
+					error_log($reg);
+				}
+
 				$raiz = (array_key_exists($RaizIdx, $data[$key]))
 				? self::getFromDb(new Raiz, ['id'], 'nombre', utf8_encode($r)) : null;
 
@@ -179,6 +191,7 @@ class RaizDesinenciaController extends Controller
 						"pronombre_reflex_id" => $pr,
 						"verbo_auxiliar_id" => $va,
 						"regla_id" => $rule,
+						"region" => $reg
 
 					];
 
@@ -191,8 +204,10 @@ class RaizDesinenciaController extends Controller
 
     }
 
-    public static function getData($id){
-    	$desra = DesinenciaRaiz::where('raiz_id', $id)->where('negativo', '=', '0')->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id']);
+    public static function getData($id, $region){
+    	$desra = DesinenciaRaiz::where('raiz_id', $id)
+    	->whereIn('region', $region)
+    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region']);
     	$a = array();
 
     	foreach ($desra as $dr) {
@@ -217,8 +232,9 @@ class RaizDesinenciaController extends Controller
     		"pronombre_reflex" => self::getValue($dr->pronombre_reflex_id, new PronombreReflex, ['pronombre_reflex']),
     		"pronombre" => self::getValue($dr->pronombre_id, new PersonasGramatical, ['pronombre', 'plural', 'persona_gramatical']),
     		"pronombre_formal_id" => self::getValue($dr->pronombre_formal_id, new PersonasGramatical, ['pronombre', 'plural', 'persona_gramatical']),
-    		'regla' => self::getValue($dr->regla_id, new Regla, ['regla']),
+    		"regla" => self::getValue($dr->regla_id, new Regla, ['regla']),
     		"negativo" => $dr->negativo,
+    		"region" => $dr->region
 
     	]);
 			}

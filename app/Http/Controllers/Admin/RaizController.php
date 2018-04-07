@@ -15,6 +15,7 @@ class RaizController extends Controller
 
 				$RaizIdx = array_search('Raíz', str_replace(" ", "", $data[0]));
 				$InfIdx  = array_search('Verbo', str_replace(" ", "", $data[0]));				
+				$NegIdx  = array_search('Negación', str_replace(" ", "", $data[0]));
 
 			} catch (Exception $e) {
 				return response()->json(["exception" => $e->getMessage]);			
