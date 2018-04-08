@@ -17,6 +17,12 @@ class AuthController extends Controller
 	        'email' => 'required|email|unique:users',
 	        'password' => 'required',
 	        'confirm_password' => 'required|same:password',
+	    ], [
+
+	    	'required' => ':attribute',
+	    	'unique' => ':attribute',
+	    	'same' => ':attribute' 
+
 	    ]);
 
 	    if ($validator->fails()) {
@@ -63,5 +69,10 @@ class AuthController extends Controller
 		$token->delete(); 		
  		return response()->json(["message" => "Logged Out"], 200);
     }
+
+  public function checkEmail(Request $request){
+  	$email = User::where('email', '=', $request['email'])->count();
+  	return response()->json(["res" => $email]);
+  }
 
 }

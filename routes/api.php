@@ -4,6 +4,7 @@
 		
 		Route::post('register', 'Auth\AuthController@register');
 		Route::post('login', 'Auth\AuthController@login');
+		Route::post('checkemail', 'Auth\AuthController@checkEmail');
 		Route::get('api_clients', 'Clients\ClientsController@index');
 		Route::post('api_clients', 'Clients\ClientsController@store');
 		

@@ -44,7 +44,7 @@ class RaizDesinenciaController extends Controller
 				
 				if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
-				$r = str_replace(" ", "", $data[$key][$RaizIdx]);
+				$r = str_replace([" ", "[", "]"], "", $data[$key][$RaizIdx]);
 
 				$reg = 0;
 				if ($PgIdx) {
@@ -55,7 +55,6 @@ class RaizDesinenciaController extends Controller
 					}else{
 						$reg = 0;
 					} 
-					error_log($reg);
 				}
 
 				$raiz = (array_key_exists($RaizIdx, $data[$key]))
@@ -64,7 +63,7 @@ class RaizDesinenciaController extends Controller
 
 				if (array_key_exists($DesIdx, $data[$key])) {
 
-					$d = str_replace(" ", "", $data[$key][$DesIdx]);
+					$d = str_replace([" ", "[", "]"], "", $data[$key][$DesIdx]);
 
 					$desinencia = self::getFromDb(new Desinencia, ['id'], 'desinencia', utf8_encode($d));
 					
@@ -86,7 +85,7 @@ class RaizDesinenciaController extends Controller
 
 						if (array_key_exists($p1, $data[$key])) {
 							
-							$pronombre1 = str_replace(" ", "", $data[$key][$p1]);
+							$pronombre1 = str_replace([" ", "[", "]"], "", $data[$key][$p1]);
 							$pronombre1 = utf8_encode($pronombre1);
 							$pronombre1 = explode(",", $pronombre1);
 							$pronombre1 = array_filter($pronombre1);
@@ -106,7 +105,7 @@ class RaizDesinenciaController extends Controller
 
 						$p2 = $PfIdx;
 
-						$pronombre2 = str_replace(" ", "", $data[$key][$p2]);
+						$pronombre2 = str_replace([" ", "[", "]"], "", $data[$key][$p2]);
 						$pronombre2 = utf8_encode($pronombre2);
 						$pronombre2 = explode(",", $pronombre2);
 						$pronombre2 = array_filter($pronombre2);
@@ -205,7 +204,7 @@ class RaizDesinenciaController extends Controller
     }
 
     public static function getData($id, $region){
-    	$desra = DesinenciaRaiz::where('raiz_id', $id)
+    	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
     	->whereIn('region', $region)
     	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region']);
     	$a = array();

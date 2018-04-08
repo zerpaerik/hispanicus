@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class ConfigRegion extends Model
 {
     protected $fillable = [
-    	'region',
+    	'lang',
+    	'modo',
+    	'favs',
+    	'user_id'
     ];
 }
