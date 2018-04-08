@@ -27,4 +27,11 @@
 
 Route::group(['prefix' => '/v1', 'middleware' => 'auth:api'], function() {
 	Route::get('myuser', 'Admin\FavoritosController@authuser');
+	//CONFIG
+	Route::get('favs/', 'Admin\ConfigRegionController@getFavs');
+	Route::post('favs/', 'Admin\ConfigRegionController@setFavs');
+	Route::get('lang/', 'Admin\ConfigRegionController@getLang');
+	Route::post('lang/', 'Admin\ConfigRegionController@setLang');
+	Route::get('region/', 'Admin\ConfigRegionController@getRegion');
+	Route::post('region/', 'Admin\ConfigRegionController@setRegion');	
 });

@@ -15,8 +15,8 @@ class CreateConfigRegionsTable extends Migration
     {
         Schema::create('config_regions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('lang');
-            $table->string('modo');
+            $table->string('lang')->default('en');
+            $table->string('modo')->nullable();
             $table->string('favs')->default('[]');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users');

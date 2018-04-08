@@ -31,5 +31,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 
     //Verbos
     Route::get('verbos_create', 'Admin\VerbosController@showUploadView')->name('verbos.create');
+    Route::get('dict_create', 'Admin\VerbosController@showUploadDictView')->name('verbos.dict');
 
 });

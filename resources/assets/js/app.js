@@ -43,6 +43,11 @@ Vue.component(
     require('./components/verbos/Create.vue')
 );
 
+Vue.component(
+    'dict-create',
+    require('./components/verbos/Dict.vue')
+);
+
 const app = new Vue({
     el: '#app'
 });

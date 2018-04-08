@@ -5,50 +5,90 @@ namespace hispanicus\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use hispanicus\Http\Controllers\Controller;
 use hispanicus\ConfigRegion;
+use hispanicus\User;
 
 class ConfigRegionController extends Controller
 {
-    public function store(Request $request){
-	    $validator = Validator::make($request->all(), [
-	        'region' => 'required',
-	    ]);
 
-	    if ($validator->fails()) 
-	        return response()->json(['error'=>$validator->errors()], 422);    	
 
-    	$cr = ConfigRegion::create($request->all());
-    	return response()->json($cr, 200);
+
+    public function getLang(){
+
+        $u = \Auth::user();
+        $f = ConfigRegion::where('user_id', '=', $u->id)->get(['lang'])->first();
+        if ($f) {
+            return response()->json(["success" => true, "lang" => json_decode($f->lang)], 200);
+        }else{
+            return response()->json(["success" => true, "lang" => 'en'], 200);
+        }
     }
 
-    public function update(Request $request, $id){
-
-        $cr = ConfigRegion::findOrFail($id);
-        $cr->update($request->all());
-        return response()->json($cr);        
+    public function setLang(Request $request){
+        $u = \Auth::user();
+        $f = ConfigRegion::where('user_id', '=', $u->id)->get()->first();
+        if ($f) {
+            $f->lang = $request['lang'];
+            $r = $f->save();
+            if ($r) return response()->json(["success" => true, "lang" => $f->lang], 200);
+            return response()->json(["success" => false], 442);
+        }else{
+            $r = ConfigRegion::insert(["user_id" => $u->id, "lang" => $request['lang']]);
+            if ($r) return response()->json(["success" => true, "lang" => $request['lang']], 200);
+            return response()->json(["success" => false], 442);
+        }
     }
 
-    public function destroy($id){
-        
-        $cr = ConfigRegion::findOrFail($id);
-        $cr->delete();
-        return response()->json(["Msg" = "deleted"]);
+
+    public function getRegion(){
+
+        $u = \Auth::user();
+        $f = ConfigRegion::where('user_id', '=', $u->id)->get(['modo'])->first();
+        if ($f) {
+            return response()->json(["success" => true, "modo" => $f->modo], 200);
+        }else{
+            return response()->json(["success" => true, "modo" => [1, 2, 0]], 200);
+        }
     }
 
-    public function index(){
-        
-        $cr = ConfigRegion::all();
-        return response()->json($cr);
+    public function setRegion(Request $request){
+        $u = \Auth::user();
+        $f = ConfigRegion::where('user_id', '=', $u->id)->get()->first();
+        if ($f) {
+            $f->modo = $request['modo'];
+            $r = $f->save();
+            if ($r) return response()->json(["success" => true, "modo" => $f->modo], 200);
+            return response()->json(["success" => false], 442);
+        }else{
+            $r = ConfigRegion::insert(["user_id" => $u->id, "modo" => $request['modo']]);
+            if ($r) return response()->json(["success" => true, "modo" => $r->modo], 200);
+            return response()->json(["success" => false], 442);
+        }
     }
 
-    public function create(){
+    public function getFavs(){
 
+        $u = \Auth::user();
+        $f = ConfigRegion::where('user_id', '=', $u->id)->get(['favs'])->first();
+        if ($f) {
+            return response()->json(["success" => true, "favs" => json_decode($f->favs)], 200);
+        }else{
+            return response()->json(["success" => true, "favs" => []], 200);
+        }
     }
 
-    public function edit(){
-
+    public function setFav(Request $request){
+        $u = \Auth::user();
+        $f = ConfigRegion::where('user_id', '=', $u->id)->get()->first();
+        if ($f) {
+            $f->favs = $request['favs'];
+            $r = $f->save();
+            if ($r) return response()->json(["success" => true, "favs" => json_decode($f->favs)], 200);
+            return response()->json(["success" => false], 442);
+        }else{
+            $r = ConfigRegion::insert(["user_id" => $u->id, "favs" => $request['favs']]);
+            if ($r) return response()->json(["success" => true, "favs" => $r->favs], 200);
+            return response()->json(["success" => false], 442);
+        }
     }
 
-    public function delete(){
-
-    }    
 }

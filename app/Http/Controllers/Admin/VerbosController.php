@@ -59,6 +59,7 @@ class VerbosController extends Controller
 
 		return response()->json([
 			"verbo" => $v->infinitivo,
+			"tutorial" => utf8_decode($v->tutorial),
 			"data" => RaizDesinenciaController::getData($r, json_decode($request["region"]))
 		]);
 	}	
@@ -154,6 +155,11 @@ class VerbosController extends Controller
         return view('admin.verbos.create');
 	}
 
+	public function showUploadDictView(){
+
+        return view('admin.verbos.dict');
+	}
+
 	public static function extractVal($data, $value, $utf8 = false){
 		
 		$d = array();
@@ -225,6 +231,7 @@ class VerbosController extends Controller
 			$DefIdx = array_search('definiciónapp', str_replace(" ", "", $data[0]));
 			$VerboIdx = array_search('Verbo', str_replace(" ", "", $data[0]));
 			$ModelIdx = array_search('Modelo', str_replace(" ", "", $data[0]));
+			$TutoIdx = array_search('Tutorial', str_replace(" ", "", $data[0]));
 
 		} catch (Exception $e) {}
 		
@@ -245,6 +252,10 @@ class VerbosController extends Controller
 
 					if (array_key_exists($ModelIdx, $data[$key])) {
 						$v->modelo = str_replace(" ", "", $data[$key][$ModelIdx]);
+					}
+
+					if (array_key_exists($TutoIdx, $data[$key])) {
+						$v->tutorial = utf8_encode($data[$key][$TutoIdx]);
 					}
 
 					$r = $v->save();

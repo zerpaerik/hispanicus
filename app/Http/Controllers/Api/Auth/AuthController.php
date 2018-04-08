@@ -5,6 +5,7 @@ namespace hispanicus\Http\Controllers\Api\Auth;
 use Illuminate\Http\Request;
 use hispanicus\Http\Controllers\Controller;
 use hispanicus\User;
+use hispanicus\ConfigRegion;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -33,6 +34,7 @@ class AuthController extends Controller
 	    $input['password'] = bcrypt($request->get('password'));
 	    $user = User::create($input);
 	    $token =  $user->createToken('hispanicus')->accessToken;
+	    $conf = ConfigRegion::insert(["user_id" => $user->id, "lang" => "en", "modo" => "1"]);
 
 	    return response()->json([
 	        'token' => $token,
@@ -40,6 +42,8 @@ class AuthController extends Controller
             	"name" => $user->name,
             	"email" => $user->email,
 	        ],	
+	        'lang' => 'en',
+	        'modo' => '1'
 	    ], 200);
 	}
 
@@ -47,13 +51,23 @@ class AuthController extends Controller
 	{
 	    if (Auth::attempt($request->only('email', 'password'))) {
 	        $user = Auth::user();
+	        $conf = ConfigRegion::where('user_id', '=', $user->id)->get()->first();
+	        if ($conf) {
+	        	$lang = $conf->lang; 
+	        	$modo = $conf->modo;
+	        }else{
+	        	$lang = 'en'; 
+	        	$modo = '1';
+	        }
 	        $token =  $user->createToken('hispanicus')->accessToken;
 	        return response()->json([
 	            'token' => $token,
 	            'user' => [
 	            	"name" => $user->name,
 	            	"email" => $user->email,
-	            ],	           
+	            ],
+	            'lang' => $lang,
+	            'modo' => $modo	           
 	        ], 200);
 	    } else {
 	        return response()->json(['error' => 'Unauthorized'], 401);

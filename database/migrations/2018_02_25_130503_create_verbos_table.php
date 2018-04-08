@@ -20,6 +20,7 @@ class CreateVerbosTable extends Migration
             $table->foreign('tipo_verbo_id')->references('id')->on('tipo_verbos');
             $table->string('def')->nullable();
             $table->string('modelo')->nullable();
+            $table->string('tutorial')->nullable();
             $table->timestamps();
         });
     }
