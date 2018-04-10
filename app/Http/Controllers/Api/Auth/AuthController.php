@@ -43,7 +43,8 @@ class AuthController extends Controller
             	"email" => $user->email,
 	        ],	
 	        'lang' => 'en',
-	        'modo' => '1'
+	        'modo' => '1',
+	        'favs' => []
 	    ], 200);
 	}
 
@@ -55,9 +56,11 @@ class AuthController extends Controller
 	        if ($conf) {
 	        	$lang = $conf->lang; 
 	        	$modo = $conf->modo;
+	        	$favs = json_decode($conf->favs);
 	        }else{
 	        	$lang = 'en'; 
 	        	$modo = '1';
+	        	$favs = [];
 	        }
 	        $token =  $user->createToken('hispanicus')->accessToken;
 	        return response()->json([
@@ -67,7 +70,8 @@ class AuthController extends Controller
 	            	"email" => $user->email,
 	            ],
 	            'lang' => $lang,
-	            'modo' => $modo	           
+	            'modo' => $modo,
+	            'favs' => $favs          
 	        ], 200);
 	    } else {
 	        return response()->json(['error' => 'Unauthorized'], 401);

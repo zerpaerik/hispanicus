@@ -76,16 +76,16 @@ class ConfigRegionController extends Controller
         }
     }
 
-    public function setFav(Request $request){
+    public function setFavs(Request $request){
         $u = \Auth::user();
         $f = ConfigRegion::where('user_id', '=', $u->id)->get()->first();
         if ($f) {
-            $f->favs = $request['favs'];
+            $f->favs = json_encode($request['favs']);
             $r = $f->save();
             if ($r) return response()->json(["success" => true, "favs" => json_decode($f->favs)], 200);
             return response()->json(["success" => false], 442);
         }else{
-            $r = ConfigRegion::insert(["user_id" => $u->id, "favs" => $request['favs']]);
+            $r = ConfigRegion::insert(["user_id" => $u->id, "favs" => json_encode($request['favs'])]);
             if ($r) return response()->json(["success" => true, "favs" => $r->favs], 200);
             return response()->json(["success" => false], 442);
         }
