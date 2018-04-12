@@ -233,7 +233,9 @@ class RaizDesinenciaController extends Controller
     		"pronombre_formal_id" => self::getValue($dr->pronombre_formal_id, new PersonasGramatical, ['pronombre', 'plural', 'persona_gramatical']),
     		"regla" => self::getValue($dr->regla_id, new Regla, ['regla']),
     		"negativo" => $dr->negativo,
-    		"region" => $dr->region
+    		"region" => $dr->region,
+    		"plural" => (int)self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, new PersonasGramatical, ['plural']),
+    		"pg" => self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, new PersonasGramatical, ['persona_gramatical']),
 
     	]);
 			}

@@ -67,7 +67,7 @@ class VerbosController extends Controller
 	public function listVerbs(){
 		$verbs = \DB::table('verbos')->orderBy('infinitivo')->get(['id','infinitivo', 'def']);
 		$verbs = self::AlphaOrder($verbs);
-		return response()->json($verbs);
+		return response()->json($verbs, 200);
 	}
 
 	public function storeVerbs($data = array()){
