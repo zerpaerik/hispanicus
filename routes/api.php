@@ -26,7 +26,9 @@
 	});
 
 Route::group(['prefix' => '/v1', 'middleware' => 'auth:api'], function() {
-	Route::get('myuser', 'Admin\FavoritosController@authuser');
+
+	Route::get('verbos/favs/', 'Admin\VerbosController@listFavs');
+	
 	//CONFIG
 	Route::get('favs/', 'Admin\ConfigRegionController@getFavs');
 	Route::post('favs/', 'Admin\ConfigRegionController@setFavs');

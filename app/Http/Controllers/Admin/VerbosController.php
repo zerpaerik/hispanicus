@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use hispanicus\Verbo;
 use hispanicus\TipoVerbo;
 use hispanicus\Raiz;
+use hispanicus\ConfigRegion;
 use Illuminate\Database\QueryException;
 use Validator;
 use hispanicus\Http\Controllers\Admin\DesinenciaController;
@@ -62,12 +63,19 @@ class VerbosController extends Controller
 			"tutorial" => utf8_decode($v->tutorial),
 			"data" => RaizDesinenciaController::getData($r, json_decode($request["region"]))
 		]);
-	}	
+	}
 
 	public function listVerbs(){
 		$verbs = \DB::table('verbos')->orderBy('infinitivo')->get(['id','infinitivo', 'def']);
 		$verbs = self::AlphaOrder($verbs);
 		return response()->json($verbs, 200);
+	}
+
+	public function listFavs(){
+		$u = \Auth::user();
+		$f = ConfigRegion::where('user_id', '=', $u->id)->get(['favs'])->first();
+		$v = Verbo::whereIn('id', json_decode($f->favs))->get(['id', 'infinitivo', 'def']);
+		return response()->json($v, 200);
 	}
 
 	public function storeVerbs($data = array()){
