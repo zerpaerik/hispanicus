@@ -18,7 +18,7 @@ class DataStatica extends Controller
 			try {
 
 				$FvIdx   = array_search('Formaverbal', str_replace(" ", "", $data[0]));	
-				$TvIdx   = array_search('Tiempoverbal', str_replace(" ", "", $data[0]));			
+				$TvIdx   = array_search('CTV', str_replace(" ", "", $data[0]));			
 				$PiIdx   = array_search('Pronombreinformal', str_replace(" ", "", $data[0]));	
 				$PfIdx   = array_search('Pronombreformal', str_replace(" ", "", $data[0]));
 				$PrIdx   = array_search('Pronombrereflexivo', str_replace(" ", "", $data[0]));
@@ -44,7 +44,7 @@ class DataStatica extends Controller
     	$dataPg 	= array();
     	$dataPr 	= array();
     	$dataVa 	= array();
-    	$dataRule = array();
+    	$dataRule   = array();
 
 		foreach ($data as $key => $value) {
 
@@ -113,7 +113,6 @@ class DataStatica extends Controller
 				break;
 			}				
 			
-
 			$verbo_auxiliar = str_replace(" ", "", $data[$key][$VaIdx]);
 
 			$insert = [
@@ -146,9 +145,9 @@ class DataStatica extends Controller
 		}
 
 		return [
-			self::save($dataRule, $inDbRule, new Regla, 					"regla"),
+			self::save($dataRule, $inDbRule, new Regla, 			"regla"),
 			self::save($dataVa,   $inDbVa,   new VerboAuxiliar, 	"verbo_auxiliar"),
-			self::save($dataPr,   $inDbPr,   new PronombreReflex, "pronombre_reflex"),
+			self::save($dataPr,   $inDbPr,   new PronombreReflex,   "pronombre_reflex"),
 			self::save($dataTv,   $inDbTv,   new TiempoVerbal, 		"tiempo"),
 			self::save($dataFv,   $inDbFv,   new FormaVerbal, 		"forma_verbal")
 		];
