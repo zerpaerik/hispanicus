@@ -70,7 +70,6 @@
                                         style="margin-right: 15px;">
                                     Login
                                 </button>
-                                <a href="download/">descargar</a>
                             </div>
                         </div>
                     </form>
