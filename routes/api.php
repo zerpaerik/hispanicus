@@ -20,7 +20,7 @@
     	Route::post('verbos/', 'Admin\VerbosController@storeRegular');
     	Route::post('dicts/', 'Admin\VerbosController@storeDict');
     	Route::post('verbos/regular_oc', 'Admin\VerbosController@storeRegularOrthChange');
-    	Route::get('verbos/', 'Admin\VerbosController@listVerbs');
+    	Route::get('verbos/{tipo}', 'Admin\VerbosController@listVerbs');
     	Route::post('verbo/{id}', 'Admin\VerbosController@getVerb');
 
 	});
