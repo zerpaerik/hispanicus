@@ -78,6 +78,11 @@ class VerbosController extends Controller
 		return response()->json($v, 200);
 	}
 
+	public function getTutorial($id){
+		$tutorial = \DB::table('verbos')->where('id', '=', $id)->get(['tutorial'])->first();
+		return response()->json($tutorial, 200);
+	}
+
 	public function storeVerbs($data = array()){
 		
 		try {

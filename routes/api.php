@@ -28,7 +28,8 @@
 Route::group(['prefix' => '/v1', 'middleware' => 'auth:api'], function() {
 
 	Route::get('verbos/favs/', 'Admin\VerbosController@listFavs');
-	
+	Route::get('tutorial/{id}/', 'Admin\VerbosController@getTutorial');
+
 	//CONFIG
 	Route::get('favs/', 'Admin\ConfigRegionController@getFavs');
 	Route::post('favs/', 'Admin\ConfigRegionController@setFavs');
