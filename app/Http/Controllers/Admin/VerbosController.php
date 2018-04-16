@@ -65,9 +65,20 @@ class VerbosController extends Controller
 		]);
 	}
 
-	public function listVerbs(){
-		$verbs = \DB::table('verbos')->orderBy('infinitivo')->get(['id','infinitivo', 'def']);
-		$verbs = self::AlphaOrder($verbs);
+	public function listVerbs($tipo){
+		$orderby = ($tipo == 1 || $tipo == 0) ? 'infinitivo' : 'modelo';
+		
+		if ($tipo == 1) {
+			$verbs = \DB::table('verbos')->where('tipo_verbo_id', '=', $tipo)->orderBy($orderby)->get(['id','infinitivo', 'def', 'modelo']);
+			$verbs = self::AlphaOrder($verbs);
+		}elseif($tipo == 0){
+			$verbs = \DB::table('verbos')->orderBy($orderby)->get(['id','infinitivo', 'def', 'modelo']);
+			$verbs = self::AlphaOrder($verbs);
+		}else{
+			$verbs = \DB::table('verbos')->where('tipo_verbo_id', '=', $tipo)->orderBy($orderby)->get(['id','infinitivo', 'def', 'modelo']);
+			$verbs = self::modelOrder($verbs);
+		}
+		
 		return response()->json($verbs, 200);
 	}
 
@@ -76,6 +87,11 @@ class VerbosController extends Controller
 		$f = ConfigRegion::where('user_id', '=', $u->id)->get(['favs'])->first();
 		$v = Verbo::whereIn('id', json_decode($f->favs))->get(['id', 'infinitivo', 'def']);
 		return response()->json($v, 200);
+	}
+
+	public function getTutorial($id){
+		$tutorial = \DB::table('verbos')->where('id', '=', $id)->get(['tutorial'])->first();
+		return response()->json($tutorial, 200);
 	}
 
 	public function storeVerbs($data = array()){
@@ -230,6 +246,30 @@ class VerbosController extends Controller
 		}
 
 		return $ordered;
+
+	}
+
+	public static function modelOrder($data){
+
+		$ordered = array();
+
+    foreach($data as $d){
+        if(array_key_exists($d->modelo, $ordered)){
+          continue;
+        }else{
+          $ordered[$d->modelo] = [];
+        }
+		}
+
+		foreach ($data as $d) {
+			array_push($ordered[$d->modelo], [
+				"id" => $d->id,
+				"infinitivo" => $d->infinitivo,
+				"def" => str_replace('"', " ", $d->def),
+			]);
+		}
+
+		return $ordered;		
 
 	}
 

@@ -18,7 +18,7 @@ class DataStatica extends Controller
 			try {
 
 				$FvIdx   = array_search('Formaverbal', str_replace(" ", "", $data[0]));	
-				$TvIdx   = array_search('CTV', str_replace(" ", "", $data[0]));			
+				$TvIdx   = array_search('Tiempoverbal', str_replace(" ", "", $data[0]));			
 				$PiIdx   = array_search('Pronombreinformal', str_replace(" ", "", $data[0]));	
 				$PfIdx   = array_search('Pronombreformal', str_replace(" ", "", $data[0]));
 				$PrIdx   = array_search('Pronombrereflexivo', str_replace(" ", "", $data[0]));

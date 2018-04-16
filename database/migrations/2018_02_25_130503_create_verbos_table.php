@@ -18,9 +18,9 @@ class CreateVerbosTable extends Migration
             $table->string('infinitivo');
             $table->integer('tipo_verbo_id')->unsigned()->index();
             $table->foreign('tipo_verbo_id')->references('id')->on('tipo_verbos');
-            $table->string('def')->nullable();
+            $table->text('def')->nullable();
             $table->string('modelo')->nullable();
-            $table->string('tutorial')->nullable();
+            $table->text('tutorial')->nullable();
             $table->timestamps();
         });
     }
