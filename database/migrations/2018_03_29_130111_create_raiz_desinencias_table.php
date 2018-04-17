@@ -35,6 +35,7 @@ class CreateRaizDesinenciasTable extends Migration
             $table->integer('verbo_auxiliar_id')->unsigned()->index()->nullable();
             $table->foreign('verbo_auxiliar_id')->references('id')->on('verbo_auxiliars');
             $table->integer('region')->default(0);
+            $table->string("ctv")->nullable();
             $table->timestamps();
         });
     }

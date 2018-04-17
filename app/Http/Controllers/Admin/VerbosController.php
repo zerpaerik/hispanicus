@@ -60,7 +60,6 @@ class VerbosController extends Controller
 
 		return response()->json([
 			"verbo" => $v->infinitivo,
-			"tutorial" => utf8_decode($v->tutorial),
 			"data" => RaizDesinenciaController::getData($r, json_decode($request["region"]))
 		]);
 	}

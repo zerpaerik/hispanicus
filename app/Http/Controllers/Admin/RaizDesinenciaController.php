@@ -31,6 +31,7 @@ class RaizDesinenciaController extends Controller
 				$PgIdx   = array_search('Pers.gram.', str_replace(" ", "", $data[0]));
 				$VaIdx	 = array_search('Verboauxiliar', str_replace(" ", "", $data[0]));
 				$RuleIdx = array_search('Regla', str_replace(" ", "", $data[0]));
+				$ctvIdx = array_search('CTV', str_replace(" ", "", $data[0]));
 
 			} catch (Exception $e) {
 				return response()->json(["exception" => $e->getMessage]);			
@@ -138,6 +139,19 @@ class RaizDesinenciaController extends Controller
 				$pr = null;
 			}
 
+			if ($ctvIdx) {
+			
+				if (array_key_exists($ctvIdx, $data[$key])) {
+				
+					$ctv = str_replace(" ", "", $data[$key][$ctvIdx]);
+
+				}else{
+					$ctv = null;
+				}
+			}else{
+				$ctv = null;
+			}			
+
 			if ($VaIdx) {
 				
 				if (array_key_exists($VaIdx, $data[$key])) {
@@ -190,7 +204,8 @@ class RaizDesinenciaController extends Controller
 						"pronombre_reflex_id" => $pr,
 						"verbo_auxiliar_id" => $va,
 						"regla_id" => $rule,
-						"region" => $reg
+						"region" => $reg,
+						"ctv" => $ctv
 
 					];
 
@@ -206,24 +221,30 @@ class RaizDesinenciaController extends Controller
     public static function getData($id, $region){
     	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
     	->whereIn('region', $region)
-    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region']);
-    	$a = array();
+    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region', 'ctv']);
+    	$a = array("indicativo" => ["simple" => [], "compuesto" => []],
+    						 "subjuntivo" => ["simple" => [], "compuesto" => []], 
+    						 "imperativo" => ["simple" => []], 
+    						 "fnp" 				=> ["simple" => []]
+    						);
 
     	foreach ($desra as $dr) {
     		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
+    		$mv = self::getWhere($dr->ctv);
 
-	        if(array_key_exists($tiempo, $a)){
+	        if(in_array([$tiempo => []], $a[$mv[1]][$mv[0]])){
 	          continue;
 	        }else{
-	          $a[$tiempo] = [];
+	          $a[$mv[1]][$mv[0]] += [$tiempo => []];
 	        }
     	}
 
     	foreach ($desra as $dr) {
 
     		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
-
-	    	array_push($a[$tiempo], [
+    		$mv = self::getWhere($dr->ctv);
+    		
+	    	array_push($a[$mv[1]][$mv[0]][$tiempo], [
 	    	"raiz" => self::getValue($dr->raiz_id, new Raiz, ['nombre']),
     		"desinencia" => self::getValue($dr->desinencia_id, new Desinencia, ['desinencia']),
     		"forma_verbal" => self::getValue($dr->forma_verbal_id, new FormaVerbal, ['forma_verbal']),
@@ -282,6 +303,23 @@ class RaizDesinenciaController extends Controller
 				return $res;
 			}
 			return $res;	    	    	
+    }
+
+    public static function getWhere($val){
+    	$val = str_replace("tv", "", $val);
+    	if ($val > 0 && $val < 6) {
+    		return ["simple", "indicativo"];
+    	}else if($val > 5 && $val < 10){
+    		return ["simple", "subjuntivo"];
+    	}else if($val == 10 || $val == 12 || $val == 13 || $val == 17 || $val == 16){
+    		return ["compuesto", "indicativo"];
+    	}else if($val == 11 || $val == 14 || $val == 15 || $val == 18){
+    		return ["compuesto", "subjuntivo"];
+    	}else if($val > 19 && $val < 25){
+    		return ["simple", "fnp"];
+    	}else{
+    		return ["simple", "imperativo"];
+    	}
     }
 
     public static function getFromDb($obj, $getFields, $where, $cVal){
