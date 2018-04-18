@@ -90,6 +90,7 @@ class VerbosController extends Controller
 
 	public function getTutorial($id){
 		$tutorial = \DB::table('verbos')->where('id', '=', $id)->get(['tutorial'])->first();
+		$tutorial->tutorial = utf8_decode($tutorial->tutorial);
 		return response()->json($tutorial, 200);
 	}
 
