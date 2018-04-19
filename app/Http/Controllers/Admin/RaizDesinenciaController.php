@@ -52,7 +52,7 @@ class RaizDesinenciaController extends Controller
 					 	$reg = 1;
 					}elseif (json_encode($data[$key][$PgIdx]) == '"[2\u00aa]"') {
 					 	$reg = 2;
-					}elseif ($PiIdx) {
+					}elseif ($PiIdx && array_key_exists($PiIdx, $data[$key])) {
 						if (json_encode($data[$key][$PiIdx]) == '"[vos]"') {$reg = 3;}
 					}else{
 						$reg = 0;
