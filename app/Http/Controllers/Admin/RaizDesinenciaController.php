@@ -46,13 +46,14 @@ class RaizDesinenciaController extends Controller
 				if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
 				$r = str_replace([" ", "[", "]"], ["", '<b class="rc">', "</b>"], $data[$key][$RaizIdx]);
-
 				$reg = 0;
 				if ($PgIdx && array_key_exists($PgIdx, $data[$key])) {
 					if (json_encode($data[$key][$PgIdx]) == '"{2\u00aa}"') {
 					 	$reg = 1;
 					}elseif (json_encode($data[$key][$PgIdx]) == '"[2\u00aa]"') {
 					 	$reg = 2;
+					}elseif ($PiIdx) {
+						if (json_encode($data[$key][$PiIdx]) == '"[vos]"') {$reg = 3;}
 					}else{
 						$reg = 0;
 					} 

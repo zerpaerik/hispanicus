@@ -15,7 +15,7 @@ class CreateRaizDesinenciasTable extends Migration
     {
         Schema::create('desinencia_raizs', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('desinencia_id')->unsigned()->index();
+            $table->integer('desinencia_id')->unsigned()->index()->nullable();
             $table->foreign('desinencia_id')->references('id')->on('desinencias');
             $table->integer('tiempo_verbal_id')->unsigned()->index();
             $table->foreign('tiempo_verbal_id')->references('id')->on('tiempo_verbals');
