@@ -186,7 +186,7 @@ class RaizDesinenciaController extends Controller
 
 				$neg = (array_key_exists($NegIdx, $data[$key])) ? true:false;
 
-				if (!$raiz || !$desinencia) {
+				if (!$raiz) {
 					
 					continue;
 
