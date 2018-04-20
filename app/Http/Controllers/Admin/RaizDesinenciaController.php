@@ -223,10 +223,10 @@ class RaizDesinenciaController extends Controller
     	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
     	->whereIn('region', $region)
     	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region', 'ctv']);
-    	$a = array("indicativo" => ["tiempo simple" => [], "tiempo compuesto" => []],
-    						 "subjuntivo" => ["tiempo simple" => [], "tiempo compuesto" => []], 
-    						 "imperativo" => ["tiempo simple" => []], 
-    						 "F.N.P."     => ["tiempo simple" => []]
+    	$a = array("indicativo" => ["tiempos simples" => [], "tiempos compuestos" => []],
+    						 "subjuntivo" => ["tiempos simples" => [], "tiempos compuestos" => []], 
+    						 "imperativo" => ["tiempos simples" => []], 
+    						 "F.N.P."     => ["tiempos simples" => []]
     						);
 
     	foreach ($desra as $dr) {
@@ -309,17 +309,17 @@ class RaizDesinenciaController extends Controller
     public static function getWhere($val){
     	$val = str_replace("tv", "", $val);
     	if ($val > 0 && $val < 6) {
-    		return ["tiempo simple", "indicativo"];
+    		return ["tiempos simples", "indicativo"];
     	}else if($val > 5 && $val < 10){
-    		return ["tiempo simple", "subjuntivo"];
+    		return ["tiempos simples", "subjuntivo"];
     	}else if($val == 10 || $val == 12 || $val == 13 || $val == 17 || $val == 16){
-    		return ["tiempo compuesto", "indicativo"];
+    		return ["tiempos compuestos", "indicativo"];
     	}else if($val == 11 || $val == 14 || $val == 15 || $val == 18){
-    		return ["tiempo compuesto", "subjuntivo"];
+    		return ["tiempos compuestos", "subjuntivo"];
     	}else if($val > 19 && $val < 25){
-    		return ["tiempo simple", "F.N.P."];
+    		return ["tiempos simples", "F.N.P."];
     	}else{
-    		return ["tiempo simple", "imperativo"];
+    		return ["tiempos simples", "imperativo"];
     	}
     }
 
