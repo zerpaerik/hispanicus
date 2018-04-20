@@ -46,13 +46,14 @@ class RaizDesinenciaController extends Controller
 				if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
 				$r = str_replace([" ", "[", "]"], ["", '<b class="rc">', "</b>"], $data[$key][$RaizIdx]);
-
 				$reg = 0;
 				if ($PgIdx && array_key_exists($PgIdx, $data[$key])) {
 					if (json_encode($data[$key][$PgIdx]) == '"{2\u00aa}"') {
 					 	$reg = 1;
 					}elseif (json_encode($data[$key][$PgIdx]) == '"[2\u00aa]"') {
 					 	$reg = 2;
+					}elseif ($PiIdx && array_key_exists($PiIdx, $data[$key])) {
+						if (json_encode($data[$key][$PiIdx]) == '"[vos]"') {$reg = 3;}
 					}else{
 						$reg = 0;
 					} 
@@ -186,7 +187,7 @@ class RaizDesinenciaController extends Controller
 
 				$neg = (array_key_exists($NegIdx, $data[$key])) ? true:false;
 
-				if (!$raiz || !$desinencia) {
+				if (!$raiz) {
 					
 					continue;
 
@@ -222,10 +223,10 @@ class RaizDesinenciaController extends Controller
     	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
     	->whereIn('region', $region)
     	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region', 'ctv']);
-    	$a = array("indicativo" => ["simple" => [], "compuesto" => []],
-    						 "subjuntivo" => ["simple" => [], "compuesto" => []], 
-    						 "imperativo" => ["simple" => []], 
-    						 "fnp" 				=> ["simple" => []]
+    	$a = array("indicativo" => ["tiempos simples" => [], "tiempos compuestos" => []],
+    						 "subjuntivo" => ["tiempos simples" => [], "tiempos compuestos" => []], 
+    						 "imperativo" => ["tiempos simples" => []], 
+    						 "F.N.P."     => ["tiempos simples" => []]
     						);
 
     	foreach ($desra as $dr) {
@@ -308,17 +309,17 @@ class RaizDesinenciaController extends Controller
     public static function getWhere($val){
     	$val = str_replace("tv", "", $val);
     	if ($val > 0 && $val < 6) {
-    		return ["simple", "indicativo"];
+    		return ["tiempos simples", "indicativo"];
     	}else if($val > 5 && $val < 10){
-    		return ["simple", "subjuntivo"];
+    		return ["tiempos simples", "subjuntivo"];
     	}else if($val == 10 || $val == 12 || $val == 13 || $val == 17 || $val == 16){
-    		return ["compuesto", "indicativo"];
+    		return ["tiempos compuestos", "indicativo"];
     	}else if($val == 11 || $val == 14 || $val == 15 || $val == 18){
-    		return ["compuesto", "subjuntivo"];
+    		return ["tiempos compuestos", "subjuntivo"];
     	}else if($val > 19 && $val < 25){
-    		return ["simple", "fnp"];
+    		return ["tiempos simples", "F.N.P."];
     	}else{
-    		return ["simple", "imperativo"];
+    		return ["tiempos simples", "imperativo"];
     	}
     }
 
