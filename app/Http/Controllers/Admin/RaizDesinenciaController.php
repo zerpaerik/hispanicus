@@ -64,7 +64,7 @@ class RaizDesinenciaController extends Controller
 
 				if (array_key_exists($DesIdx, $data[$key])) {
 
-					$d = str_replace([" ", "[", "]"], ["", '<b class="dc">', "</b>"], $data[$key][$DesIdx]);
+					$d = str_replace([" ", "[", "]"], ["", "", ""], $data[$key][$DesIdx]);
 
 					$desinencia = self::getFromDb(new Desinencia, ['id'], 'desinencia', utf8_encode($d));
 					
