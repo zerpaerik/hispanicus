@@ -1,9 +1,49 @@
+<style scoped>
+  .first{
+    background-color: lightgray;
+    font-weight: bold;
+  }
+  .btn-file {
+      position: relative;
+      overflow: hidden;
+  }
+  .btn-file input[type=file] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      background: white;
+      cursor: inherit;
+      display: block;
+  }
+  .full-mid{
+    position: fixed;
+    bottom:0;
+    left:-1;
+  }
+</style>
+
 <template>
+
     <div class="panel panel-default">
+            <b-alert class="full-mid" show variant="warning" v-if="saving">
+              <h1 class="alert-heading">Guardando en la base de datos...</h1>
+              <p><b>Por favor no cambie de pagina durante este proceso.</b></p>
+            </b-alert>
             <div class="panel-heading">
                 <h5>
                     Crear Verbo
                 </h5>
+                <div align="right">
+                <button :disabled="saving"  v-if="datatable.length > 0" class="btn btn-success" @click="upload('save')">Guardar</button>
+                <button :disabled="saving"  v-if="datatable.length > 0" class="btn btn-danger" @click="clean()">Cancelar</button>
+                </div>
             </div>
         
         <div class="row panel-body" style="padding-left:2%; padding-right:2%;">
@@ -16,10 +56,19 @@
                     </span>
                 </div>
                 <div class="col-md-2">
-                    <button class="btn btn-success btn-block" @click="upload('show')" v-if="file"><i class="fa fa-upload"></i></button>
+                    <button :disabled="saving" class="btn btn-success btn-block" @click="upload('show')" v-if="file"><i class="fa fa-upload"></i></button>
                 </div>
-
-                <div class="col" style="padding-top:10px;">
+                
+                <div class="col-md-2">
+                  <select class="form-control" variant="info" v-model="tipo">
+                    <option values="0" disabled selected="selected">Tipo de verbo</option>
+                    <option value="1">Regular</option>
+                    <option value="2">Regular (cambio ortografico)</option>
+                    <option value="3">Irregular</option>
+                  </select>
+                </div>
+                
+                <div class="col-md-4" style="padding-top:10px;">
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" v-bind:style="{width: + pc + '%'}" :aria-valuenow="pc" aria-valuemin="0" aria-valuemax="100">
                             {{pc}}%
@@ -27,95 +76,36 @@
                     </div>
                 </div>
             </div>
-        <table class="table table-borderless m-b-none" v-if="datatable.length > 0">
+        </div>
+
+      <div class="row">
+        <table class="table table-borderless m-b-none col" v-if="datatable.length > 0">
             <tbody>
-                <tr v-for="(d, index) in datatable">
+                <tr v-for="(d, index) in datatable" v-bind:class="{ first: (index == 0) }">
                     <!-- ID -->
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.A }}
+                    <td v-for="i in idxs" style="vertical-align: middle;">
+                        <span> {{ d[i] }} </span>
                     </td>
 
-                    <!-- Name -->
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.B }}
-                    </td>
-                    
-                    <!-- Name -->
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.C }}
-                    </td>    
-
-                    <!-- Name -->
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.D }}
-                    </td>
-
-                    <!-- Name -->
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.E }}
-                    </td>
-
-                    <!-- Name -->
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.F }}
-                    </td>
-                    
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.G }}
-                    </td>
-
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.H }}
-                    </td>
-
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.I }}
-                    </td>
-
-                    <td v-if="index > 0" style="vertical-align: middle;">
-                        {{ d.J }}
-                    </td>
-       
-                </tr>
-                <tr>
-                    <td>
-                        <button class="btn btn-primary" @click="upload('save')">Guardar</button>
-                    </td>
                 </tr>
             </tbody>
         </table>            
         </div>
-        <div style="position:fixed; bottom:0; left:-1;">
-        <b-alert show dismissible v-if="new_types">Se han añadido nuevos Tipos de Verbos</b-alert>
-        <b-alert show dismissible v-if="new_verbs">Se han añadido nuevos Verbos</b-alert>
-        <b-alert show dismissible v-if="new_des">Se han añadido nuevos Desinencias</b-alert>
-        <b-alert show dismissible v-if="!new_types && !new_verbs && saved" variant="danger">
+        <div style="position:fixed; width:30%; bottom:0; left:-1;">
+        
+        <b-alert show dismissible v-if="new_verbs && saved">
+          <p>Se han añadido nuevos Tipos de Verbos</p>
+          <p>Se han añadido nuevos Verbos</p>
+          <p>Se han añadido nuevos Desinencias</p>
+        </b-alert>
+
+        <b-alert show dismissible v-else-if="!new_types && !new_verbs && saved" variant="danger">
             Esta hoja ya ha sido agregada, no se han hecho cambios en la base de datos.
         </b-alert>
     </div>
     </div>    
 </template>
-<style scoped>  
-    .btn-file {
-        position: relative;
-        overflow: hidden;
-    }
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
-    }
-</style>
+
 <script>
     export default{
         data(){
@@ -128,7 +118,10 @@
                 new_verbs: false,
                 new_types: false,
                 new_des: false,
-                saved: false
+                saved: false,
+                saving : false,
+                idxs : [],
+                tipo : 0
             }
         },
         methods: {
@@ -148,25 +141,51 @@
                 };
 
                 this.data.append('file', this.file);
+                this.data.append('tipo', this.tipo);
                 
                 this.uploading = true;
+
                 if (action == "save") {
+                    if (this.tipo < 1) { return alert('Debe especificar un tipo de verbo'); }
+                    this.saving = true;
                     axios.post('/api/v1/verbos', this.data, config)
                         .then(response => {
                             this.new_types = response.data.new_types;
                             this.new_verbs = response.data.new_verbs;
                             this.new_des = response.data.new_des;
                             this.saved = true;
+                            this.saving = false;
+                        }).catch(error => {
+                            console.log(error);
+                            this.saving = false;                          
                         });
                 }else{
                     axios.post('/api/v1/upload_verbos', this.data, config)
                     .then(response => {
-                        console.log(response);
-                        this.datatable = response.data.data;
+                      var res = response.data.data;
+                      for(let data in res){
+                        if (res[data].length < 1) {
+                          res.splice(data, 1);
+                        }
+                      }
+                      console.log(res);
+                      var values = ["verbo", "raíz", "desinencia", "formaverbal", "pers.gram.", "verboauxiliar", "pronombrereflexivo", "pronombreformal", "pronombreinformal", "tiempoverbal"];
+                      var indexes = [];
+                      for(let d in res[0]){
+                        if(values.includes(res[0][d].toLowerCase().replace(" ", ""))){
+                          indexes.push(d);
+                        }
+                      }
+                      this.idxs = indexes;
+                      this.datatable = res;
+                      
                     }).catch(error => {
                         console.log(error);
                     });
                 }
+            },
+            clean(){
+              location.reload();
             }
         }
     }

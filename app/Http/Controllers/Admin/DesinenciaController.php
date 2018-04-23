@@ -33,8 +33,7 @@ class DesinenciaController extends Controller
 			if (!array_key_exists($DesIdx, $data[$key])) continue;
 		
 			$desinencia = str_replace(" ", "", $data[$key][$DesIdx]);
-			$desinencia = str_replace("[", '<b class="dc">', $data[$key][$DesIdx]);
-			$desinencia = str_replace("]", '</b>', $data[$key][$DesIdx]);
+			$desinencia = str_replace(["[", "]"], "", $data[$key][$DesIdx]);
 
 			$insert = [
 				"desinencia" => utf8_encode($desinencia),

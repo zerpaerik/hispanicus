@@ -48,6 +48,11 @@ Vue.component(
     require('./components/verbos/Dict.vue')
 );
 
+Vue.component(
+    'verbos-show',
+    require('./components/verbos/Show.vue')
+);
+
 const app = new Vue({
     el: '#app'
 });

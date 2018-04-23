@@ -114,8 +114,8 @@ class DataStatica extends Controller
 			}				
 			
 			$verbo_auxiliar = str_replace(" ", "", $data[$key][$VaIdx]);
-			$verbo_auxiliar = str_replace("[", '<b class="vac">', $data[$key][$VaIdx]);
-			$verbo_auxiliar = str_replace("]", '</b>', $data[$key][$VaIdx]);
+			$verbo_auxiliar = str_replace("[", "", $data[$key][$VaIdx]);
+			$verbo_auxiliar = str_replace("]", "", $data[$key][$VaIdx]);
 
 			$insert = [
 				"verbo_auxiliar" => utf8_encode($verbo_auxiliar),

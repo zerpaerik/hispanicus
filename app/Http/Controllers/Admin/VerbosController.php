@@ -23,7 +23,7 @@ class VerbosController extends Controller
 	public function storeRegular(Request $request){
 		$sheetData = $this->loadFile($request)["data"];
 
-		$s1 = $this->storeVerbs($sheetData);
+		$s1 = $this->storeVerbs($sheetData, $request["tipo"]);
 		$s2 = RaizController::storeRaiz($sheetData);
 		$s3 = DesinenciaController::storeDesinencia($sheetData);
 		$s4 = DataStatica::storeStaticData($sheetData);
@@ -34,7 +34,7 @@ class VerbosController extends Controller
 			"new_roots" 	=> $s2,
 			"new_des"   	=> $s3,
 			"new_static" 	=> $s4,
-			"merges" 		=> $s5
+			"merges" 			=> $s5
 		]);
 	}
 
@@ -60,7 +60,7 @@ class VerbosController extends Controller
 
 		return response()->json([
 			"verbo" => $v->infinitivo,
-			"data" => RaizDesinenciaController::getData($r, json_decode($request["region"]))
+			"data" => RaizDesinenciaController::getData($r, json_decode($request["region"]), $request["lang"])
 		]);
 	}
 
@@ -94,7 +94,7 @@ class VerbosController extends Controller
 		return response()->json($tutorial, 200);
 	}
 
-	public function storeVerbs($data = array()){
+	public function storeVerbs($data = array(), $type){
 		
 		try {
 
@@ -115,11 +115,10 @@ class VerbosController extends Controller
 			if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
 			$infinitivo = str_replace(" ", "", self::quitarSe($data[$key][$InfIdx]));
-			$tipo_verbo = 1;
 
 			$insert = [
 				"infinitivo" => utf8_encode($infinitivo),
-				"tipo_verbo_id" => $tipo_verbo
+				"tipo_verbo_id" => $type
 			];
 
 			if (!in_array(["infinitivo" => self::quitarSe($data[$key][$InfIdx])], $inDb)) {
@@ -174,16 +173,6 @@ class VerbosController extends Controller
 
 	}	
 
-	public function showUploadView(){
-
-        return view('admin.verbos.create');
-	}
-
-	public function showUploadDictView(){
-
-        return view('admin.verbos.dict');
-	}
-
 	public static function extractVal($data, $value, $utf8 = false){
 		
 		$d = array();
@@ -211,6 +200,7 @@ class VerbosController extends Controller
 				$d = array_filter($sheetData[$key]);
 				array_push($data, $d);
 			}
+			
 			return ["data" => $data, "sheet" => $sheetData];
 		} catch (Exception $e) {
 		    return response()->json($e->getMessage());
@@ -315,6 +305,46 @@ class VerbosController extends Controller
 		
 		return $r;
 
+	}
+
+	public function searchVerbo($verbo){
+		$v = Verbo::where('infinitivo', 'like', '%'.$verbo.'%')->get()->first();
+		
+		if (!$v) return response()->json(["message" => "not_found"], 404);
+		
+		$raices = Raiz::where('verbo_id', $v->id)->get(['id']);
+
+		$r = array();
+
+		foreach ($raices as $root) {
+		  array_push($r, $root->id);
+		}
+
+		return response()->json([
+			"verbo" => $v->infinitivo,
+			"raices" => $r,
+			"data" => RaizDesinenciaController::getData($r, ["*"])
+		]);
+	}
+
+	public function delRaices(Request $request){
+		$affectedRows = \DB::table('desinencia_raizs')->whereIn('raiz_id', $request["raices"])->delete();
+		return response()->json($affectedRows, 200);
+	}
+
+	public function showUploadView(){
+
+        return view('admin.verbos.create');
+	}
+
+	public function showUploadDictView(){
+
+        return view('admin.verbos.dict');
+	}
+
+	public function showVerbView(){
+
+        return view('admin.verbos.show');
 	}
 
 }

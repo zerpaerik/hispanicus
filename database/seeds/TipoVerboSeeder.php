@@ -12,7 +12,7 @@ class TipoVerboSeed extends Seeder
      */
     public function run()
     {
-        $tipos = ["regular", "irregular"];
+        $tipos = ["regular", "regular (cambio ortografico)", "irregular"];
         foreach ($tipos as $key => $value) {
             $tipoVerbo = TipoVerbo::create([
             'nombre' => $value,

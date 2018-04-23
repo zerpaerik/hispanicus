@@ -21,7 +21,7 @@ class PersonasGramaticalSeeder extends Seeder
 
 		$data = [
 			["pronombre" => json_encode($yo), "plural" => false, "formal" => false,   "persona_gramatical" => 1],
-      ["pronombre" => json_encode($vos), "plural" => false, "formal" => false,  "persona_gramatical" => 1],
+      ["pronombre" => json_encode($vos), "plural" => false, "formal" => false,  "persona_gramatical" => 2],
 			["pronombre" => json_encode($tu), "plural" => false, "formal" => false,   "persona_gramatical" => 2],
 			["pronombre" => json_encode($ella), "plural" => false, "formal" => false, "persona_gramatical" => 3],
 			["pronombre" => json_encode($nos), "plural" => true, "formal" => false,   "persona_gramatical" => 1],

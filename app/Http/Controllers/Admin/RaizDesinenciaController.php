@@ -31,7 +31,7 @@ class RaizDesinenciaController extends Controller
 				$PgIdx   = array_search('Pers.gram.', str_replace(" ", "", $data[0]));
 				$VaIdx	 = array_search('Verboauxiliar', str_replace(" ", "", $data[0]));
 				$RuleIdx = array_search('Regla', str_replace(" ", "", $data[0]));
-				$ctvIdx = array_search('CTV', str_replace(" ", "", $data[0]));
+				$ctvIdx	 = array_search('CTV', str_replace(" ", "", $data[0]));
 
 			} catch (Exception $e) {
 				return response()->json(["exception" => $e->getMessage]);			
@@ -45,15 +45,20 @@ class RaizDesinenciaController extends Controller
 				
 				if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
-				$r = str_replace([" ", "[", "]"], ["", '<b class="rc">', "</b>"], $data[$key][$RaizIdx]);
+				$r = str_replace([" ", "[", "]"], ["", "", ""], $data[$key][$RaizIdx]);
 				$reg = 0;
-				if ($PgIdx && array_key_exists($PgIdx, $data[$key])) {
-					if (json_encode($data[$key][$PgIdx]) == '"{2\u00aa}"') {
+
+				if ($PiIdx && array_key_exists($PiIdx, $data[$key])) {
+					$p = str_replace(" ", "", $data[$key][$PiIdx]);
+					
+					if (json_encode($p) == '"[ustedes]"') {
 					 	$reg = 1;
-					}elseif (json_encode($data[$key][$PgIdx]) == '"[2\u00aa]"') {
+					}else if (json_encode($p) == '"[vosotros,vosotras]"') {
 					 	$reg = 2;
-					}elseif ($PiIdx && array_key_exists($PiIdx, $data[$key])) {
-						if (json_encode($data[$key][$PiIdx]) == '"[vos]"') {$reg = 3;}
+					}else if (json_encode($p) == '"[vos]"') {
+						$reg = 3;
+					}else if (json_encode($p) == '"t\u00fa"'){
+						$reg = 4;
 					}else{
 						$reg = 0;
 					} 
@@ -128,7 +133,7 @@ class RaizDesinenciaController extends Controller
 			
 				if (array_key_exists($PrIdx, $data[$key])) {
 				
-					$pronombre_reflex = str_replace(" ", "", $data[$key][$PrIdx]);
+					$pronombre_reflex = str_replace([" ", "[", "]"], "", $data[$key][$PrIdx]);
 
 					$pr = (array_key_exists($PrIdx, $data[$key]))
 					? self::getFromDb(new PronombreReflex, ['id'], 'pronombre_reflex', utf8_encode($pronombre_reflex)) : null;
@@ -157,7 +162,7 @@ class RaizDesinenciaController extends Controller
 				
 				if (array_key_exists($VaIdx, $data[$key])) {
 
-				$verbo_auxiliar = str_replace(" ", "", $data[$key][$VaIdx]);
+				$verbo_auxiliar = str_replace([" ", "[", "]"], "", $data[$key][$VaIdx]);
 
 				$va = (array_key_exists($VaIdx, $data[$key]))
 				? self::getFromDb(new VerboAuxiliar, ['id'], 'verbo_auxiliar', utf8_encode($verbo_auxiliar)) : null;
@@ -219,19 +224,39 @@ class RaizDesinenciaController extends Controller
 
     }
 
-    public static function getData($id, $region){
-    	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
-    	->whereIn('region', $region)
-    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region', 'ctv']);
-    	$a = array("indicativo" => ["tiempos simples" => [], "tiempos compuestos" => []],
-    						 "subjuntivo" => ["tiempos simples" => [], "tiempos compuestos" => []], 
-    						 "imperativo" => ["tiempos simples" => []], 
-    						 "F.N.P."     => ["tiempos simples" => []]
+    public static function getData($id, $region, $lang="es"){
+    	
+    	if (sizeof($region) > 1) {
+	    	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
+	    	->whereIn('region', $region)
+	    	->orderBy('ctv', 'desc')
+	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region', 'ctv']);
+    	}else{
+	    	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
+	    	->orderBy('ctv', 'desc')
+	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region', 'ctv']);
+    	}
+
+    	$times = [
+	     "en" => [
+	       "simple tenses",
+	       "compound tenses",
+	    	 ],
+	     "es" => [
+	       "tiempos simples",
+	       "tiempos compuestos",
+	  	   ],
+		   ];
+
+    	$a = array("indicativo" => [$times[$lang][0] => [], $times[$lang][1] => []],
+    						 "subjuntivo" => [$times[$lang][0] => [], $times[$lang][1] => []], 
+    						 "imperativo" => [$times[$lang][0] => []], 
+    						 "F.N.P."     => [$times[$lang][0] => []]
     						);
 
     	foreach ($desra as $dr) {
     		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
-    		$mv = self::getWhere($dr->ctv);
+    		$mv = self::getWhere($dr->ctv, $lang, $times);
 
 	        if(in_array([$tiempo => []], $a[$mv[1]][$mv[0]])){
 	          continue;
@@ -243,7 +268,7 @@ class RaizDesinenciaController extends Controller
     	foreach ($desra as $dr) {
 
     		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
-    		$mv = self::getWhere($dr->ctv);
+    		$mv = self::getWhere($dr->ctv, $lang, $times);
     		
 	    	array_push($a[$mv[1]][$mv[0]][$tiempo], [
 	    	"raiz" => self::getValue($dr->raiz_id, new Raiz, ['nombre']),
@@ -306,20 +331,20 @@ class RaizDesinenciaController extends Controller
 			return $res;	    	    	
     }
 
-    public static function getWhere($val){
+    public static function getWhere($val, $lang, $times){
     	$val = str_replace("tv", "", $val);
     	if ($val > 0 && $val < 6) {
-    		return ["tiempos simples", "indicativo"];
+    		return [$times[$lang][0], "indicativo"];
     	}else if($val > 5 && $val < 10){
-    		return ["tiempos simples", "subjuntivo"];
+    		return [$times[$lang][0], "subjuntivo"];
     	}else if($val == 10 || $val == 12 || $val == 13 || $val == 17 || $val == 16){
-    		return ["tiempos compuestos", "indicativo"];
+    		return [$times[$lang][1], "indicativo"];
     	}else if($val == 11 || $val == 14 || $val == 15 || $val == 18){
-    		return ["tiempos compuestos", "subjuntivo"];
+    		return [$times[$lang][1], "subjuntivo"];
     	}else if($val > 19 && $val < 25){
-    		return ["tiempos simples", "F.N.P."];
+    		return [$times[$lang][0], "F.N.P."];
     	}else{
-    		return ["tiempos simples", "imperativo"];
+    		return [$times[$lang][0], "imperativo"];
     	}
     }
 

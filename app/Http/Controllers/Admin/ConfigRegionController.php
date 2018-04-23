@@ -10,8 +10,6 @@ use hispanicus\User;
 class ConfigRegionController extends Controller
 {
 
-
-
     public function getLang(){
 
         $u = \Auth::user();

@@ -93,14 +93,21 @@
                     <li class="{{ $request->segment(2) == 'verbos_create' ? 'active active-sub' : '' }}">
                         <a href="{{ route('admin.verbos.create') }}">
                             <i class="fa fa-plus"></i>
-                            <span class="title">Crear Verbo</span>
+                            <span class="title">Añadir verbos</span>
                         </a>
                     </li>
+
+                    <li class="{{ $request->segment(2) == 'verbos_show' ? 'active active-sub' : '' }}">
+                        <a href="{{ route('admin.verbos.show') }}">
+                            <i class="fa fa-plus"></i>
+                            <span class="title">Listar verbos</span>
+                        </a>
+                    </li>                    
 
                     <li class="{{ $request->segment(2) == 'dict_create' ? 'active active-sub' : '' }}">
                         <a href="{{ route('admin.verbos.dict') }}">
                             <i class="fa fa-book"></i>
-                            <span class="title">Crear Diccionario</span>
+                            <span class="title">Agregar diccionario</span>
                         </a>
                     </li>
                                         
