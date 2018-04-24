@@ -48,7 +48,7 @@
         
         <div class="row panel-body" style="padding-left:2%; padding-right:2%;">
             <div class="col-md-12" style="padding-top:2%; padding-bottom:2%;">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <span class=" btn btn-block btn-primary btn-file" id="btnfile">
                         <span v-if="!file && !uploading">Seleccionar</span>
                         <span v-else>{{file.name}}</span>
@@ -60,13 +60,22 @@
                 </div>
                 
                 <div class="col-md-2">
+                  <label>Tipo de verbo</label>
                   <select class="form-control" variant="info" v-model="tipo">
-                    <option values="0" disabled selected="selected">Tipo de verbo</option>
                     <option value="1">Regular</option>
                     <option value="2">Regular (cambio ortografico)</option>
                     <option value="3">Irregular</option>
                   </select>
                 </div>
+
+                <div class="col-md-2">
+                  <label>Región</label>
+                  <select class="form-control" variant="info" v-model="region">
+                    <option value="1">España</option>
+                    <option value="2">Latino america</option>
+                    <option value="3">Voseo</option>
+                  </select>
+                </div>                
                 
                 <div class="col-md-4" style="padding-top:10px;">
                     <div class="progress">
@@ -121,7 +130,8 @@
                 saved: false,
                 saving : false,
                 idxs : [],
-                tipo : 0
+                tipo : null,
+                region : null
             }
         },
         methods: {
@@ -142,21 +152,23 @@
 
                 this.data.append('file', this.file);
                 this.data.append('tipo', this.tipo);
+                this.data.append('region', this.region);
                 
                 this.uploading = true;
 
                 if (action == "save") {
                     if (this.tipo < 1) { return alert('Debe especificar un tipo de verbo'); }
                     this.saving = true;
+                    this.saved = false;
                     axios.post('/api/v1/verbos', this.data, config)
                         .then(response => {
                             this.new_types = response.data.new_types;
-                            this.new_verbs = response.data.new_verbs;
+                            this.new_verbs = response.data.new_merges;
                             this.new_des = response.data.new_des;
                             this.saved = true;
                             this.saving = false;
+                            this.datatable = [];
                         }).catch(error => {
-                            console.log(error);
                             this.saving = false;                          
                         });
                 }else{
@@ -168,7 +180,7 @@
                           res.splice(data, 1);
                         }
                       }
-                      console.log(res);
+                      
                       var values = ["verbo", "raíz", "desinencia", "formaverbal", "pers.gram.", "verboauxiliar", "pronombrereflexivo", "pronombreformal", "pronombreinformal", "tiempoverbal"];
                       var indexes = [];
                       for(let d in res[0]){

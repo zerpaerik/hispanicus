@@ -30,7 +30,7 @@
 
       <div class="row panel-body" style="padding-left:2%; padding-right:2%;" v-if="!hideTable">
         <div v-for="(k, i) in keys" :key="i">
-        <b-list-group class="col-md-6" v-for="(t, id) in getKeys(data[k])" :key="id">
+        <b-list-group class="col-md-2" v-for="(t, id) in getKeys(data[k])" :key="id">
           <b-list-group-item active class="header">
             {{k}}
           </b-list-group-item>
@@ -45,12 +45,11 @@
           </b-list-group-item>
           <b-list-group-item v-for="(f, idxs) in getKeys(data[k][t][v])" :key="idxs" v-bind:class="{ region: (data[k][t][v][f].region > 0) }">
 
-            <span style="color:green;font-weight:bold;">{{data[k][t][v][f].pronombre}} {{data[k][t][v][f].pronombre_formal_id}}</span>
+            <span style="font-weight:bold;">{{data[k][t][v][f].pronombre}} {{data[k][t][v][f].pronombre_formal_id}}</span>
             <span v-if="data[k][t][v][f].negativo != '0'">no</span>
             <span>{{data[k][t][v][f].pronombre_reflex}}</span>
             <span>{{data[k][t][v][f].verbo_auxiliar}}</span>
-            <span>{{html_decode(data[k][t][v][f].raiz)}}</span><span style="color:darkred;font-weight:bold;">{{html_decode(data[k][t][v][f].desinencia)}}</span>
-            <span>{{data[k][t][v][f].region}}</span>
+            <span>{{html_decode(data[k][t][v][f].raiz)}}</span><span style="color:red;font-weight:bold;">{{html_decode(data[k][t][v][f].desinencia)}}</span>
             
           </b-list-group-item>
           </div>
@@ -64,7 +63,7 @@
       </div>
         <div style="position:fixed; width:30%; bottom:0; left:-1;">
         <b-alert show dismissible variant="warning" v-if="notFound">
-            <p>Verbo no encontrado, asegurese de haberlo escrito correctamente.</p>
+            <p>Verbo <b style="color:#000066;">{{search}}</b> no ha sido encontrado, asegurese de haberlo escrito correctamente.</p>
         </b-alert>
         </div>      
     </div>  
@@ -96,7 +95,6 @@
               this.data = res;
               this.keys = this.getKeys(res);
               this.raices = response.data.raices;
-              console.log(res);
               this.hideTable = false;
               this.searching = false;
               this.notFound = false;

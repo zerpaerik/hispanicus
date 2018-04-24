@@ -27,14 +27,14 @@ class VerbosController extends Controller
 		$s2 = RaizController::storeRaiz($sheetData);
 		$s3 = DesinenciaController::storeDesinencia($sheetData);
 		$s4 = DataStatica::storeStaticData($sheetData);
-		$s5 = RaizDesinenciaController::makeRelations($sheetData);
+		$s5 = RaizDesinenciaController::makeRelations($sheetData, $request["region"]);
 
 		return response()->json([
 			"new_verbs" 	=> $s1,
 			"new_roots" 	=> $s2,
 			"new_des"   	=> $s3,
 			"new_static" 	=> $s4,
-			"merges" 			=> $s5
+			"merges" 		=> $s5
 		]);
 	}
 

@@ -11596,6 +11596,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -11611,7 +11620,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             saved: false,
             saving: false,
             idxs: [],
-            tipo: 0
+            tipo: null,
+            region: null
         };
     },
 
@@ -11633,6 +11643,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.data.append('file', this.file);
             this.data.append('tipo', this.tipo);
+            this.data.append('region', this.region);
 
             this.uploading = true;
 
@@ -11641,14 +11652,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return alert('Debe especificar un tipo de verbo');
                 }
                 this.saving = true;
+                this.saved = false;
                 axios.post('/api/v1/verbos', this.data, config).then(function (response) {
                     _this.new_types = response.data.new_types;
-                    _this.new_verbs = response.data.new_verbs;
+                    _this.new_verbs = response.data.new_merges;
                     _this.new_des = response.data.new_des;
                     _this.saved = true;
                     _this.saving = false;
+                    _this.datatable = [];
                 }).catch(function (error) {
-                    console.log(error);
                     _this.saving = false;
                 });
             } else {
@@ -11659,7 +11671,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             res.splice(data, 1);
                         }
                     }
-                    console.log(res);
+
                     var values = ["verbo", "raíz", "desinencia", "formaverbal", "pers.gram.", "verboauxiliar", "pronombrereflexivo", "pronombreformal", "pronombreinformal", "tiempoverbal"];
                     var indexes = [];
                     for (var d in res[0]) {
@@ -11863,7 +11875,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -11892,7 +11903,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.data = res;
         _this.keys = _this.getKeys(res);
         _this.raices = response.data.raices;
-        console.log(res);
         _this.hideTable = false;
         _this.searching = false;
         _this.notFound = false;
@@ -51774,7 +51784,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51812,7 +51822,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] AuthorizedClients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51850,7 +51860,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Clients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51888,7 +51898,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PersonalAccessTokens.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51926,7 +51936,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Create.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51964,7 +51974,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Dict.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Dict.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dict.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52002,7 +52012,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Show.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Show.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Show.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52715,7 +52725,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, _vm._l((_vm.getKeys(_vm.data[k])), function(t, id) {
       return _c('b-list-group', {
         key: id,
-        staticClass: "col-md-6"
+        staticClass: "col-md-2"
       }, [_c('b-list-group-item', {
         staticClass: "header",
         attrs: {
@@ -52741,15 +52751,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             }
           }, [_c('span', {
             staticStyle: {
-              "color": "green",
               "font-weight": "bold"
             }
           }, [_vm._v(_vm._s(_vm.data[k][t][v][f].pronombre) + " " + _vm._s(_vm.data[k][t][v][f].pronombre_formal_id))]), _vm._v(" "), (_vm.data[k][t][v][f].negativo != '0') ? _c('span', [_vm._v("no")]) : _vm._e(), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.data[k][t][v][f].pronombre_reflex))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.data[k][t][v][f].verbo_auxiliar))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.html_decode(_vm.data[k][t][v][f].raiz)))]), _c('span', {
             staticStyle: {
-              "color": "darkred",
+              "color": "red",
               "font-weight": "bold"
             }
-          }, [_vm._v(_vm._s(_vm.html_decode(_vm.data[k][t][v][f].desinencia)))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.data[k][t][v][f].region))])])
+          }, [_vm._v(_vm._s(_vm.html_decode(_vm.data[k][t][v][f].desinencia)))])])
         })], 2)
       })], 2)
     }))
@@ -52779,7 +52788,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "dismissible": "",
       "variant": "warning"
     }
-  }, [_c('p', [_vm._v("Verbo no encontrado, asegurese de haberlo escrito correctamente.")])]) : _vm._e()], 1)])
+  }, [_c('p', [_vm._v("Verbo "), _c('b', {
+    staticStyle: {
+      "color": "#000066"
+    }
+  }, [_vm._v(_vm._s(_vm.search))]), _vm._v(" no ha sido encontrado, asegurese de haberlo escrito correctamente.")])]) : _vm._e()], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -52843,7 +52856,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "padding-bottom": "2%"
     }
   }, [_c('div', {
-    staticClass: "col-md-4"
+    staticClass: "col-md-2"
   }, [_c('span', {
     staticClass: " btn btn-block btn-primary btn-file",
     attrs: {
@@ -52873,7 +52886,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fa fa-upload"
   })]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-md-2"
-  }, [_c('select', {
+  }, [_c('label', [_vm._v("Tipo de verbo")]), _vm._v(" "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -52897,12 +52910,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('option', {
     attrs: {
-      "values": "0",
-      "disabled": "",
-      "selected": "selected"
-    }
-  }, [_vm._v("Tipo de verbo")]), _vm._v(" "), _c('option', {
-    attrs: {
       "value": "1"
     }
   }, [_vm._v("Regular")]), _vm._v(" "), _c('option', {
@@ -52914,6 +52921,42 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": "3"
     }
   }, [_vm._v("Irregular")])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-2"
+  }, [_c('label', [_vm._v("Región")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.region),
+      expression: "region"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "variant": "info"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.region = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "1"
+    }
+  }, [_vm._v("España")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "2"
+    }
+  }, [_vm._v("Latino america")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "3"
+    }
+  }, [_vm._v("Voseo")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-4",
     staticStyle: {
       "padding-top": "10px"

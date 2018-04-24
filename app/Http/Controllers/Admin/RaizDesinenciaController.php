@@ -17,7 +17,7 @@ use hispanicus\Http\Controllers\Controller;
 
 class RaizDesinenciaController extends Controller
 {
-    public static function makeRelations($data = array()){
+    public static function makeRelations($data = array(), $region){
 			try {
 
 				$RaizIdx = array_search('Raíz', str_replace(" ", "", $data[0]));
@@ -32,13 +32,25 @@ class RaizDesinenciaController extends Controller
 				$VaIdx	 = array_search('Verboauxiliar', str_replace(" ", "", $data[0]));
 				$RuleIdx = array_search('Regla', str_replace(" ", "", $data[0]));
 				$ctvIdx	 = array_search('CTV', str_replace(" ", "", $data[0]));
+				$nIdx	 	 = array_search('Nº', str_replace(" ", "", $data[0]));
 
 			} catch (Exception $e) {
 				return response()->json(["exception" => $e->getMessage]);			
 			}
 
 			$raiz_desinencia_data = array();
-			$inDb = DesinenciaRaiz::all()->toArray();
+			$inDb = DesinenciaRaiz::all(["pronombre_id",
+			"pronombre_formal_id",
+			"tiempo_verbal_id",
+			"forma_verbal_id",
+			"raiz_id",
+			"desinencia_id",
+			"negativo",
+			"pronombre_reflex_id",
+			"verbo_auxiliar_id",
+			"regla_id",
+			"region",
+			"ctv"])->toArray();
 			array_shift($data);
 
 			foreach ($data as $key => $value) {
@@ -62,6 +74,16 @@ class RaizDesinenciaController extends Controller
 					}else{
 						$reg = 0;
 					} 
+				}else{
+					if ($nIdx && array_key_exists($nIdx, $data[$key])) {
+						if ($region == 1 && $data[$key][$nIdx] == 5) {
+							$reg = 2;
+						}else if($region == 2 && $data[$key][$nIdx] == 5){
+							$reg = 1;
+						}else if($region == 3  && $data[$key][$nIdx] == 2){
+							$reg = 3;
+						}
+					}
 				}
 
 				$raiz = (array_key_exists($RaizIdx, $data[$key]))
@@ -96,7 +118,7 @@ class RaizDesinenciaController extends Controller
 							$pronombre1 = utf8_encode($pronombre1);
 							$pronombre1 = explode(",", $pronombre1);
 							$pronombre1 = array_filter($pronombre1);
-							$pronombre1 = json_encode($pronombre1);							
+							$pronombre1 = json_encode($pronombre1);
 
 							$pi = self::getFromDb(new PersonasGramatical, ['id', 'persona_gramatical'], 'pronombre', $pronombre1);
 
@@ -217,7 +239,7 @@ class RaizDesinenciaController extends Controller
 
 				}
 
-				array_push($raiz_desinencia_data, $insert);	
+				array_push($raiz_desinencia_data, $insert);
 			}
 
 			return(self::save($raiz_desinencia_data, $inDb));
@@ -251,8 +273,7 @@ class RaizDesinenciaController extends Controller
     	$a = array("indicativo" => [$times[$lang][0] => [], $times[$lang][1] => []],
     						 "subjuntivo" => [$times[$lang][0] => [], $times[$lang][1] => []], 
     						 "imperativo" => [$times[$lang][0] => []], 
-    						 "F.N.P."     => [$times[$lang][0] => []]
-    						);
+    						 "F.N.P."     => [$times[$lang][0] => []]);
 
     	foreach ($desra as $dr) {
     		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
@@ -283,7 +304,6 @@ class RaizDesinenciaController extends Controller
     		"region" => $dr->region,
     		"plural" => (int)self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, new PersonasGramatical, ['plural']),
     		"pg" => self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, new PersonasGramatical, ['persona_gramatical']),
-
     	]);
 			}
 
@@ -311,26 +331,6 @@ class RaizDesinenciaController extends Controller
     	return $r;
     }
 
-    public static function save($data, $inDb){
-			$res = false;
-
-			try {
-				foreach ($data as $key => $value) {
-					$v = in_array($data[$key], $inDb);
-					if($v){
-						continue;
-					}else{
-						DesinenciaRaiz::insert($data[$key]);
-						array_push($inDb, $data[$key]);
-						$res = true;
-					}
-				}
-			} catch (QueryException $e) {
-				return $res;
-			}
-			return $res;	    	    	
-    }
-
     public static function getWhere($val, $lang, $times){
     	$val = str_replace("tv", "", $val);
     	if ($val > 0 && $val < 6) {
@@ -355,5 +355,39 @@ class RaizDesinenciaController extends Controller
     		return $r->id;
     	}
     	return null;
+    }
+
+    public static function save($data, $inDb){
+			$res = false;
+
+			try {
+				foreach ($data as $key => $value) {
+
+					$v = self::unique($inDb, $data[$key]);
+					error_log($v);
+					if($v){
+						continue;
+					}else{
+						DesinenciaRaiz::insert($data[$key]);
+						array_push($inDb, $data[$key]);
+						$res = true;
+					}
+				}
+			} catch (QueryException $e) {
+				return $res;
+			}
+			return $res;
+    }
+
+    public static function unique($a, $b){
+    	
+    	$r = false;
+
+    	foreach ($a as $key => $value) {
+    		if ($a[$key] == $b) {
+    			return true;
+    		}
+    	}
+    	return $r;
     }
 }
