@@ -16,6 +16,10 @@ class CreateTableReglas extends Migration
         Schema::create('reglas', function (Blueprint $table) {
             $table->increments('id');
             $table->text('regla')->nullable();
+            $table->string('lang');
+            $table->string('region');
+            $table->integer('verbo_id')->index()->unsigned();
+            $table->foreign('verbo_id')->references('id')->on('verbos');
             $table->timestamps();
         });
     }

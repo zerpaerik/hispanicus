@@ -26,7 +26,7 @@ class VerbosController extends Controller
 		$s1 = $this->storeVerbs($sheetData, $request["tipo"]);
 		$s2 = RaizController::storeRaiz($sheetData);
 		$s3 = DesinenciaController::storeDesinencia($sheetData);
-		$s4 = DataStatica::storeStaticData($sheetData);
+		$s4 = DataStatica::storeStaticData($sheetData, $request["region"], $request["lang"]);
 		$s5 = RaizDesinenciaController::makeRelations($sheetData, $request["region"]);
 
 		return response()->json([

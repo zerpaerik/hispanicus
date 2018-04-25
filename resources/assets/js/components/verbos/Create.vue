@@ -75,6 +75,16 @@
                     <option value="2">Latino america</option>
                     <option value="3">Voseo</option>
                   </select>
+                </div>
+
+                <div class="col-md-2">
+                  <label>Idioma</label>
+                  <select class="form-control" variant="info" v-model="lang">
+                    <option value="es">Español</option>
+                    <option value="en">Ingles</option>
+                    <option value="pt">Portugés</option>
+                    <option value="cn">Chino</option>
+                  </select>
                 </div>                
                 
                 <div class="col-md-4" style="padding-top:10px;">
@@ -131,7 +141,8 @@
                 saving : false,
                 idxs : [],
                 tipo : null,
-                region : null
+                region : null,
+                lang : null
             }
         },
         methods: {
@@ -153,6 +164,7 @@
                 this.data.append('file', this.file);
                 this.data.append('tipo', this.tipo);
                 this.data.append('region', this.region);
+                this.data.append('lang', this.lang);
                 
                 this.uploading = true;
 

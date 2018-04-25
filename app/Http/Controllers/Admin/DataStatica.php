@@ -11,24 +11,25 @@ use hispanicus\PersonasGramatical;
 use hispanicus\PronombreReflex;
 use hispanicus\VerboAuxiliar;
 use hispanicus\Regla;
+use hispanicus\Verbo;
 
 class DataStatica extends Controller
 {
-    public static function storeStaticData($data = array()){
-			try {
+    public static function storeStaticData($data = array(), $reg, $lang){
+		try {
 
-				$FvIdx   = array_search('Formaverbal', str_replace(" ", "", $data[0]));	
-				$TvIdx   = array_search('Tiempoverbal', str_replace(" ", "", $data[0]));			
-				$PiIdx   = array_search('Pronombreinformal', str_replace(" ", "", $data[0]));	
-				$PfIdx   = array_search('Pronombreformal', str_replace(" ", "", $data[0]));
-				$PrIdx   = array_search('Pronombrereflexivo', str_replace(" ", "", $data[0]));
-				$PgIdx   = array_search('Pers.gram.', str_replace(" ", "", $data[0]));
-				$VaIdx	 = array_search('Verboauxiliar', str_replace(" ", "", $data[0]));
-				$RuleIdx = array_search('Regla', str_replace(" ", "", $data[0]));
-
-			} catch (Exception $e) {
-				return response()->json(["exception" => $e->getMessage]);			
-			}
+			$FvIdx    = array_search('Formaverbal', str_replace(" ", "", $data[0]));	
+			$TvIdx    = array_search('Tiempoverbal', str_replace(" ", "", $data[0]));			
+			$PiIdx    = array_search('Pronombreinformal', str_replace(" ", "", $data[0]));	
+			$PfIdx    = array_search('Pronombreformal', str_replace(" ", "", $data[0]));
+			$PrIdx    = array_search('Pronombrereflexivo', str_replace(" ", "", $data[0]));
+			$PgIdx    = array_search('Pers.gram.', str_replace(" ", "", $data[0]));
+			$VaIdx	  = array_search('Verboauxiliar', str_replace(" ", "", $data[0]));
+			$RuleIdx  = array_search('Regla', str_replace(" ", "", $data[0]));
+			$VerboIdx = array_search('Verbo', str_replace(" ", "", $data[0]));
+		} catch (Exception $e) {
+			return response()->json(["exception" => $e->getMessage]);			
+		}
 
 			array_shift($data);
 
@@ -134,11 +135,13 @@ class DataStatica extends Controller
 				break;
 			}	
 
-
 			$regla = $data[$key][$RuleIdx];
-
+			$verbo_id = Verbo::where('infinitivo', '=', $data[$key][$VerboIdx])->get(['id'])->first()->id;
 			$insert = [
 				"regla" => utf8_encode($regla),
+				"region" => $region,
+				"lang" => $lang,
+				"verbo_id" => $verbo_id
 			];
 
 			if (!in_array(["regla" => $data[$key][$RuleIdx]], $inDbRule)) {
