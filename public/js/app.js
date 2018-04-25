@@ -11605,6 +11605,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -11621,7 +11629,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             saving: false,
             idxs: [],
             tipo: null,
-            region: null
+            region: null,
+            lang: null
         };
     },
 
@@ -11644,6 +11653,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.data.append('file', this.file);
             this.data.append('tipo', this.tipo);
             this.data.append('region', this.region);
+            this.data.append('lang', this.lang);
 
             this.uploading = true;
 
@@ -11655,7 +11665,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.saved = false;
                 axios.post('/api/v1/verbos', this.data, config).then(function (response) {
                     _this.new_types = response.data.new_types;
-                    _this.new_verbs = response.data.new_merges;
+                    _this.new_verbs = response.data.merges;
                     _this.new_des = response.data.new_des;
                     _this.saved = true;
                     _this.saving = false;
@@ -11884,6 +11894,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       notFound: false,
       searching: false,
       deleting: false,
+      lastSearch: '',
       data: null,
       keys: [],
       times: [],
@@ -11897,7 +11908,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       this.searching = true;
-
+      this.lastSearch = this.search;
       axios.get('/api/v1/verbos/search/' + this.search).then(function (response) {
         var res = response.data.data;
         _this.data = res;
@@ -11916,7 +11927,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this2 = this;
 
       this.deleting = true;
-      axios.post('/api/v1/delete', { raices: this.raices }).then(function (response) {
+      axios.post('/api/v1/delete', { raices: this.raices, verbo: this.lastSearch }).then(function (response) {
         _this2.load();
         _this2.affectedRows = response.data;
         _this2.deleting = false;
@@ -52792,7 +52803,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "color": "#000066"
     }
-  }, [_vm._v(_vm._s(_vm.search))]), _vm._v(" no ha sido encontrado, asegurese de haberlo escrito correctamente.")])]) : _vm._e()], 1)])
+  }, [_vm._v(_vm._s(_vm.lastSearch))]), _vm._v(" no ha sido encontrado, asegurese de haberlo escrito correctamente.")])]) : _vm._e()], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -52957,6 +52968,46 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": "3"
     }
   }, [_vm._v("Voseo")])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-2"
+  }, [_c('label', [_vm._v("Idioma")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.lang),
+      expression: "lang"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "variant": "info"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.lang = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "es"
+    }
+  }, [_vm._v("Español")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "en"
+    }
+  }, [_vm._v("Ingles")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "pt"
+    }
+  }, [_vm._v("Portugés")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "cn"
+    }
+  }, [_vm._v("Chino")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-4",
     staticStyle: {
       "padding-top": "10px"
@@ -53002,7 +53053,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "show": "",
       "dismissible": ""
     }
-  }, [_c('p', [_vm._v("Se han añadido nuevos Tipos de Verbos")]), _vm._v(" "), _c('p', [_vm._v("Se han añadido nuevos Verbos")]), _vm._v(" "), _c('p', [_vm._v("Se han añadido nuevos Desinencias")])]) : (!_vm.new_types && !_vm.new_verbs && _vm.saved) ? _c('b-alert', {
+  }, [_c('p', [_vm._v("¡Se han añadido nuevos registros!")])]) : (!_vm.new_verbs && _vm.saved) ? _c('b-alert', {
     attrs: {
       "show": "",
       "dismissible": "",

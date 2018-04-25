@@ -63,7 +63,7 @@
       </div>
         <div style="position:fixed; width:30%; bottom:0; left:-1;">
         <b-alert show dismissible variant="warning" v-if="notFound">
-            <p>Verbo <b style="color:#000066;">{{search}}</b> no ha sido encontrado, asegurese de haberlo escrito correctamente.</p>
+            <p>Verbo <b style="color:#000066;">{{lastSearch}}</b> no ha sido encontrado, asegurese de haberlo escrito correctamente.</p>
         </b-alert>
         </div>      
     </div>  
@@ -78,6 +78,7 @@
               notFound : false,
               searching : false,
               deleting : false,
+              lastSearch : '',
               data : null,
               keys : [],
               times : [],
@@ -89,7 +90,7 @@
           load(){
             
             this.searching = true;
-            
+            this.lastSearch = this.search;
             axios.get('/api/v1/verbos/search/' + this.search).then(response => {
               var res = response.data.data;
               this.data = res;
@@ -108,7 +109,7 @@
           },
           d(){
             this.deleting = true;
-            axios.post('/api/v1/delete', {raices : this.raices}).then(response => {
+            axios.post('/api/v1/delete', {raices : this.raices, verbo : this.lastSearch}).then(response => {
               this.load();
               this.affectedRows = response.data;
               this.deleting = false;

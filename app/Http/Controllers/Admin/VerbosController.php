@@ -39,7 +39,7 @@ class VerbosController extends Controller
 	}
 
 	public function storeDict(Request $request){
-		$sheetData = $this->loadFile($request)["data"];	
+		$sheetData = $this->loadFile($request)["data"];
 		$s1 = $this->setDictionaries($sheetData);
 
 		return response()->json([
@@ -51,7 +51,7 @@ class VerbosController extends Controller
 		$v = Verbo::where('id', $id)->get()->first();
 		if (!$v) return response()->json(["message" => "not_found"], 404);
 		$raices = Raiz::where('verbo_id', $id)->get(['id']);
-
+		$reglas = \DB::table('reglas')->where('verbo_id', '=', $id)->where('region', '=', $request["region"])->where("lang", '=', $request['lang'])->get();
 		$r = array();
 
 		foreach ($raices as $root) {
@@ -60,6 +60,7 @@ class VerbosController extends Controller
 
 		return response()->json([
 			"verbo" => $v->infinitivo,
+			"reglas" => $reglas,
 			"data" => RaizDesinenciaController::getData($r, json_decode($request["region"]), $request["lang"])
 		]);
 	}
@@ -329,6 +330,8 @@ class VerbosController extends Controller
 
 	public function delRaices(Request $request){
 		$affectedRows = \DB::table('desinencia_raizs')->whereIn('raiz_id', $request["raices"])->delete();
+		$verboid = \DB::table('verbos')->where('infinitivo', '=', $request["verbo"])->get(['id'])->first()->id;
+		$affectedRows += \DB::table('reglas')->where('verbo_id', '=', $verboid)->delete();
 		return response()->json($affectedRows, 200);
 	}
 

@@ -30,7 +30,6 @@ class RaizDesinenciaController extends Controller
 				$NegIdx  = array_search('Negación', str_replace(" ", "", $data[0]));
 				$PgIdx   = array_search('Pers.gram.', str_replace(" ", "", $data[0]));
 				$VaIdx	 = array_search('Verboauxiliar', str_replace(" ", "", $data[0]));
-				$RuleIdx = array_search('Regla', str_replace(" ", "", $data[0]));
 				$ctvIdx	 = array_search('CTV', str_replace(" ", "", $data[0]));
 				$nIdx	 	 = array_search('Nº', str_replace(" ", "", $data[0]));
 
@@ -48,7 +47,6 @@ class RaizDesinenciaController extends Controller
 			"negativo",
 			"pronombre_reflex_id",
 			"verbo_auxiliar_id",
-			"regla_id",
 			"region",
 			"ctv"])->toArray();
 			array_shift($data);
@@ -196,21 +194,6 @@ class RaizDesinenciaController extends Controller
 				$va = null;
 			}
 
-			if ($RuleIdx) {
-				
-				if (array_key_exists($RuleIdx, $data[$key])) {
-											
-					$regla = utf8_encode($data[$key][$RuleIdx]);
-
-					$rule = (array_key_exists($RuleIdx, $data[$key]))
-					? self::getFromDb(new Regla, ['id'], 'regla', $regla) : null;
-				
-				}	else {
-					$rule = null;
-				}
-			}else{
-				$rule = null;
-			}
 
 				$neg = (array_key_exists($NegIdx, $data[$key])) ? true:false;
 
@@ -231,7 +214,6 @@ class RaizDesinenciaController extends Controller
 						"negativo" => $neg,
 						"pronombre_reflex_id" => $pr,
 						"verbo_auxiliar_id" => $va,
-						"regla_id" => $rule,
 						"region" => $reg,
 						"ctv" => $ctv
 
@@ -252,11 +234,11 @@ class RaizDesinenciaController extends Controller
 	    	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
 	    	->whereIn('region', $region)
 	    	->orderBy('ctv', 'desc')
-	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region', 'ctv']);
+	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'verbo_auxiliar_id', 'region', 'ctv']);
     	}else{
 	    	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
 	    	->orderBy('ctv', 'desc')
-	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'regla_id', 'verbo_auxiliar_id', 'region', 'ctv']);
+	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'verbo_auxiliar_id', 'region', 'ctv']);
     	}
 
     	$times = [
@@ -299,7 +281,6 @@ class RaizDesinenciaController extends Controller
     		"pronombre_reflex" => self::getValue($dr->pronombre_reflex_id, new PronombreReflex, ['pronombre_reflex']),
     		"pronombre" => self::getValue($dr->pronombre_id, new PersonasGramatical, ['pronombre', 'plural', 'persona_gramatical']),
     		"pronombre_formal_id" => self::getValue($dr->pronombre_formal_id, new PersonasGramatical, ['pronombre', 'plural', 'persona_gramatical']),
-    		"regla" => self::getValue($dr->regla_id, new Regla, ['regla']),
     		"negativo" => $dr->negativo,
     		"region" => $dr->region,
     		"plural" => (int)self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, new PersonasGramatical, ['plural']),

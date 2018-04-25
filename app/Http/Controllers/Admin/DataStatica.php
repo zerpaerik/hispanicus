@@ -15,7 +15,7 @@ use hispanicus\Verbo;
 
 class DataStatica extends Controller
 {
-    public static function storeStaticData($data = array(), $reg, $lang){
+    public static function storeStaticData($data = array(), $region, $lang){
 		try {
 
 			$FvIdx    = array_search('Formaverbal', str_replace(" ", "", $data[0]));	
@@ -38,7 +38,7 @@ class DataStatica extends Controller
     	$inDbPg = PersonasGramatical::get(["*"])->toArray();
     	$inDbPr = PronombreReflex::get(["pronombre_reflex"])->toArray();
     	$inDbVa = VerboAuxiliar::get(["verbo_auxiliar"])->toArray();
-    	$inDbRule = Regla::get(["regla"])->toArray();
+    	$inDbRule = Regla::get(["regla", "region"])->toArray();
 
     	$dataFv 	= array();
     	$dataTv 	= array();

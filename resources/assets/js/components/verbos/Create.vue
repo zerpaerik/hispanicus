@@ -113,12 +113,10 @@
         <div style="position:fixed; width:30%; bottom:0; left:-1;">
         
         <b-alert show dismissible v-if="new_verbs && saved">
-          <p>Se han añadido nuevos Tipos de Verbos</p>
-          <p>Se han añadido nuevos Verbos</p>
-          <p>Se han añadido nuevos Desinencias</p>
+          <p>¡Se han añadido nuevos registros!</p>
         </b-alert>
 
-        <b-alert show dismissible v-else-if="!new_types && !new_verbs && saved" variant="danger">
+        <b-alert show dismissible v-else-if="!new_verbs && saved" variant="danger">
             Esta hoja ya ha sido agregada, no se han hecho cambios en la base de datos.
         </b-alert>
     </div>
@@ -175,7 +173,7 @@
                     axios.post('/api/v1/verbos', this.data, config)
                         .then(response => {
                             this.new_types = response.data.new_types;
-                            this.new_verbs = response.data.new_merges;
+                            this.new_verbs = response.data.merges;
                             this.new_des = response.data.new_des;
                             this.saved = true;
                             this.saving = false;

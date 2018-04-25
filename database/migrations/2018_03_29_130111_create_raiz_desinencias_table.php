@@ -30,8 +30,6 @@ class CreateRaizDesinenciasTable extends Migration
             $table->foreign('pronombre_formal_id')->references('id')->on('personas_gramaticals');
             $table->integer('raiz_id')->unsigned()->index();
             $table->foreign('raiz_id')->references('id')->on('raizs');
-            $table->integer('regla_id')->unsigned()->index()->nullable();
-            $table->foreign('regla_id')->references('id')->on('reglas');
             $table->integer('verbo_auxiliar_id')->unsigned()->index()->nullable();
             $table->foreign('verbo_auxiliar_id')->references('id')->on('verbo_auxiliars');
             $table->integer('region')->default(0);
