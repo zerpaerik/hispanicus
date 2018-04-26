@@ -31,13 +31,13 @@ class DataStatica extends Controller
 			return response()->json(["exception" => $e->getMessage]);			
 		}
 
-			array_shift($data);
+		array_shift($data);
 
-    	$inDbFv = FormaVerbal::get(["forma_verbal"])->toArray();
-    	$inDbTv = TiempoVerbal::get(["tiempo"])->toArray();
-    	$inDbPg = PersonasGramatical::get(["*"])->toArray();
-    	$inDbPr = PronombreReflex::get(["pronombre_reflex"])->toArray();
-    	$inDbVa = VerboAuxiliar::get(["verbo_auxiliar"])->toArray();
+    	$inDbFv   = FormaVerbal::get(["forma_verbal"])->toArray();
+    	$inDbTv   = TiempoVerbal::get(["tiempo"])->toArray();
+    	$inDbPg   = PersonasGramatical::get(["*"])->toArray();
+    	$inDbPr   = PronombreReflex::get(["pronombre_reflex"])->toArray();
+    	$inDbVa   = VerboAuxiliar::get(["verbo_auxiliar"])->toArray();
     	$inDbRule = Regla::get(["regla", "region", "lang", "verbo_id"])->toArray();
 
     	$dataFv 	= array();
@@ -54,7 +54,6 @@ class DataStatica extends Controller
 			}else{
 				break;
 			}
-			
 
 			$forma_verbal = $data[$key][$FvIdx];
 
@@ -93,7 +92,6 @@ class DataStatica extends Controller
 			}else{
 				break;
 			}			
-			
 
 			$pronombre_reflex = str_replace(" ", "", $data[$key][$PrIdx]);
 
@@ -136,11 +134,11 @@ class DataStatica extends Controller
 			}	
 
 			$regla = $data[$key][$RuleIdx];
-			$verbo_id = Verbo::where('infinitivo', '=', $data[$key][$VerboIdx])->get(['id'])->first()->id;
+			$verbo_id = Verbo::where('infinitivo', '=', VerbosController::quitarSe($data[$key][$VerboIdx]))->get(['id'])->first()->id;
 			$insert = [
-				"regla" => utf8_encode($regla),
-				"region" => $region,
-				"lang" => $lang,
+				"regla"    => utf8_encode($regla),
+				"region"   => $region,
+				"lang"     => $lang,
 				"verbo_id" => $verbo_id
 			];
 

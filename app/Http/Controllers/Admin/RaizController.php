@@ -13,9 +13,9 @@ class RaizController extends Controller
     public static function storeRaiz($data){
 			try {
 
-				$RaizIdx = array_search('raíz', str_replace(" ", "", $data[0]));
-				$InfIdx  = array_search('verbo', str_replace(" ", "", $data[0]));				
-				$NegIdx  = array_search('negación', str_replace(" ", "", $data[0]));
+			$RaizIdx = array_search('raíz', str_replace(" ", "", $data[0]));
+			$InfIdx  = array_search('verbo', str_replace(" ", "", $data[0]));				
+			$NegIdx  = array_search('negación', str_replace(" ", "", $data[0]));
 
 			} catch (Exception $e) {
 				return response()->json(["exception" => $e->getMessage]);			
@@ -29,9 +29,7 @@ class RaizController extends Controller
 		foreach ($data as $key => $value) {
 			if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
-			$nombre = str_replace(" ", "", $data[$key][$RaizIdx]);
-			$nombre = str_replace("[", '', $nombre);
-			$nombre = str_replace("]", '', $nombre);
+			$nombre = str_replace([" ", "[", "]"], "", $data[$key][$RaizIdx]);
 			$verbo  = Verbo::where('infinitivo', '=', utf8_encode($data[$key][$InfIdx]))->get(['id'])->first();
 
 			if ($verbo) {

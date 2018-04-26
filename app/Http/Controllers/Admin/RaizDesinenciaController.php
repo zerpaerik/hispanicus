@@ -31,7 +31,7 @@ class RaizDesinenciaController extends Controller
 				$PgIdx   = array_search('pers.gram.', str_replace(" ", "", $data[0]));
 				$VaIdx	 = array_search('verboauxiliar', str_replace(" ", "", $data[0]));
 				$ctvIdx	 = array_search('ctv', str_replace(" ", "", $data[0]));
-				$nIdx	 	 = array_search('nº', str_replace(" ", "", $data[0]));
+				$nIdx	 = array_search('nº', str_replace(" ", "", $data[0]));
 
 			} catch (Exception $e) {
 				return response()->json(["exception" => $e->getMessage]);			
@@ -58,7 +58,7 @@ class RaizDesinenciaController extends Controller
 				
 				if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
-				$r = str_replace([" ", "[", "]"], ["", "", ""], $data[$key][$RaizIdx]);
+				$r = str_replace([" ", "[", "]"], "", $data[$key][$RaizIdx]);
 				$reg = 0;
 
 				if ($PiIdx && array_key_exists($PiIdx, $data[$key])) {
@@ -93,7 +93,7 @@ class RaizDesinenciaController extends Controller
 
 				if (array_key_exists($DesIdx, $data[$key])) {
 
-					$d = str_replace([" ", "[", "]"], ["", "", ""], $data[$key][$DesIdx]);
+					$d = str_replace([" ", "[", "]"], "", $data[$key][$DesIdx]);
 
 					$desinencia = self::getFromDb(new Desinencia, ['id'], 'desinencia', utf8_encode($d));
 					

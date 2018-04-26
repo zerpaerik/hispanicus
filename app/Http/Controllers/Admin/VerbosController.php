@@ -179,8 +179,8 @@ class VerbosController extends Controller
 	  $len = strlen($value);
 	  $pos = strrpos($value, "se");
 	  if ($pos == ($len - 2)) $value = substr_replace($value, "", $pos);
-	  return $value;
 
+	  return $value;
 	}	
 
 	public static function extractVal($data, $value, $utf8 = false){
@@ -277,9 +277,9 @@ class VerbosController extends Controller
 		try {
 
 			$DefIdx = array_search('definiciónapp', str_replace(" ", "", $data[0]));
-			$VerboIdx = array_search('verbo', str_replace(" ", "", $data[0]));
-			$ModelIdx = array_search('modelo', str_replace(" ", "", $data[0]));
-			$TutoIdx = array_search('tutorial', str_replace(" ", "", $data[0]));
+			$VerboIdx = array_search('verbo', 		str_replace(" ", "", $data[0]));
+			$ModelIdx = array_search('modelo', 		str_replace(" ", "", $data[0]));
+			$TutoIdx = array_search('tutorial', 	str_replace(" ", "", $data[0]));
 
 		} catch (Exception $e) {}
 		
