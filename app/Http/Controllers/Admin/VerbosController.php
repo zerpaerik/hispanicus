@@ -34,7 +34,7 @@ class VerbosController extends Controller
 			"new_roots" 	=> $s2,
 			"new_des"   	=> $s3,
 			"new_static" 	=> $s4,
-			"merges" 			=> $s5
+			"merges" 		=> $s5
 		]);
 	}
 

@@ -30,8 +30,8 @@ class RaizController extends Controller
 			if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
 			$nombre = str_replace(" ", "", $data[$key][$RaizIdx]);
-			$nombre = str_replace("[", '<b class="rc">', $nombre);
-			$nombre = str_replace("]", '</b>', $nombre);
+			$nombre = str_replace("[", '', $nombre);
+			$nombre = str_replace("]", '', $nombre);
 			$verbo  = Verbo::where('infinitivo', '=', utf8_encode($data[$key][$InfIdx]))->get(['id'])->first();
 
 			if ($verbo) {
