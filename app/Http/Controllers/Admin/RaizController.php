@@ -13,9 +13,9 @@ class RaizController extends Controller
     public static function storeRaiz($data){
 			try {
 
-				$RaizIdx = array_search('Raíz', str_replace(" ", "", $data[0]));
-				$InfIdx  = array_search('Verbo', str_replace(" ", "", $data[0]));				
-				$NegIdx  = array_search('Negación', str_replace(" ", "", $data[0]));
+				$RaizIdx = array_search('raíz', str_replace(" ", "", $data[0]));
+				$InfIdx  = array_search('verbo', str_replace(" ", "", $data[0]));				
+				$NegIdx  = array_search('negación', str_replace(" ", "", $data[0]));
 
 			} catch (Exception $e) {
 				return response()->json(["exception" => $e->getMessage]);			

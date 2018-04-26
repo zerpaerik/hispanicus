@@ -16,8 +16,8 @@ class DesinenciaController extends Controller
 
 		try {
 
-			$DesIdx = array_search('Desinencia', str_replace(" ", "", $data[0]));
-			$NegIdx  = array_search('Negación', str_replace(" ", "", $data[0]));
+			$DesIdx = array_search('desinencia', str_replace(" ", "", $data[0]));
+			$NegIdx  = array_search('negación', str_replace(" ", "", $data[0]));
 
 		} catch (Exception $e) {
 			return response()->json(["exception" => $e->getMessage]);			

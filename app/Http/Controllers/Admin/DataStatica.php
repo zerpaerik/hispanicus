@@ -18,15 +18,15 @@ class DataStatica extends Controller
     public static function storeStaticData($data = array(), $region, $lang){
 		try {
 
-			$FvIdx    = array_search('Formaverbal', str_replace(" ", "", $data[0]));	
-			$TvIdx    = array_search('Tiempoverbal', str_replace(" ", "", $data[0]));			
-			$PiIdx    = array_search('Pronombreinformal', str_replace(" ", "", $data[0]));	
-			$PfIdx    = array_search('Pronombreformal', str_replace(" ", "", $data[0]));
-			$PrIdx    = array_search('Pronombrereflexivo', str_replace(" ", "", $data[0]));
-			$PgIdx    = array_search('Pers.gram.', str_replace(" ", "", $data[0]));
-			$VaIdx	  = array_search('Verboauxiliar', str_replace(" ", "", $data[0]));
-			$RuleIdx  = array_search('Regla', str_replace(" ", "", $data[0]));
-			$VerboIdx = array_search('Verbo', str_replace(" ", "", $data[0]));
+			$FvIdx    = array_search('formaverbal', str_replace(" ", "", $data[0]));	
+			$TvIdx    = array_search('tiempoverbal', str_replace(" ", "", $data[0]));			
+			$PiIdx    = array_search('pronombreinformal', str_replace(" ", "", $data[0]));	
+			$PfIdx    = array_search('pronombreformal', str_replace(" ", "", $data[0]));
+			$PrIdx    = array_search('pronombrereflexivo', str_replace(" ", "", $data[0]));
+			$PgIdx    = array_search('pers.gram.', str_replace(" ", "", $data[0]));
+			$VaIdx	  = array_search('verboauxiliar', str_replace(" ", "", $data[0]));
+			$RuleIdx  = array_search('regla', str_replace(" ", "", $data[0]));
+			$VerboIdx = array_search('verbo', str_replace(" ", "", $data[0]));
 		} catch (Exception $e) {
 			return response()->json(["exception" => $e->getMessage]);			
 		}
