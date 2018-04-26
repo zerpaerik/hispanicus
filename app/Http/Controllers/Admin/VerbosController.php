@@ -108,8 +108,8 @@ class VerbosController extends Controller
 		
 		try {
 
-			$InfIdx = array_search('Verbo', str_replace(" ", "", $data[0]));
-			$RaizIdx = array_search('Raíz', str_replace(" ", "", $data[0]));
+			$InfIdx = array_search('verbo', str_replace(" ", "", $data[0]));
+			$RaizIdx = array_search('raíz', str_replace(" ", "", $data[0]));
 
 		} catch (Exception $e) {
 			return response()->json(["exception" => $e->getMessage]);			
@@ -277,9 +277,9 @@ class VerbosController extends Controller
 		try {
 
 			$DefIdx = array_search('definiciónapp', str_replace(" ", "", $data[0]));
-			$VerboIdx = array_search('Verbo', str_replace(" ", "", $data[0]));
-			$ModelIdx = array_search('Modelo', str_replace(" ", "", $data[0]));
-			$TutoIdx = array_search('Tutorial', str_replace(" ", "", $data[0]));
+			$VerboIdx = array_search('verbo', str_replace(" ", "", $data[0]));
+			$ModelIdx = array_search('modelo', str_replace(" ", "", $data[0]));
+			$TutoIdx = array_search('tutorial', str_replace(" ", "", $data[0]));
 
 		} catch (Exception $e) {}
 		
