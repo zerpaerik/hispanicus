@@ -38,7 +38,7 @@ class DataStatica extends Controller
     	$inDbPg = PersonasGramatical::get(["*"])->toArray();
     	$inDbPr = PronombreReflex::get(["pronombre_reflex"])->toArray();
     	$inDbVa = VerboAuxiliar::get(["verbo_auxiliar"])->toArray();
-    	$inDbRule = Regla::get(["regla", "region"])->toArray();
+    	$inDbRule = Regla::get(["regla", "region", "lang", "verbo_id"])->toArray();
 
     	$dataFv 	= array();
     	$dataTv 	= array();
@@ -144,7 +144,7 @@ class DataStatica extends Controller
 				"verbo_id" => $verbo_id
 			];
 
-			if (!in_array(["regla" => $data[$key][$RuleIdx]], $inDbRule)) {
+			if (!self::unique($inDbRule, ["regla" => utf8_encode($data[$key][$RuleIdx]), "region" => $region, "lang" => $lang, "verbo_id" => $verbo_id])) {
 				array_push($dataRule, $insert);
 			}
 		}
@@ -179,4 +179,16 @@ class DataStatica extends Controller
 			}
 			return $res;	    	
     }
+
+    public static function unique($a, $b){
+    	
+    	$r = false;
+
+    	foreach ($a as $key => $value) {
+    		if ($a[$key] == $b) {
+    			return true;
+    		}
+    	}
+    	return $r;
+    }    
 }

@@ -34,7 +34,7 @@ class VerbosController extends Controller
 			"new_roots" 	=> $s2,
 			"new_des"   	=> $s3,
 			"new_static" 	=> $s4,
-			"merges" 		=> $s5
+			"merges" 			=> $s5
 		]);
 	}
 
@@ -51,11 +51,20 @@ class VerbosController extends Controller
 		$v = Verbo::where('id', $id)->get()->first();
 		if (!$v) return response()->json(["message" => "not_found"], 404);
 		$raices = Raiz::where('verbo_id', $id)->get(['id']);
-		$reglas = \DB::table('reglas')->where('verbo_id', '=', $id)->where('region', '=', $request["region"])->where("lang", '=', $request['lang'])->get();
+		$reglas = \DB::table('reglas')
+		->where('verbo_id', '=', $id)
+		->where('region', '=', $request["modo"])
+		->where("lang", '=', $request['lang'])
+		->get(["regla"]);
+
 		$r = array();
 
 		foreach ($raices as $root) {
 		  array_push($r, $root->id);
+		}
+
+		foreach ($reglas as $key => $value) {
+			$reglas[$key]->regla = utf8_decode($reglas[$key]->regla);
 		}
 
 		return response()->json([
