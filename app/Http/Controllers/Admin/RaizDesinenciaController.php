@@ -22,19 +22,19 @@ class RaizDesinenciaController extends Controller
 
 				$RaizIdx = array_search('raíz', str_replace(" ", "", $data[0]));
 				$DesIdx  = array_search('desinencia', str_replace(" ", "", $data[0]));
-				$FvIdx   = array_search('formaverbal', str_replace(" ", "", $data[0]));	
-				$TvIdx   = array_search('tiempoverbal', str_replace(" ", "", $data[0]));			
-				$PiIdx   = array_search('pronombreinformal', str_replace(" ", "", $data[0]));	
+				$FvIdx   = array_search('formaverbal', str_replace(" ", "", $data[0]));
+				$TvIdx   = array_search('tiempoverbal', str_replace(" ", "", $data[0]));
+				$PiIdx   = array_search('pronombreinformal', str_replace(" ", "", $data[0]));
 				$PfIdx   = array_search('pronombreformal', str_replace(" ", "", $data[0]));
 				$PrIdx   = array_search('pronombrereflexivo', str_replace(" ", "", $data[0]));
 				$NegIdx  = array_search('negación', str_replace(" ", "", $data[0]));
 				$PgIdx   = array_search('pers.gram.', str_replace(" ", "", $data[0]));
 				$VaIdx	 = array_search('verboauxiliar', str_replace(" ", "", $data[0]));
 				$ctvIdx	 = array_search('ctv', str_replace(" ", "", $data[0]));
-				$nIdx	 = array_search('nº', str_replace(" ", "", $data[0]));
+				$nIdx 	 = array_search('nº', str_replace(" ", "", $data[0]));
 
 			} catch (Exception $e) {
-				return response()->json(["exception" => $e->getMessage]);			
+				return response()->json(["exception" => $e->getMessage]);
 			}
 
 			$raiz_desinencia_data = array();
@@ -52,6 +52,7 @@ class RaizDesinenciaController extends Controller
 			"ctv",
 			"pers_gram",
 			"num"])->toArray();
+			
 			array_shift($data);
 
 			foreach ($data as $key => $value) {
@@ -205,7 +206,7 @@ class RaizDesinenciaController extends Controller
 
 				}else{
 					$pgram = null;
-				}				
+				}
 			}else{
 				$pgram = null;
 			}	
@@ -267,14 +268,18 @@ class RaizDesinenciaController extends Controller
 	    	->orderBy('ctv', 'asc')
 	    	->orderBy('num', 'asc')
 	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'verbo_auxiliar_id', 'ctv', 'pers_gram', 'num', 'region']);
+    	
     	}else{
+	    
 	    	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
 	    	->orderBy('ctv', 'asc')
 	    	->orderBy('num', 'asc')
 	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'verbo_auxiliar_id', 'ctv', 'pers_gram', 'num', 'region']);
+    	
     	}
 
     	$times = [
+
 	     "en" => [
 	       "simple tenses",
 	       "compound tenses",
@@ -283,6 +288,7 @@ class RaizDesinenciaController extends Controller
 	       "tiempos simples",
 	       "tiempos compuestos",
 	  	   ],
+
 		   ];
 
     	$a = array("indicativo" => [$times[$lang][0] => [], $times[$lang][1] => []],

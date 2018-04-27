@@ -318,7 +318,7 @@ class VerbosController extends Controller
 	}
 
 	public function searchVerbo($verbo){
-		$v = Verbo::where('infinitivo', 'like', '%'.$verbo.'%')->get()->first();
+		$v = Verbo::where('infinitivo', 'ilike', '%'.$verbo.'%')->get()->first();
 		
 		if (!$v) return response()->json(["message" => "not_found"], 404);
 		
