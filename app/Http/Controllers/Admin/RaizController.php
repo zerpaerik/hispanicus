@@ -22,7 +22,7 @@ class RaizController extends Controller
 			}
 			array_shift($data);
 			$insert = array();
-			$dataRaiz = array();    	
+			$dataRaiz = array();
 
 			$inDb = Raiz::get(['nombre'])->toArray();
 
@@ -30,9 +30,10 @@ class RaizController extends Controller
 			if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
 			$nombre = str_replace([" ", "[", "]"], "", $data[$key][$RaizIdx]);
-			$verbo  = Verbo::where('infinitivo', '=', utf8_encode($data[$key][$InfIdx]))->get(['id'])->first();
+			$verbo  = Verbo::where('infinitivo', '=', VerbosController::quitarSe($data[$key][$InfIdx]))->get(['id'])->first();
 
 			if ($verbo) {
+
 				$insert = [
 					"nombre" => utf8_encode($nombre),
 					"verbo_id" => $verbo->id

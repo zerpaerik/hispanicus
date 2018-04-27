@@ -35,7 +35,6 @@ class PersonasGramaticalController extends Controller
     	$pg = PersonasGramatical::findOrFail($id);
     	$pg->delete();
     	return response()->json(["Msg" => "deleted"]);
-
     }
 
     public function index(){

@@ -358,5 +358,4 @@ class VerbosController extends Controller
 
         return view('admin.verbos.show');
 	}
-
 }
