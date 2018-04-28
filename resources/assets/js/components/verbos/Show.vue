@@ -91,6 +91,7 @@
             
             this.searching = true;
             this.lastSearch = this.search;
+            this.notFound = false;
             axios.get('/api/v1/verbos/search/' + this.search).then(response => {
               var res = response.data.data;
               this.data = res;
@@ -104,7 +105,9 @@
               this.notFound = true;
               this.hideTable = true;
               this.searching = false;
-
+              setTimeout(() => {
+                  this.notFound = false;
+              }, 5000);                
             });
           },
           d(){

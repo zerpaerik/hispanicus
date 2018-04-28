@@ -178,8 +178,11 @@
                             this.saved = true;
                             this.saving = false;
                             this.datatable = [];
+                            setTimeout(() => {
+                                this.saved = false;
+                            }, 5000);                              
                         }).catch(error => {
-                            this.saving = false;                          
+                            this.saving = false;
                         });
                 }else{
                     axios.post('/api/v1/upload_verbos', this.data, config)
