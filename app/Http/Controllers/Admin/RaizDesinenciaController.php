@@ -58,7 +58,7 @@ class RaizDesinenciaController extends Controller
 				
 				if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
-				$r = str_replace([" ", "[", "]"], "", $data[$key][$RaizIdx]);
+				$r = str_replace([" ", "[", "]"], ["", '<b class="rc">', "</b>"], $data[$key][$RaizIdx]);
 				$reg = 0;
 
 				if ($PiIdx && array_key_exists($PiIdx, $data[$key])) {
@@ -90,15 +90,16 @@ class RaizDesinenciaController extends Controller
 				$raiz = (array_key_exists($RaizIdx, $data[$key]))
 				? self::getFromDb(new Raiz, ['id'], 'nombre', utf8_encode($r)) : null;
 
-
 				if (array_key_exists($DesIdx, $data[$key])) {
 
-					$d = str_replace([" ", "[", "]"], "", $data[$key][$DesIdx]);
+					$d = str_replace([" ", "[", "]"], ["", '<b class="rc">', "</b>"], $data[$key][$DesIdx]);
 
 					$desinencia = self::getFromDb(new Desinencia, ['id'], 'desinencia', utf8_encode($d));
 					
 				}else{
+
 					$desinencia = null;
+				
 				}
 				
 				$fv = (array_key_exists($FvIdx, $data[$key]))
