@@ -29,7 +29,7 @@ class RaizController extends Controller
 		foreach ($data as $key => $value) {
 			if (!array_key_exists($RaizIdx, $data[$key])) continue;
 
-			$nombre = str_replace([" ", "[", "]"], "", $data[$key][$RaizIdx]);
+			$nombre = str_replace([" ", "[", "]"], ["", '<b class="rc">', "</b>"], $data[$key][$RaizIdx]);
 			$verbo  = Verbo::where('infinitivo', '=', VerbosController::quitarSe($data[$key][$InfIdx]))->get(['id'])->first();
 
 			if ($verbo) {

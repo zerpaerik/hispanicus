@@ -34,7 +34,7 @@ class VerbosController extends Controller
 			"new_roots" 	=> $s2,
 			"new_des"   	=> $s3,
 			"new_static" 	=> $s4,
-			"merges" 		=> $s5
+			"merges" 		  => $s5
 		]);
 	}
 
@@ -55,7 +55,7 @@ class VerbosController extends Controller
 		->where('verbo_id', '=', $id)
 		->where('region', '=', $request["modo"])
 		->where("lang", '=', $request['lang'])
-		->get(["regla"]);
+		->get(["regla", "tiempo"]);
 
 		$r = array();
 
@@ -69,7 +69,7 @@ class VerbosController extends Controller
 
 		return response()->json([
 			"verbo" => $v->infinitivo,
-			"reglas" => $reglas,
+			"reglas" => self::timeOrder($reglas),
 			"data" => RaizDesinenciaController::getData($r, json_decode($request["region"]), $request["lang"])
 		]);
 	}
@@ -249,6 +249,29 @@ class VerbosController extends Controller
 
 	}
 
+	public static function timeOrder($data){
+
+		$ordered = array();
+
+    foreach($data as $d){
+        if(array_key_exists($d->tiempo, $ordered)){
+          continue;
+        }else{
+          $ordered[$d->tiempo] = [];
+        }
+		}
+
+		foreach ($data as $d) {
+			array_push($ordered[$d->tiempo], [
+				"regla" => $d->regla,
+			]);
+		}
+
+		return $ordered;		
+
+	}
+
+
 	public static function modelOrder($data){
 
 		$ordered = array();
@@ -299,7 +322,7 @@ class VerbosController extends Controller
 					$v->def = $data[$key][$DefIdx];
 
 					if (array_key_exists($ModelIdx, $data[$key])) {
-						$v->modelo = str_replace(" ", "", $data[$key][$ModelIdx]);
+						$v->modelo = $data[$key][$ModelIdx];
 					}
 
 					if (array_key_exists($TutoIdx, $data[$key])) {
@@ -341,6 +364,9 @@ class VerbosController extends Controller
 		$affectedRows = \DB::table('desinencia_raizs')->whereIn('raiz_id', $request["raices"])->delete();
 		$verboid = \DB::table('verbos')->where('infinitivo', '=', $request["verbo"])->get(['id'])->first()->id;
 		$affectedRows += \DB::table('reglas')->where('verbo_id', '=', $verboid)->delete();
+		$affectedRows += \DB::table('raizs')->where('verbo_id', '=', $verboid)->delete();
+		$affectedRows += \DB::table('verbos')->where('id', '=', $verboid)->delete();
+
 		return response()->json($affectedRows, 200);
 	}
 

@@ -1,3 +1,24 @@
+<style scoped>  
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+</style>
 <template>
     <div class="panel panel-default">
             <div class="panel-heading">
@@ -28,29 +49,14 @@
                 </div>
             </div>
         </div>
+        <div style="position:fixed; width:30%; bottom:0; left:-1;">
+        <b-alert show dismissible v-if="saved">
+          <p>¡Se han añadido nuevos registros!</p>
+        </b-alert>
+        </div>   
     </div>    
 </template>
-<style scoped>  
-    .btn-file {
-        position: relative;
-        overflow: hidden;
-    }
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
-    }
-</style>
+
 <script>
     export default{
         data(){
@@ -81,16 +87,19 @@
                 this.data.append('file', this.file);
                 
                 this.uploading = true;
+                this.saved = false;
                 if (action == "save") {
                     axios.post('/api/v1/verbos', this.data, config)
                         .then(response => {
-                            this.saved = true;
+                            this.saved = response.Dicts;
                         });
                 }else{
                     axios.post('/api/v1/dicts', this.data, config)
                     .then(response => {
-                        console.log(response);
-                        this.datatable = response.data.data;
+                        this.saved = true;
+                        setTimeout(() => {
+                            this.saved = false;
+                        }, 5000);
                     }).catch(error => {
                         console.log(error);
                     });
