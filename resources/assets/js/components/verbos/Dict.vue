@@ -37,8 +37,18 @@
                     </span>
                 </div>
                 <div class="col-md-2">
-                    <button class="btn btn-success btn-block" @click="upload('show')" v-if="file"><i class="fa fa-upload"></i></button>
+                    <button class="btn btn-success btn-block" @click="upload('show')" v-if="file && lang"><i class="fa fa-upload"></i></button>
                 </div>
+
+                <div class="col-md-2">
+                  <select class="form-control" variant="info" v-model="lang">
+                    <option value="undefined" disabled>Idioma</option>
+                    <option value="es">Español</option>
+                    <option value="en">Ingles</option>
+                    <option value="pt">Portugés</option>
+                    <option value="cn">Chino</option>
+                  </select>
+                </div>   
 
                 <div class="col" style="padding-top:10px;">
                     <div class="progress">
@@ -65,7 +75,9 @@
                 pc : 0,
                 uploading : false,
                 data: new FormData(),
-                saved: false
+                saved: false,
+                region : undefined,
+                lang : undefined
             }
         },
         methods: {
@@ -85,6 +97,7 @@
                 };
 
                 this.data.append('file', this.file);
+                this.data.append('lang', this.lang);
                 
                 this.uploading = true;
                 this.saved = false;
@@ -94,6 +107,7 @@
                             this.saved = response.Dicts;
                         });
                 }else{
+
                     axios.post('/api/v1/dicts', this.data, config)
                     .then(response => {
                         this.saved = true;

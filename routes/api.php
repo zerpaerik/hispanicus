@@ -10,6 +10,7 @@
 		
 		Route::group(['middleware' => 'auth:api'], function () {
 	    	Route::post('logout', 'Auth\AuthController@logout');
+	    	Route::post('sendmessage', 'Auth\AuthController@sendAMessage');
 		});
 
 	});
@@ -21,7 +22,7 @@
     	Route::post('verbos/', 'Admin\VerbosController@storeRegular');
     	Route::post('dicts/', 'Admin\VerbosController@storeDict');
     	Route::post('verbos/regular_oc', 'Admin\VerbosController@storeRegularOrthChange');
-    	Route::get('verbos/{tipo}', 'Admin\VerbosController@listVerbs');
+    	Route::get('verbos/{tipo}/{lang}', 'Admin\VerbosController@listVerbs');
     	Route::post('verbo/{id}', 'Admin\VerbosController@getVerb');
     	Route::post('delete', 'Admin\VerbosController@delRaices');
 

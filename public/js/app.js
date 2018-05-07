@@ -11770,6 +11770,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -11778,7 +11788,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             pc: 0,
             uploading: false,
             data: new FormData(),
-            saved: false
+            saved: false,
+            region: undefined,
+            lang: undefined
         };
     },
 
@@ -11799,6 +11811,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
 
             this.data.append('file', this.file);
+            this.data.append('lang', this.lang);
 
             this.uploading = true;
             this.saved = false;
@@ -11807,6 +11820,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.saved = response.Dicts;
                 });
             } else {
+
                 axios.post('/api/v1/dicts', this.data, config).then(function (response) {
                     _this.saved = true;
                     setTimeout(function () {
@@ -52636,7 +52650,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-2"
-  }, [(_vm.file) ? _c('button', {
+  }, [(_vm.file && _vm.lang) ? _c('button', {
     staticClass: "btn btn-success btn-block",
     on: {
       "click": function($event) {
@@ -52646,6 +52660,51 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-upload"
   })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-2"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.lang),
+      expression: "lang"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "variant": "info"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.lang = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "undefined",
+      "disabled": ""
+    }
+  }, [_vm._v("Idioma")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "es"
+    }
+  }, [_vm._v("Español")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "en"
+    }
+  }, [_vm._v("Ingles")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "pt"
+    }
+  }, [_vm._v("Portugés")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "cn"
+    }
+  }, [_vm._v("Chino")])])]), _vm._v(" "), _c('div', {
     staticClass: "col",
     staticStyle: {
       "padding-top": "10px"
@@ -52911,7 +52970,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-2"
-  }, [(_vm.file) ? _c('button', {
+  }, [(_vm.file && _vm.tipo && _vm.lang && _vm.region) ? _c('button', {
     staticClass: "btn btn-success btn-block",
     attrs: {
       "disabled": _vm.saving

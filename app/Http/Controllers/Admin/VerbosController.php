@@ -10,6 +10,7 @@ use hispanicus\Verbo;
 use hispanicus\TipoVerbo;
 use hispanicus\Raiz;
 use hispanicus\ConfigRegion;
+use hispanicus\Tutorial;
 use Illuminate\Database\QueryException;
 use Validator;
 use hispanicus\Http\Controllers\Admin\DesinenciaController;
@@ -40,7 +41,7 @@ class VerbosController extends Controller
 
 	public function storeDict(Request $request){
 		$sheetData = $this->loadFile($request)["data"];
-		$s1 = $this->setDictionaries($sheetData);
+		$s1 = $this->setDictionaries($sheetData, $request["lang"]);
 
 		return response()->json([
 			"Dicts" => $s1,
@@ -48,9 +49,12 @@ class VerbosController extends Controller
 	}
 
 	public function getVerb($id, Request $request){
+
 		$v = Verbo::where('id', $id)->get()->first();
 		if (!$v) return response()->json(["message" => "not_found"], 404);
+
 		$raices = Raiz::where('verbo_id', $id)->get(['id']);
+
 		$reglas = \DB::table('reglas')
 		->where('verbo_id', '=', $id)
 		->where('region', '=', $request["modo"])
@@ -72,20 +76,21 @@ class VerbosController extends Controller
 			"reglas" => self::timeOrder($reglas),
 			"data" => RaizDesinenciaController::getData($r, json_decode($request["region"]), $request["lang"])
 		]);
+
 	}
 
-	public function listVerbs($tipo){
+	public function listVerbs($tipo, $lang){
 		$orderby = ($tipo == 1 || $tipo == 0) ? 'infinitivo' : 'modelo';
 		
 		if ($tipo == 1) {
-			$verbs = \DB::table('verbos')->where('tipo_verbo_id', '=', $tipo)->orderBy($orderby)->get(['id','infinitivo', 'def', 'modelo']);
-			$verbs = self::AlphaOrder($verbs);
+			$verbs = \DB::table('verbos')->where('tipo_verbo_id', '=', $tipo)->orderBy($orderby)->get(['id','infinitivo']);
+			$verbs = self::AlphaOrder($verbs, $lang);
 		}elseif($tipo == 0){
-			$verbs = \DB::table('verbos')->orderBy($orderby)->get(['id','infinitivo', 'def', 'modelo']);
-			$verbs = self::AlphaOrder($verbs);
+			$verbs = \DB::table('verbos')->orderBy($orderby)->get(['id','infinitivo']);
+			$verbs = self::AlphaOrder($verbs, $lang);
 		}else{
-			$verbs = \DB::table('verbos')->where('tipo_verbo_id', '=', $tipo)->orderBy($orderby)->get(['id','infinitivo', 'def', 'modelo']);
-			$verbs = self::modelOrder($verbs);
+			$verbs = \DB::table('verbos')->where('tipo_verbo_id', '=', $tipo)->get(['id','infinitivo']);
+			$verbs = self::modelOrder($verbs, $lang);
 		}
 		
 		return response()->json($verbs, 200);
@@ -131,9 +136,10 @@ class VerbosController extends Controller
 				"tipo_verbo_id" => $type
 			];
 
-			if (!in_array(["infinitivo" => self::quitarSe($data[$key][$InfIdx])], $inDb)) {
-				array_push($dataVerbo, $insert);
-			}
+			
+				if (!in_array(["infinitivo" => self::quitarSe($data[$key][$InfIdx])], $inDb)) {
+					array_push($dataVerbo, $insert);
+				}
 		}
 		return (self::save($dataVerbo, $inDb));
 	}
@@ -225,9 +231,9 @@ class VerbosController extends Controller
 
 	}
 
-	public static function AlphaOrder($data){
+	public static function AlphaOrder($data, $lang="en"){
 
-	$ordered = array();
+	  $ordered = array();
 
     foreach($data as $d){
         if(array_key_exists($d->infinitivo[0], $ordered)){
@@ -238,10 +244,12 @@ class VerbosController extends Controller
 		}
 
 		foreach ($data as $d) {
+			$def = Tutorial::where('verbo_id', '=', $d->id)->where('lang', '=', $lang)->get(['def'])->first();
+			if ($def) { $def = $def->def;	}else{ $def = null; }
 			array_push($ordered[$d->infinitivo[0]], [
 				"id" => $d->id,
 				"infinitivo" => $d->infinitivo,
-				"def" => str_replace('"', " ", $d->def),
+				"def" => str_replace('"', " ", $def),
 			]);
 		}
 
@@ -272,11 +280,14 @@ class VerbosController extends Controller
 	}
 
 
-	public static function modelOrder($data){
+	public static function modelOrder($data, $lang){
 
 		$ordered = array();
-
+		$other = ["es" => "Otros", "en" => "Others", "pt" => "Others", "cn" => "Others"];
     foreach($data as $d){
+    		$def = Tutorial::where('verbo_id', '=', $d->id)->where('lang', '=', $lang)->get(['model'])->first();
+      	if ($def) { $d->modelo = $def->model ?: $other[$lang	];	}else{ $def = new Tutorial(); $d->modelo = $other[$lang]; }
+
         if(array_key_exists($d->modelo, $ordered)){
           continue;
         }else{
@@ -285,10 +296,14 @@ class VerbosController extends Controller
 		}
 
 		foreach ($data as $d) {
+
+			$def = Tutorial::where('verbo_id', '=', $d->id)->where('lang', '=', $lang)->get(['def', 'model'])->first();
+			if ($def) { $deft = $def->def; $d->modelo = $def->model;	}else{ $deft = null; $d->modelo = $other[$lang]; }
+
 			array_push($ordered[$d->modelo], [
 				"id" => $d->id,
 				"infinitivo" => $d->infinitivo,
-				"def" => str_replace('"', " ", $d->def),
+				"def" => str_replace('"', " ", $deft),
 			]);
 		}
 
@@ -296,13 +311,13 @@ class VerbosController extends Controller
 
 	}
 
-	public function setDictionaries($data = array()){
+	public function setDictionaries($data = array(), $lang){
 		try {
 
-			$DefIdx = array_search('definiciónapp', str_replace(" ", "", $data[0]));
-			$VerboIdx = array_search('verbo', 		str_replace(" ", "", $data[0]));
-			$ModelIdx = array_search('modelo', 		str_replace(" ", "", $data[0]));
-			$TutoIdx = array_search('tutorial', 	str_replace(" ", "", $data[0]));
+			$DefIdx   = array_search('definiciónapp', str_replace(" ", "", $data[0]));
+			$VerboIdx = array_search('verbo', 		    str_replace(" ", "", $data[0]));
+			$ModelIdx = array_search('modelo', 		    str_replace(" ", "", $data[0]));
+			$TutoIdx  = array_search('tutorial', 	    str_replace(" ", "", $data[0]));
 
 		} catch (Exception $e) {}
 		
@@ -314,26 +329,34 @@ class VerbosController extends Controller
 
 			if (!array_key_exists($VerboIdx, $data[$key])) continue;
 
-				$vl = $data[$key][$VerboIdx];
-				$v  = Verbo::where('infinitivo', '=', $vl)->get()->first();
-
+				$vl   = $data[$key][$VerboIdx];
+				$v    = Verbo::where('infinitivo', '=', $vl)->get()->first();
 				if ($v) {
-					
-					$v->def = $data[$key][$DefIdx];
-
-					if (array_key_exists($ModelIdx, $data[$key])) {
-						$v->modelo = $data[$key][$ModelIdx];
-					}
-
-					if (array_key_exists($TutoIdx, $data[$key])) {
-						$v->tutorial = utf8_encode($data[$key][$TutoIdx]);
-					}
-
-					$r = $v->save();
-
+					$tuto = Tutorial::where('verbo_id', '=', $v->id)
+					->where('lang', '=', $lang)
+					->get()->first();
+					if (!$tuto) {
+						$tuto = new Tutorial();
+						$tuto->verbo_id = $v->id;							
+					}	
 				}else{
 					continue;
 				}
+
+					$tuto->lang = $lang;
+					$tuto->def = $data[$key][$DefIdx];
+
+					if (array_key_exists($ModelIdx, $data[$key])) {
+						$tuto->model = $data[$key][$ModelIdx];
+					}
+
+					if (array_key_exists($TutoIdx, $data[$key])) {
+						$tuto->tutorial = utf8_encode($data[$key][$TutoIdx]);
+					}
+
+					$r = $tuto->save();
+
+				
 		}
 		
 		return $r;
