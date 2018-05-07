@@ -5,8 +5,10 @@ namespace hispanicus\Http\Controllers\Api\Auth;
 use Illuminate\Http\Request;
 use hispanicus\Http\Controllers\Controller;
 use hispanicus\User;
+use hispanicus\Mail\Message;
 use hispanicus\ConfigRegion;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 
 class AuthController extends Controller
@@ -91,6 +93,19 @@ class AuthController extends Controller
   public function checkEmail(Request $request){
   	$email = User::where('email', '=', $request['email'])->count();
   	return response()->json(["res" => $email]);
+  }
+
+  public function sendAMessage(Request $request){
+  	$msg = $request["msg"];
+  	$usr = Auth::user();
+
+  	if ($msg) {
+			$send = Mail::to("medinajesus821@gmail.com")
+			->send(new Message($usr->email, $msg));
+  	}
+
+  	error_log($send);
+  	return response()->json([true], 200);
   }
 
 }

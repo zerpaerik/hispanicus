@@ -56,7 +56,7 @@
                     </span>
                 </div>
                 <div class="col-md-2">
-                    <button :disabled="saving" class="btn btn-success btn-block" @click="upload('show')" v-if="file"><i class="fa fa-upload"></i></button>
+                    <button :disabled="saving" class="btn btn-success btn-block" @click="upload('show')" v-if="file && tipo && lang && region"><i class="fa fa-upload"></i></button>
                 </div>
                 
                 <div class="col-md-2">
