@@ -76,16 +76,11 @@ class RaizDesinenciaController extends Controller
 					}else{
 						$reg = 0;
 					} 
+
 				}else{
-					if ($nIdx && array_key_exists($nIdx, $data[$key])) {
-						if ($region == 1 && $data[$key][$nIdx] == 5) {
-							$reg = 2;
-						}else if($region == 2 && $data[$key][$nIdx] == 5){
-							$reg = 1;
-						}else if($region == 3  && $data[$key][$nIdx] == 2){
-							$reg = 3;
-						}
-					}
+
+					$reg = 0;
+					
 				}
 
 				$raiz = (array_key_exists($RaizIdx, $data[$key]))
@@ -117,7 +112,7 @@ class RaizDesinenciaController extends Controller
 
 						if (array_key_exists($p1, $data[$key])) {
 							
-							$pronombre1 = str_replace([" ", "[", "]"], "", $data[$key][$p1]);
+							$pronombre1 = str_replace([" ", "[", "]"], ["", '<b class="rc">', '</b>'], $data[$key][$p1]);
 							$pronombre1 = utf8_encode($pronombre1);
 							$pronombre1 = explode(",", $pronombre1);
 							$pronombre1 = array_filter($pronombre1);
@@ -137,7 +132,7 @@ class RaizDesinenciaController extends Controller
 
 						$p2 = $PfIdx;
 
-						$pronombre2 = str_replace([" ", "[", "]"], "", $data[$key][$p2]);
+						$pronombre2 = str_replace([" ", "[", "]"], ["", '<b class="rc">', '</b>'], $data[$key][$p2]);
 						$pronombre2 = utf8_encode($pronombre2);
 						$pronombre2 = explode(",", $pronombre2);
 						$pronombre2 = array_filter($pronombre2);
@@ -158,7 +153,7 @@ class RaizDesinenciaController extends Controller
 			
 				if (array_key_exists($PrIdx, $data[$key])) {
 				
-					$pronombre_reflex = str_replace([" ", "[", "]"], "", $data[$key][$PrIdx]);
+					$pronombre_reflex = str_replace([" ", "[", "]"], ["", '<b class="rc">', '</b>'], $data[$key][$PrIdx]);
 
 					$pr = (array_key_exists($PrIdx, $data[$key]))
 					? self::getFromDb(new PronombreReflex, ['id'], 'pronombre_reflex', utf8_encode($pronombre_reflex)) : null;
@@ -187,7 +182,7 @@ class RaizDesinenciaController extends Controller
 				
 				if (array_key_exists($VaIdx, $data[$key])) {
 
-				$verbo_auxiliar = str_replace([" ", "[", "]"], "", $data[$key][$VaIdx]);
+				$verbo_auxiliar = str_replace([" ", "[", "]"], ["", '<b class="rc">', '</b>'], $data[$key][$VaIdx]);
 
 				$va = (array_key_exists($VaIdx, $data[$key]))
 				? self::getFromDb(new VerboAuxiliar, ['id'], 'verbo_auxiliar', utf8_encode($verbo_auxiliar)) : null;

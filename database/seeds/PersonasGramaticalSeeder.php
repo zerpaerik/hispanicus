@@ -18,18 +18,22 @@ class PersonasGramaticalSeeder extends Seeder
   	$ell  = explode(",", utf8_encode("ellos,ellas"));
   	$usted  = explode(",", utf8_encode("usted"));
   	$ustds  = explode(",", utf8_encode("ustedes"));
+    $vos2 = explode(",", utf8_encode('<b class="rc">vos</b>'));
+    $ustds2  = explode(",", utf8_encode('<b class="rc">ustedes</b>'));
 
 		$data = [
-			["pronombre" => json_encode($yo), "plural" => false, "formal" => false,    "persona_gramatical" => 1],
-      ["pronombre" => json_encode($vos), "plural" => false, "formal" => false,   "persona_gramatical" => 2],
-			["pronombre" => json_encode($tu), "plural" => false, "formal" => false,    "persona_gramatical" => 2],
-			["pronombre" => json_encode($ella), "plural" => false, "formal" => false,  "persona_gramatical" => 3],
-			["pronombre" => json_encode($nos), "plural" => true, "formal" => false,    "persona_gramatical" => 1],
-			["pronombre" => json_encode($voso), "plural" => true, "formal" => false,   "persona_gramatical" => 2],
-			["pronombre" => json_encode($ell), "plural" => true, "formal" => false,    "persona_gramatical" => 3],
+			["pronombre" => json_encode($yo),    "plural" => false, "formal" => false,    "persona_gramatical" => 1],
+      ["pronombre" => json_encode($vos),   "plural" => false, "formal" => false,   "persona_gramatical" => 2],
+			["pronombre" => json_encode($tu),    "plural" => false, "formal" => false,    "persona_gramatical" => 2],
+			["pronombre" => json_encode($ella),  "plural" => false, "formal" => false,  "persona_gramatical" => 3],
+			["pronombre" => json_encode($nos),   "plural" => true, "formal" => false,    "persona_gramatical" => 1],
+			["pronombre" => json_encode($voso),  "plural" => true, "formal" => false,   "persona_gramatical" => 2],
+			["pronombre" => json_encode($ell),   "plural" => true, "formal" => false,    "persona_gramatical" => 3],
 			["pronombre" => json_encode($usted), "plural" => false, "formal" => true,  "persona_gramatical" => 3],
 			["pronombre" => json_encode($ustds), "plural" => true, "formal" => true,   "persona_gramatical" => 3],
-      ["pronombre" => json_encode($ustds), "plural" => true, "formal" => false,  "persona_gramatical" => 2]
+      ["pronombre" => json_encode($ustds), "plural" => true, "formal" => false,  "persona_gramatical" => 2],
+      ["pronombre" => json_encode($vos2), "plural" => false,  "formal" => false,   "persona_gramatical" => 2],
+      ["pronombre" => json_encode($ustds2), "plural" => true, "formal" => false,  "persona_gramatical" => 2]
 		]; 
 
       foreach ($data as $key => $value) {

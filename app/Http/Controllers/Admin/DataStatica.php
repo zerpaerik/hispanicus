@@ -93,7 +93,7 @@ class DataStatica extends Controller
 				break;
 			}			
 
-			$pronombre_reflex = str_replace(" ", "", $data[$key][$PrIdx]);
+			$pronombre_reflex = str_replace([" ", "[", "]"], ["", '<b class="rc>', '</b>'], $data[$key][$PrIdx]);
 
 			$insert = [
 				"pronombre_reflex" => utf8_encode($pronombre_reflex),
@@ -112,9 +112,7 @@ class DataStatica extends Controller
 				break;
 			}				
 			
-			$verbo_auxiliar = str_replace(" ", "", $data[$key][$VaIdx]);
-			$verbo_auxiliar = str_replace("[", "", $data[$key][$VaIdx]);
-			$verbo_auxiliar = str_replace("]", "", $data[$key][$VaIdx]);
+			$verbo_auxiliar = str_replace([" ", "[", "]"], ["", '<b class="rc">', '</b>'], $data[$key][$VaIdx]);
 
 			$insert = [
 				"verbo_auxiliar" => utf8_encode($verbo_auxiliar),

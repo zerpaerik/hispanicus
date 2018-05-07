@@ -104,7 +104,6 @@ class AuthController extends Controller
 			->send(new Message($usr->email, $msg));
   	}
 
-  	error_log($send);
   	return response()->json([true], 200);
   }
 

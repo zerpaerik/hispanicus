@@ -104,7 +104,10 @@ class VerbosController extends Controller
 	}
 
 	public function getTutorial($id){
-		$tutorial = \DB::table('verbos')->where('id', '=', $id)->get(['tutorial'])->first();
+		$tutorial = \DB::table('tutorials')->where('verbo_id', '=', $id)->get(['tutorial'])->first();
+		if (!$tutorial) {
+			return response()->json(["message" => "not found"], 404);	
+		}
 		$tutorial->tutorial = utf8_decode($tutorial->tutorial);
 		return response()->json($tutorial, 200);
 	}
