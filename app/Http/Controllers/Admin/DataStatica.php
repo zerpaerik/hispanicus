@@ -27,6 +27,7 @@ class DataStatica extends Controller
 			$VaIdx	  = array_search('verboauxiliar', str_replace(" ", "", $data[0]));
 			$RuleIdx  = array_search('regla', str_replace(" ", "", $data[0]));
 			$VerboIdx = array_search('verbo', str_replace(" ", "", $data[0]));
+
 		} catch (Exception $e) {
 			return response()->json(["exception" => $e->getMessage]);			
 		}
@@ -132,7 +133,13 @@ class DataStatica extends Controller
 			}	
 
 			$regla = $data[$key][$RuleIdx];
-			$verbo_id = Verbo::where('infinitivo', '=', VerbosController::quitarSe($data[$key][$VerboIdx]))->get(['id'])->first()->id;
+			$verbo_id = Verbo::where('infinitivo', '=', VerbosController::quitarSe($data[$key][$VerboIdx]))->get(['id'])->first();	
+			if (!$verbo_id) {
+				continue;
+			}else{
+				$verbo_id = $verbo_id->id;
+			}
+			
 			$insert = [
 				"regla"    => utf8_encode($regla),
 				"region"   => $region,

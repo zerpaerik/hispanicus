@@ -134,15 +134,17 @@ class VerbosController extends Controller
 
 			$infinitivo = str_replace(" ", "", self::quitarSe($data[$key][$InfIdx]));
 
+			if (strlen($infinitivo) == 0) continue;
+
 			$insert = [
 				"infinitivo" => utf8_encode($infinitivo),
 				"tipo_verbo_id" => $type
 			];
 
 			
-				if (!in_array(["infinitivo" => self::quitarSe($data[$key][$InfIdx])], $inDb)) {
-					array_push($dataVerbo, $insert);
-				}
+			if (!in_array(["infinitivo" => self::quitarSe($data[$key][$InfIdx])], $inDb)) {
+				array_push($dataVerbo, $insert);
+			}
 		}
 		return (self::save($dataVerbo, $inDb));
 	}
@@ -367,7 +369,7 @@ class VerbosController extends Controller
 	}
 
 	public function searchVerbo($verbo){
-		$v = Verbo::where('infinitivo', 'ilike', '%'.$verbo.'%')->get()->first();
+		$v = Verbo::where('infinitivo', 'like', '%'.$verbo.'%')->get()->first();
 		
 		if (!$v) return response()->json(["message" => "not_found"], 404);
 		
