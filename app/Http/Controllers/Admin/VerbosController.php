@@ -134,15 +134,17 @@ class VerbosController extends Controller
 
 			$infinitivo = str_replace(" ", "", self::quitarSe($data[$key][$InfIdx]));
 
+			if (strlen($infinitivo) == 0) continue;
+
 			$insert = [
 				"infinitivo" => utf8_encode($infinitivo),
 				"tipo_verbo_id" => $type
 			];
 
 			
-				if (!in_array(["infinitivo" => self::quitarSe($data[$key][$InfIdx])], $inDb)) {
-					array_push($dataVerbo, $insert);
-				}
+			if (!in_array(["infinitivo" => self::quitarSe($data[$key][$InfIdx])], $inDb)) {
+				array_push($dataVerbo, $insert);
+			}
 		}
 		return (self::save($dataVerbo, $inDb));
 	}
