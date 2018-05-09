@@ -145,7 +145,8 @@ class DataStatica extends Controller
 				"region"   => $region,
 				"lang"     => $lang,
 				"verbo_id" => $verbo_id,
-				"tiempo"   => $data[$key][$TvIdx]
+				"tiempo"   => $data[$key][$TvIdx],
+				"forma"    => $data[$key][$FvIdx]
 			];
 
 			if (!self::unique($inDbRule, ["regla" => utf8_encode($data[$key][$RuleIdx]), "region" => $region, "lang" => $lang, "verbo_id" => $verbo_id])) {

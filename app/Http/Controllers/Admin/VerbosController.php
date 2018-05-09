@@ -59,7 +59,7 @@ class VerbosController extends Controller
 		->where('verbo_id', '=', $id)
 		->where('region', '=', $request["modo"])
 		->where("lang", '=', $request['lang'])
-		->get(["regla", "tiempo"]);
+		->get(["regla", "tiempo", "forma"]);
 
 		$r = array();
 
@@ -277,6 +277,7 @@ class VerbosController extends Controller
 		foreach ($data as $d) {
 			array_push($ordered[$d->tiempo], [
 				"regla" => $d->regla,
+				"forma" => $d->forma
 			]);
 		}
 
@@ -342,7 +343,7 @@ class VerbosController extends Controller
 					->get()->first();
 					if (!$tuto) {
 						$tuto = new Tutorial();
-						$tuto->verbo_id = $v->id;							
+						$tuto->verbo_id = $v->id;
 					}	
 				}else{
 					continue;
@@ -393,6 +394,7 @@ class VerbosController extends Controller
 		$verboid = \DB::table('verbos')->where('infinitivo', '=', $request["verbo"])->get(['id'])->first()->id;
 		$affectedRows += \DB::table('reglas')->where('verbo_id', '=', $verboid)->delete();
 		$affectedRows += \DB::table('raizs')->where('verbo_id', '=', $verboid)->delete();
+		$affectedRows += \DB::table('tutorials')->where('verbo_id', '=', $verboid)->delete();
 		$affectedRows += \DB::table('verbos')->where('id', '=', $verboid)->delete();
 
 		return response()->json($affectedRows, 200);

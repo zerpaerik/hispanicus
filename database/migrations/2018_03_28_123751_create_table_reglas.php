@@ -19,6 +19,7 @@ class CreateTableReglas extends Migration
             $table->string('lang');
             $table->string('region');
             $table->string('tiempo');
+            $table->string('forma');
             $table->integer('verbo_id')->index()->unsigned();
             $table->foreign('verbo_id')->references('id')->on('verbos');
             $table->timestamps();
