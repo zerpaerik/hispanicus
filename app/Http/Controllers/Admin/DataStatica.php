@@ -155,7 +155,7 @@ class DataStatica extends Controller
 		}
 
 		return [
-			self::save($dataRule, $inDbRule, new Regla, 			"regla"),
+			self::saveRule($dataRule, $inDbRule),
 			self::save($dataVa,   $inDbVa,   new VerboAuxiliar, 	"verbo_auxiliar"),
 			self::save($dataPr,   $inDbPr,   new PronombreReflex,   "pronombre_reflex"),
 			self::save($dataTv,   $inDbTv,   new TiempoVerbal, 		"tiempo"),
@@ -165,7 +165,9 @@ class DataStatica extends Controller
     }
 
     public static function save($data = array(), $inDb = array(), $Obj, $unique = ""){
+
 			$data = VerbosController::unique_multidim_array($data, $unique);		
+			
 			$res = false;
 
 			try {
@@ -183,6 +185,28 @@ class DataStatica extends Controller
 				return $res;
 			}
 			return $res;	    	
+    }
+
+    public static function saveRule($data, $inDb){
+			$res = false;
+
+			try {
+				foreach ($data as $key => $value) {
+
+					$v = self::unique($inDb, $data[$key]);
+
+					if($v){
+						continue;
+					}else{
+						Regla::insert($data[$key]);
+						array_push($inDb, $data[$key]);
+						$res = true;
+					}
+				}
+			} catch (QueryException $e) {
+				return $res;
+			}
+			return $res;
     }
 
     public static function unique($a, $b){
