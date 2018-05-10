@@ -35,7 +35,7 @@ class VerbosController extends Controller
 			"new_roots" 	=> $s2,
 			"new_des"   	=> $s3,
 			"new_static" 	=> $s4,
-			"merges" 		  => $s5
+			"merges" 		=> $s5
 		]);
 	}
 
@@ -59,7 +59,7 @@ class VerbosController extends Controller
 		->where('verbo_id', '=', $id)
 		->where('region', '=', $request["modo"])
 		->where("lang", '=', $request['lang'])
-		->get(["regla", "tiempo"]);
+		->get(["regla", "tiempo", "forma"]);
 
 		$r = array();
 
@@ -92,14 +92,13 @@ class VerbosController extends Controller
 			$verbs = \DB::table('verbos')->where('tipo_verbo_id', '=', $tipo)->get(['id','infinitivo']);
 			$verbs = self::modelOrder($verbs, $lang);
 		}
-		
 		return response()->json($verbs, 200);
 	}
 
 	public function listFavs(){
 		$u = \Auth::user();
 		$f = ConfigRegion::where('user_id', '=', $u->id)->get(['favs'])->first();
-		$v = Verbo::whereIn('id', json_decode($f->favs))->get(['id', 'infinitivo', 'def']);
+		$v = Verbo::whereIn('id', json_decode($f->favs))->get(['id', 'infinitivo']);
 		return response()->json($v, 200);
 	}
 
@@ -277,6 +276,7 @@ class VerbosController extends Controller
 		foreach ($data as $d) {
 			array_push($ordered[$d->tiempo], [
 				"regla" => $d->regla,
+				"forma" => $d->forma
 			]);
 		}
 
@@ -342,7 +342,7 @@ class VerbosController extends Controller
 					->get()->first();
 					if (!$tuto) {
 						$tuto = new Tutorial();
-						$tuto->verbo_id = $v->id;							
+						$tuto->verbo_id = $v->id;
 					}	
 				}else{
 					continue;
@@ -393,6 +393,7 @@ class VerbosController extends Controller
 		$verboid = \DB::table('verbos')->where('infinitivo', '=', $request["verbo"])->get(['id'])->first()->id;
 		$affectedRows += \DB::table('reglas')->where('verbo_id', '=', $verboid)->delete();
 		$affectedRows += \DB::table('raizs')->where('verbo_id', '=', $verboid)->delete();
+		$affectedRows += \DB::table('tutorials')->where('verbo_id', '=', $verboid)->delete();
 		$affectedRows += \DB::table('verbos')->where('id', '=', $verboid)->delete();
 
 		return response()->json($affectedRows, 200);

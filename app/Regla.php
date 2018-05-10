@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Regla extends Model
 {
     protected $fillable = [
-    	'regla'
+    	'regla',
+    	"region",   
+		"lang",     
+		"verbo_id", 
+		"tiempo",   
+		"forma"    
     ];
 }
