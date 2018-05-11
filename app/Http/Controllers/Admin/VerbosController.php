@@ -127,6 +127,8 @@ class VerbosController extends Controller
 		$insert = array();
 		$dataVerbo = array();
 
+		$reflexOnly = ($reflexOnly == true) ? 1 : 0;
+
 		$inDb = Verbo::get(['infinitivo'])->toArray();
 
 		foreach ($data as $key => $value) {
@@ -139,7 +141,7 @@ class VerbosController extends Controller
 			$insert = [
 				"infinitivo" => utf8_encode($infinitivo),
 				"tipo_verbo_id" => $type,
-				"reflex_only" => ($reflexOnly) ? 1 : 0
+				"reflex_only" => $reflexOnly
 			];
 
 			
