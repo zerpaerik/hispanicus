@@ -174,7 +174,7 @@
                 this.data.append('tipo', this.tipo);
                 this.data.append('region', this.region);
                 this.data.append('lang', this.lang);
-                this.data.append('reflexOnly', this.reflexOnly);
+                this.data.append('reflexOnly', this.reflexOnly ? 1 : 0);
                 
                 this.uploading = true;
 

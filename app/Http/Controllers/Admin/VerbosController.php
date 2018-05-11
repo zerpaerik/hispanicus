@@ -127,8 +127,6 @@ class VerbosController extends Controller
 		$insert = array();
 		$dataVerbo = array();
 
-		$reflexOnly = ($reflexOnly == true) ? 1 : 0;
-
 		$inDb = Verbo::get(['infinitivo'])->toArray();
 
 		foreach ($data as $key => $value) {
