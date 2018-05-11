@@ -11613,6 +11613,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -11630,7 +11640,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             idxs: [],
             tipo: null,
             region: null,
-            lang: null
+            lang: null,
+            reflexOnly: false
         };
     },
 
@@ -11654,6 +11665,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.data.append('tipo', this.tipo);
             this.data.append('region', this.region);
             this.data.append('lang', this.lang);
+            this.data.append('reflexOnly', this.reflexOnly ? 1 : 0);
 
             this.uploading = true;
 
@@ -23401,7 +23413,7 @@ exports.push([module.i, "\n.header[data-v-afb5bdfc]{\n  text-transform: capitali
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(10)();
-exports.push([module.i, "\n.first[data-v-d575ef7e]{\n  background-color: lightgray;\n  font-weight: bold;\n}\n.btn-file[data-v-d575ef7e] {\n    position: relative;\n    overflow: hidden;\n}\n.btn-file input[type=file][data-v-d575ef7e] {\n    position: absolute;\n    top: 0;\n    right: 0;\n    min-width: 100%;\n    min-height: 100%;\n    font-size: 100px;\n    text-align: right;\n    filter: alpha(opacity=0);\n    opacity: 0;\n    outline: none;\n    background: white;\n    cursor: inherit;\n    display: block;\n}\n.full-mid[data-v-d575ef7e]{\n  position: fixed;\n  bottom:0;\n  left:-1;\n}\n", ""]);
+exports.push([module.i, "\n.first[data-v-d575ef7e]{\n  background-color: lightgray;\n  font-weight: bold;\n}\n.btn-file[data-v-d575ef7e] {\n    position: relative;\n    overflow: hidden;\n}\n.btn-file input[type=file][data-v-d575ef7e] {\n    position: absolute;\n    top: 0;\n    right: 0;\n    min-width: 100%;\n    min-height: 100%;\n    font-size: 100px;\n    text-align: right;\n    filter: alpha(opacity=0);\n    opacity: 0;\n    outline: none;\n    background: white;\n    cursor: inherit;\n    display: block;\n}\n.full-mid[data-v-d575ef7e]{\n  position: fixed;\n  bottom:0;\n  left:-1;\n}\n.check[data-v-d575ef7e]{\n  width: 30px;\n  height: 30px;\n}\n", ""]);
 
 /***/ }),
 /* 213 */
@@ -51825,7 +51837,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51863,7 +51875,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] AuthorizedClients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51901,7 +51913,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Clients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51939,7 +51951,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PersonalAccessTokens.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -51977,7 +51989,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Create.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52015,7 +52027,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Dict.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Dict.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dict.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52053,7 +52065,7 @@ var Component = __webpack_require__(13)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Show.vue"
+Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Show.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Show.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -53095,6 +53107,40 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": "cn"
     }
   }, [_vm._v("Chino")])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-2"
+  }, [_c('label', [_vm._v("Solo Reflexivo")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.reflexOnly),
+      expression: "reflexOnly"
+    }],
+    staticClass: "form-check-input check",
+    attrs: {
+      "type": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.reflexOnly) ? _vm._i(_vm.reflexOnly, null) > -1 : (_vm.reflexOnly)
+    },
+    on: {
+      "change": function($event) {
+        var $$a = _vm.reflexOnly,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.reflexOnly = $$a.concat([$$v]))
+          } else {
+            $$i > -1 && (_vm.reflexOnly = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.reflexOnly = $$c
+        }
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
     staticClass: "col-md-4",
     staticStyle: {
       "padding-top": "10px"

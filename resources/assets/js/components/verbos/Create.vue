@@ -27,6 +27,10 @@
     bottom:0;
     left:-1;
   }
+  .check{
+    width: 30px;
+    height: 30px;
+  }
 </style>
 
 <template>
@@ -85,6 +89,12 @@
                     <option value="pt">Portugés</option>
                     <option value="cn">Chino</option>
                   </select>
+                </div>     
+
+                <div class="col-md-2">
+                  <label>Solo Reflexivo</label>
+                  <br>
+                  <input class="form-check-input check" type="checkbox" v-model="reflexOnly">
                 </div>                
                 
                 <div class="col-md-4" style="padding-top:10px;">
@@ -140,7 +150,8 @@
                 idxs : [],
                 tipo : null,
                 region : null,
-                lang : null
+                lang : null,
+                reflexOnly : false
             }
         },
         methods: {
@@ -163,6 +174,7 @@
                 this.data.append('tipo', this.tipo);
                 this.data.append('region', this.region);
                 this.data.append('lang', this.lang);
+                this.data.append('reflexOnly', this.reflexOnly ? 1 : 0);
                 
                 this.uploading = true;
 

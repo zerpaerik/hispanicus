@@ -24,7 +24,7 @@ class VerbosController extends Controller
 	public function storeRegular(Request $request){
 		$sheetData = $this->loadFile($request)["data"];
 
-		$s1 = $this->storeVerbs($sheetData, $request["tipo"]);
+		$s1 = $this->storeVerbs($sheetData, $request["tipo"], $request["reflexOnly"]);
 		$s2 = RaizController::storeRaiz($sheetData);
 		$s3 = DesinenciaController::storeDesinencia($sheetData);
 		$s4 = DataStatica::storeStaticData($sheetData, $request["region"], $request["lang"]);
@@ -73,6 +73,7 @@ class VerbosController extends Controller
 
 		return response()->json([
 			"verbo" => $v->infinitivo,
+			"reflexOnly" => $v->reflex_only,
 			"reglas" => self::timeOrder($reglas),
 			"data" => RaizDesinenciaController::getData($r, json_decode($request["region"]), $request["lang"])
 		]);
@@ -111,7 +112,7 @@ class VerbosController extends Controller
 		return response()->json($tutorial, 200);
 	}
 
-	public function storeVerbs($data = array(), $type){
+	public function storeVerbs($data = array(), $type, $reflexOnly){
 		
 		try {
 
@@ -137,7 +138,8 @@ class VerbosController extends Controller
 
 			$insert = [
 				"infinitivo" => utf8_encode($infinitivo),
-				"tipo_verbo_id" => $type
+				"tipo_verbo_id" => $type,
+				"reflex_only" => $reflexOnly
 			];
 
 			
