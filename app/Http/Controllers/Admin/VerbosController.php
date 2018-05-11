@@ -349,7 +349,12 @@ class VerbosController extends Controller
 				}
 
 					$tuto->lang = $lang;
-					$tuto->def = $data[$key][$DefIdx] ?: '';
+					
+					if (array_key_exists($DefIdx, $data[$key])) {
+						$tuto->def = $data[$key][$DefIdx];
+					}else{
+						$tuto->def = '';
+					}
 
 					if (array_key_exists($ModelIdx, $data[$key])) {
 						$tuto->model = $data[$key][$ModelIdx];
