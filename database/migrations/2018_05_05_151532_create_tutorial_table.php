@@ -15,9 +15,9 @@ class CreateTutorialTable extends Migration
     {
         Schema::create('tutorials', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tutorial')->nullable();
+            $table->text('tutorial')->nullable();
             $table->string('model')->nullable();
-            $table->string('def')->nullable();
+            $table->text('def')->nullable();
             $table->string('lang')->nullable();
             $table->string('region')->nullable();
             $table->integer('verbo_id')->index()->unsigned();
