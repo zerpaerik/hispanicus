@@ -188,9 +188,14 @@ class VerbosController extends Controller
 
 	public static function quitarSe($value){
 	  
+
 	  $len = strlen($value);
-	  $pos = strrpos($value, "se");
-	  if ($pos == ($len - 2)) $value = substr_replace($value, "", $pos);
+	  if ($len > 2) {
+		  $pos = strrpos($value, "se");
+		  if ($pos == ($len - 2)) $value = substr_replace($value, "", $pos);
+
+		  return $value;
+	  }
 
 	  return $value;
 	}	
