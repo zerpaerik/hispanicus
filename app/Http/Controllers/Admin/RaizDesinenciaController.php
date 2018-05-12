@@ -293,7 +293,7 @@ class RaizDesinenciaController extends Controller
     						 "F.N.P."     => [$times[$lang][0] => []]);
 
     	foreach ($desra as $dr) {
-    		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
+    		$tiempo = self::getValue($dr->tiempo_verbal_id, 'tiempo_verbals', ['tiempo']);
     		$mv = self::getWhere($dr->ctv, $lang, $times);
 
 	        if(in_array([$tiempo => []], $a[$mv[1]][$mv[0]])){
@@ -305,20 +305,20 @@ class RaizDesinenciaController extends Controller
 
     	foreach ($desra as $dr) {
 
-    		$tiempo = self::getValue($dr->tiempo_verbal_id, new TiempoVerbal, ['tiempo']);
+    		$tiempo = self::getValue($dr->tiempo_verbal_id, 'tiempo_verbals', ['tiempo']);
     		$mv = self::getWhere($dr->ctv, $lang, $times);
     		
 	    	array_push($a[$mv[1]][$mv[0]][$tiempo], [
-	    	"raiz" => self::getValue($dr->raiz_id, new Raiz, ['nombre']),
-    		"desinencia" => self::getValue($dr->desinencia_id, new Desinencia, ['desinencia']),
-    		"forma_verbal" => self::getValue($dr->forma_verbal_id, new FormaVerbal, ['forma_verbal']),
-    		'verbo_auxiliar' => self::getValue($dr->verbo_auxiliar_id, new VerboAuxiliar, ['verbo_auxiliar']),
-    		"pronombre_reflex" => self::getValue($dr->pronombre_reflex_id, new PronombreReflex, ['pronombre_reflex']),
-    		"pronombre" => self::getValue($dr->pronombre_id, new PersonasGramatical, ['pronombre', 'plural', 'persona_gramatical']),
-    		"pronombre_formal_id" => self::getValue($dr->pronombre_formal_id, new PersonasGramatical, ['pronombre', 'plural', 'persona_gramatical']),
+	    	"raiz" => self::getValue($dr->raiz_id, 'raizs', ['nombre']),
+    		"desinencia" => self::getValue($dr->desinencia_id, 'desinencias', ['desinencia']),
+    		"forma_verbal" => self::getValue($dr->forma_verbal_id, 'forma_verbals', ['forma_verbal']),
+    		'verbo_auxiliar' => self::getValue($dr->verbo_auxiliar_id, 'verbo_auxiliars', ['verbo_auxiliar']),
+    		"pronombre_reflex" => self::getValue($dr->pronombre_reflex_id, 'pronombre_reflexes', ['pronombre_reflex']),
+    		"pronombre" => self::getValue($dr->pronombre_id, 'personas_gramaticals', ['pronombre', 'plural', 'persona_gramatical']),
+    		"pronombre_formal_id" => self::getValue($dr->pronombre_formal_id, 'personas_gramaticals', ['pronombre', 'plural', 'persona_gramatical']),
     		"negativo" => $dr->negativo,
     		"region" => $dr->region,
-    		"plural" => (int)self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, new PersonasGramatical, ['plural']),
+    		"plural" => (int)self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, 'personas_gramaticals', ['plural']),
     		"pg" => $dr->pers_gram,
     	]);
 			
@@ -331,7 +331,7 @@ class RaizDesinenciaController extends Controller
     	
     	if (is_null($id)) return $id;
     	
-    	$r = $Obj::where('id', $id)->get($values)->first();
+    	$r = (array) \DB::table($Obj)->where('id', $id)->get($values)->first();
 
     	if ($utf8) {
     		$r[$values[0]] = utf8_decode($r[$values[0]]);
