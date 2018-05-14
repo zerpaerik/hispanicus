@@ -153,7 +153,7 @@ class RaizDesinenciaController extends Controller
 			
 				if (array_key_exists($PrIdx, $data[$key])) {
 				
-					$pronombre_reflex = str_replace([" ", "[", "]"], ["", '<b class="rc">', '</b>'], $data[$key][$PrIdx]);
+					$pronombre_reflex = str_replace([" ", "[", "]"], ["", '<b class="rc">', '</b> '], $data[$key][$PrIdx]);
 
 					$pr = (array_key_exists($PrIdx, $data[$key]))
 					? self::getFromDb(new PronombreReflex, ['id'], 'pronombre_reflex', utf8_encode($pronombre_reflex)) : null;
