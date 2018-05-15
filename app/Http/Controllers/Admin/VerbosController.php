@@ -11,6 +11,7 @@ use hispanicus\TipoVerbo;
 use hispanicus\Raiz;
 use hispanicus\ConfigRegion;
 use hispanicus\Tutorial;
+use hispanicus\Info;
 use Illuminate\Database\QueryException;
 use Validator;
 use hispanicus\Http\Controllers\Admin\DesinenciaController;
@@ -45,6 +46,24 @@ class VerbosController extends Controller
 
 		return response()->json([
 			"Dicts" => $s1,
+		]);
+	}
+
+	public function storeInfo(Request $request){
+		$sheetData = $this->loadFile($request)["data"];
+		$s1 = $this->setInfo($sheetData, $request["lang"]);
+
+		return response()->json([
+			"Dicts" => $s1,
+		]);
+	}
+
+	public function getInfo($lang, $tipo){
+		$info = Info::where('tipo', '=', $tipo)->where('lang', '=', $lang)->get(['info', 'title'])->first();
+		if (!$info) return response()->json([], 404);
+		return response()->json([
+			"title" => utf8_decode($info->title),
+			"info" => utf8_decode($info->info),
 		]);
 	}
 
@@ -273,11 +292,11 @@ class VerbosController extends Controller
 		$ordered = array();
 
     foreach($data as $d){
-        if(array_key_exists($d->tiempo, $ordered)){
-          continue;
-        }else{
-          $ordered[$d->tiempo] = [];
-        }
+	        if(array_key_exists($d->tiempo, $ordered)){
+	          continue;
+	        }else{
+	          $ordered[$d->tiempo] = [];
+	        }
 		}
 
 		foreach ($data as $d) {
@@ -322,6 +341,41 @@ class VerbosController extends Controller
 		return $ordered;		
 
 	}
+
+	public function setInfo($data = array(), $lang){
+		
+		try {
+
+			$InfoIdx   = array_search('información', str_replace(" ", "", $data[0]));
+			$TipoIdx   = array_search('tipo', str_replace(" ", "", $data[0]));
+			$TituloIdx   = array_search('título', str_replace(" ", "", $data[0]));
+
+		} catch (Exception $e) {}
+
+		array_shift($data);
+		$data = array_filter($data);
+		$r = false;
+
+		foreach ($data as $key => $value) {
+			if (!array_key_exists($InfoIdx, $data[$key])) continue;
+
+				$info = Info::where('tipo', '=', $data[$key][$TipoIdx])->where('lang', '=', $lang)->get()->first();
+
+				if ($info) {
+					$info->info = utf8_encode($data[$key][$InfoIdx]);
+					$info->title = utf8_encode($data[$key][$TituloIdx]);
+					$r = $info->save();
+				}else{
+					$info = new Info();
+					$info->tipo = $data[$key][$TipoIdx];
+					$info->info = utf8_encode($data[$key][$InfoIdx]);
+					$info->title = utf8_encode($data[$key][$TituloIdx]);
+					$info->lang = $lang;
+					$r = $info->save();
+				}
+		}
+		return $r;
+	} 
 
 	public function setDictionaries($data = array(), $lang){
 		try {
@@ -425,4 +479,9 @@ class VerbosController extends Controller
 
         return view('admin.verbos.show');
 	}
+
+	public function showInfoView(){
+
+        return view('admin.verbos.info');
+	}	
 }
