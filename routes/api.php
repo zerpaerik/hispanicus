@@ -21,6 +21,8 @@
     	Route::get('verbos/search/{verbo}', 'Admin\VerbosController@searchVerbo');
     	Route::post('verbos/', 'Admin\VerbosController@storeRegular');
     	Route::post('dicts/', 'Admin\VerbosController@storeDict');
+    	Route::post('info/', 'Admin\VerbosController@storeInfo');
+    	Route::get('info/{lang}/{tipo}', 'Admin\VerbosController@getInfo');
     	Route::post('verbos/regular_oc', 'Admin\VerbosController@storeRegularOrthChange');
     	Route::get('verbos/{tipo}/{lang}', 'Admin\VerbosController@listVerbs');
     	Route::post('verbo/{id}', 'Admin\VerbosController@getVerb');

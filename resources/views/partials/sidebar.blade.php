@@ -99,8 +99,8 @@
 
                     <li class="{{ $request->segment(2) == 'verbos_show' ? 'active active-sub' : '' }}">
                         <a href="{{ route('admin.verbos.show') }}">
-                            <i class="fa fa-plus"></i>
-                            <span class="title">Listar verbos</span>
+                            <i class="fa fa-search"></i>
+                            <span class="title">Buscar verbo</span>
                         </a>
                     </li>                    
 
@@ -110,6 +110,13 @@
                             <span class="title">Agregar diccionario</span>
                         </a>
                     </li>
+
+                    <li class="{{ $request->segment(2) == 'info_show' ? 'active active-sub' : '' }}">
+                        <a href="{{ route('admin.verbos.info') }}">
+                            <i class="fa fa-info"></i>
+                            <span class="title">Agregar información</span>
+                        </a>
+                    </li>                    
                                         
                 </ul>
             </li>

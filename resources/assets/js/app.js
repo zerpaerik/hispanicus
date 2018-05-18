@@ -49,6 +49,12 @@ Vue.component(
 );
 
 Vue.component(
+    'info-create',
+    require('./components/verbos/Info.vue')
+);
+
+
+Vue.component(
     'verbos-show',
     require('./components/verbos/Show.vue')
 );
