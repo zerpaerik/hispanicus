@@ -479,13 +479,9 @@ class VerbosController extends Controller
 
         return view('admin.verbos.show');
 	}
-<<<<<<< HEAD
-}
-=======
 
 	public function showInfoView(){
 
         return view('admin.verbos.info');
 	}	
 }
->>>>>>> 60720cc24972281712dec3c656edf21783b0aab4
