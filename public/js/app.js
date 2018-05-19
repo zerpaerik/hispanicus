@@ -51968,7 +51968,7 @@ var Component = __webpack_require__(12)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52006,7 +52006,7 @@ var Component = __webpack_require__(12)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] AuthorizedClients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52044,7 +52044,7 @@ var Component = __webpack_require__(12)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\Clients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Clients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52082,7 +52082,7 @@ var Component = __webpack_require__(12)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PersonalAccessTokens.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52120,7 +52120,7 @@ var Component = __webpack_require__(12)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Create.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Create.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52158,7 +52158,7 @@ var Component = __webpack_require__(12)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Dict.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Dict.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Dict.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52196,7 +52196,7 @@ var Component = __webpack_require__(12)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Info.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Info.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Info.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52234,7 +52234,7 @@ var Component = __webpack_require__(12)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\Users\\JM\\hispanicus\\resources\\assets\\js\\components\\verbos\\Show.vue"
+Component.options.__file = "C:\\Users\\JM\\Documents\\hispanicus\\resources\\assets\\js\\components\\verbos\\Show.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Show.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -52883,7 +52883,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Portugés")]), _vm._v(" "), _c('option', {
     attrs: {
-      "value": "cn"
+      "value": "zh-CN"
     }
   }, [_vm._v("Chino")])])]), _vm._v(" "), _c('div', {
     staticClass: "col",
@@ -53017,7 +53017,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Portugés")]), _vm._v(" "), _c('option', {
     attrs: {
-      "value": "cn"
+      "value": "zh-CN"
     }
   }, [_vm._v("Chino")])])]), _vm._v(" "), _c('div', {
     staticClass: "col",
@@ -53407,7 +53407,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Portugés")]), _vm._v(" "), _c('option', {
     attrs: {
-      "value": "cn"
+      "value": "zh-CN"
     }
   }, [_vm._v("Chino")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-2"

@@ -46,7 +46,7 @@
                     <option value="es">Español</option>
                     <option value="en">Ingles</option>
                     <option value="pt">Portugés</option>
-                    <option value="cn">Chino</option>
+                    <option value="zh-CN">Chino</option>
                   </select>
                 </div>   
 
