@@ -284,6 +284,10 @@ class RaizDesinenciaController extends Controller
 	       "tiempos simples",
 	       "tiempos compuestos",
 	  	   ],
+	     "zh-CN" => [
+	       "simple tenses",
+	       "compound tenses",
+	  	   ],	  	  
 
 		   ];
 
