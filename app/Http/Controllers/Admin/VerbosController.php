@@ -314,7 +314,7 @@ class VerbosController extends Controller
 	public static function modelOrder($data, $lang){
 
 		$ordered = array();
-		$other = ["es" => "Otros", "en" => "Others", "pt" => "Others", "cn" => "Others"];
+		$other = ["es" => "Otros", "en" => "Others", "pt" => "Others", "zh-CN" => "其余"];
     foreach($data as $d){
     		$def = Tutorial::where('verbo_id', '=', $d->id)->where('lang', '=', $lang)->get(['model'])->first();
       	if ($def) { $d->modelo = $def->model ?: $other[$lang	];	}else{ $def = new Tutorial(); $d->modelo = $other[$lang]; }
