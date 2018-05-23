@@ -287,8 +287,12 @@ class RaizDesinenciaController extends Controller
 	     "zh-CN" => [
 	       "simple tenses",
 	       "compound tenses",
-	  	   ],	  	  
+	  	   ],	
 
+	     "pt" => [
+	       "tempos simples",
+	       "tempos compostos",
+	  	   ]		  	     	  
 		   ];
 
     	$a = array("indicativo" => [$times[$lang][0] => [], $times[$lang][1] => []],
