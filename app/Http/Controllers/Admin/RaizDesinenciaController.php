@@ -285,8 +285,8 @@ class RaizDesinenciaController extends Controller
 	       "tiempos compuestos",
 	  	   ],
 	     "zh-CN" => [
-	       "simple tenses",
-	       "compound tenses",
+	       "简单时",
+	       "复合时",
 	  	   ],	
 
 	     "pt" => [
@@ -328,6 +328,7 @@ class RaizDesinenciaController extends Controller
     		"region" => $dr->region,
     		"plural" => (int)self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, 'personas_gramaticals', ['plural']),
     		"pg" => $dr->pers_gram,
+    	
     	]);
 			
 			}
