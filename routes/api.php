@@ -26,6 +26,7 @@
     	Route::post('verbos/regular_oc', 'Admin\VerbosController@storeRegularOrthChange');
     	Route::get('verbos/{tipo}/{lang}', 'Admin\VerbosController@listVerbs');
     	Route::post('verbo/{id}', 'Admin\VerbosController@getVerb');
+    	Route::post('free/verbo/{id}', 'Admin\VerbosController@getFreeVerb');
     	Route::post('delete', 'Admin\VerbosController@delRaices');
 
 	});

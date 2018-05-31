@@ -99,6 +99,38 @@ class VerbosController extends Controller
 
 	}
 
+	public function getFreeVerb($id, Request $request){
+
+		$v = Verbo::where('id', $id)->get()->first();
+		if (!$v) return response()->json(["message" => "not_found"], 404);
+
+		$raices = Raiz::where('verbo_id', $id)->get(['id']);
+
+		$reglas = \DB::table('reglas')
+		->where('verbo_id', '=', $id)
+		->where('region', '=', $request["modo"])
+		->where("lang", '=', $request['lang'])
+		->get(["regla", "tiempo", "forma"]);
+
+		$r = array();
+
+		foreach ($raices as $root) {
+		  array_push($r, $root->id);
+		}
+
+		foreach ($reglas as $key => $value) {
+			$reglas[$key]->regla = utf8_decode($reglas[$key]->regla);
+		}
+
+		return response()->json([
+			"verbo" => $v->infinitivo,
+			"reflexOnly" => $v->reflex_only,
+			"reglas" => self::timeOrder($reglas),
+			"data" => RaizDesinenciaController::getFreeData($r, json_decode($request["region"]), $request["lang"])
+		]);
+
+	}	
+
 	public function listVerbs($tipo, $lang){
 		$orderby = ($tipo == 1 || $tipo == 0) ? 'infinitivo' : 'modelo';
 		
@@ -278,7 +310,7 @@ class VerbosController extends Controller
 			if ($def) { $def = $def->def;	}else{ $def = null; }
 			array_push($ordered[$d->infinitivo[0]], [
 				"id" => $d->id,
-				"infinitivo" => $d->infinitivo,
+				"infinitivo" => utf8_decode($d->infinitivo),
 				"def" => str_replace('"', " ", $def),
 			]);
 		}
@@ -333,7 +365,7 @@ class VerbosController extends Controller
 
 			array_push($ordered[$d->modelo], [
 				"id" => $d->id,
-				"infinitivo" => $d->infinitivo,
+				"infinitivo" => utf8_decode($d->infinitivo),
 				"def" => str_replace('"', " ", $deft),
 			]);
 		}

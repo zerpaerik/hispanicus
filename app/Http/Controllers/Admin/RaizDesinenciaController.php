@@ -256,6 +256,88 @@ class RaizDesinenciaController extends Controller
 
     }
 
+    public static function getFreeData($id, $region, $lang="es"){
+    	if (sizeof($region) > 1) {
+	    	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
+	    	->where('tiempo_verbal_id', '=', 1)
+	    	->whereIn('region', $region)
+	    	->orderBy('ctv', 'asc')
+	    	->orderBy('num', 'asc')
+	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'verbo_auxiliar_id', 'ctv', 'pers_gram', 'num', 'region']);
+    	
+    	}else{
+	    
+	    	$desra = DesinenciaRaiz::whereIn('raiz_id', $id)
+	    	->where('tiempo_verbal_id', '=', 1)
+	    	->orderBy('ctv', 'asc')
+	    	->orderBy('num', 'asc')
+	    	->get(['desinencia_id', 'tiempo_verbal_id', 'forma_verbal_id', 'pronombre_reflex_id', 'negativo', 'pronombre_id', 'pronombre_formal_id', 'raiz_id', 'verbo_auxiliar_id', 'ctv', 'pers_gram', 'num', 'region']);
+    	
+    	}
+
+    	$times = [
+
+	     "en" => [
+	       "simple tenses",
+	       "compound tenses",
+	    	 ],
+	     "es" => [
+	       "tiempos simples",
+	       "tiempos compuestos",
+	  	   ],
+	     "zh-CN" => [
+	       "简单时",
+	       "复合时",
+	  	   ],	
+
+	     "pt" => [
+	       "tempos simples",
+	       "tempos compostos",
+	  	   ]		  	     	  
+		   ];
+
+    	$a = array("indicativo" => [$times[$lang][0] => [], $times[$lang][1] => []],
+    						 "subjuntivo" => [$times[$lang][0] => [], $times[$lang][1] => []], 
+    						 "imperativo" => [$times[$lang][0] => []], 
+    						 "F.N.P."     => [$times[$lang][0] => []]);
+
+    	foreach ($desra as $dr) {
+    		$tiempo = self::getValue($dr->tiempo_verbal_id, 'tiempo_verbals', ['tiempo']);
+    		$mv = self::getWhere($dr->ctv, $lang, $times);
+
+	        if(in_array([$tiempo => []], $a[$mv[1]][$mv[0]])){
+	          continue;
+	        }else{
+	          $a[$mv[1]][$mv[0]] += [$tiempo => []];
+	        }
+    	}
+
+    	foreach ($desra as $dr) {
+
+    		$tiempo = self::getValue($dr->tiempo_verbal_id, 'tiempo_verbals', ['tiempo']);
+    		$mv = self::getWhere($dr->ctv, $lang, $times);
+    		
+	    	array_push($a[$mv[1]][$mv[0]][$tiempo], [
+	    	"raiz" => self::getValue($dr->raiz_id, 'raizs', ['nombre']),
+    		"desinencia" => self::getValue($dr->desinencia_id, 'desinencias', ['desinencia']),
+    		"forma_verbal" => self::getValue($dr->forma_verbal_id, 'forma_verbals', ['forma_verbal']),
+    		'verbo_auxiliar' => self::getValue($dr->verbo_auxiliar_id, 'verbo_auxiliars', ['verbo_auxiliar']),
+    		"pronombre_reflex" => self::getValue($dr->pronombre_reflex_id, 'pronombre_reflexes', ['pronombre_reflex']),
+    		"pronombre" => self::getValue($dr->pronombre_id, 'personas_gramaticals', ['pronombre', 'plural', 'persona_gramatical']),
+    		"pronombre_formal_id" => self::getValue($dr->pronombre_formal_id, 'personas_gramaticals', ['pronombre', 'plural', 'persona_gramatical']),
+    		"negativo" => $dr->negativo,
+    		"region" => $dr->region,
+    		"plural" => (int)self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, 'personas_gramaticals', ['plural']),
+    		"pg" => $dr->pers_gram,
+    	
+    	]);
+			
+			}
+
+    	return $a;
+
+    }
+
     public static function getData($id, $region, $lang="es"){
     	
     	if (sizeof($region) > 1) {
