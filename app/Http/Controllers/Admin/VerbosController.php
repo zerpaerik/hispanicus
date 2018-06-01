@@ -295,14 +295,17 @@ class VerbosController extends Controller
 
 	public static function AlphaOrder($data, $lang="en"){
 
-	  $ordered = array();
+	    $ordered = array();
 
-    foreach($data as $d){
-        if(array_key_exists($d->infinitivo[0], $ordered)){
-          continue;
-        }else{
-          $ordered[$d->infinitivo[0]] = [];
-        }
+		$data = self::array_sort($data, 'infinitivo');
+	    
+	    foreach($data as $d){
+	        
+	        if(array_key_exists($d->infinitivo[0], $ordered)){
+	          continue;
+	        }else{
+	          $ordered[$d->infinitivo[0]] = [];
+	        }
 		}
 
 		foreach ($data as $d) {
@@ -314,7 +317,7 @@ class VerbosController extends Controller
 				"def" => str_replace('"', " ", $def),
 			]);
 		}
-
+			
 		return $ordered;
 
 	}
@@ -495,6 +498,41 @@ class VerbosController extends Controller
 		$affectedRows += \DB::table('verbos')->where('id', '=', $verboid)->delete();
 
 		return response()->json($affectedRows, 200);
+	}
+
+	public static function array_sort($array, $on, $order=SORT_ASC)
+	{
+	    $new_array = array();
+	    $sortable_array = array();
+
+	    if (count($array) > 0) {
+	        foreach ($array as $k => $v) {
+	            if (is_array($v)) {
+	                foreach ($v as $k2 => $v2) {
+	                    if ($k2 == $on) {
+	                        $sortable_array[$k] = $v2;
+	                    }
+	                }
+	            } else {
+	                $sortable_array[$k] = $v;
+	            }
+	        }
+
+	        switch ($order) {
+	            case SORT_ASC:
+	                asort($sortable_array);
+	            break;
+	            case SORT_DESC:
+	                arsort($sortable_array);
+	            break;
+	        }
+
+	        foreach ($sortable_array as $k => $v) {
+	            $new_array[$k] = $array[$k];
+	        }
+	    }
+
+	    return $new_array;
 	}
 
 	public function showUploadView(){
