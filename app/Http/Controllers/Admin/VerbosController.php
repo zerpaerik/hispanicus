@@ -188,7 +188,7 @@ class VerbosController extends Controller
 			if (strlen($infinitivo) == 0) continue;
 
 			$insert = [
-				"infinitivo" => utf8_encode($infinitivo),
+				"infinitivo" => $infinitivo,
 				"tipo_verbo_id" => $type,
 				"reflex_only" => $reflexOnly
 			];
