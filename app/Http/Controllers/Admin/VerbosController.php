@@ -296,8 +296,6 @@ class VerbosController extends Controller
 	public static function AlphaOrder($data, $lang="en"){
 
 	    $ordered = array();
-
-		$data = self::array_sort($data, 'infinitivo');
 	    
 	    foreach($data as $d){
 	        
@@ -313,7 +311,7 @@ class VerbosController extends Controller
 			if ($def) { $def = $def->def;	}else{ $def = null; }
 			array_push($ordered[$d->infinitivo[0]], [
 				"id" => $d->id,
-				"infinitivo" => utf8_decode($d->infinitivo),
+				"infinitivo" => $d->infinitivo,
 				"def" => str_replace('"', " ", $def),
 			]);
 		}
