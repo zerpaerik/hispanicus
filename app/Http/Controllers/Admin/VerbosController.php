@@ -350,7 +350,7 @@ class VerbosController extends Controller
 		$other = ["es" => "Otros", "en" => "Others", "pt" => "Others", "zh-CN" => "其余"];
     foreach($data as $d){
     		$def = Tutorial::where('verbo_id', '=', $d->id)->where('lang', '=', $lang)->get(['model'])->first();
-      	if ($def) { $d->modelo = $def->model ?: $other[$lang	];	}else{ $def = new Tutorial(); $d->modelo = $other[$lang]; }
+      	if ($def) { $d->modelo = $def->model ?: $other[$lang];	}else{ $def = new Tutorial(); $d->modelo = $other[$lang]; }
 
         if(array_key_exists($d->modelo, $ordered)){
           continue;
@@ -366,7 +366,7 @@ class VerbosController extends Controller
 
 			array_push($ordered[$d->modelo], [
 				"id" => $d->id,
-				"infinitivo" => utf8_decode($d->infinitivo),
+				"infinitivo" => $d->infinitivo,
 				"def" => str_replace('"', " ", $deft),
 			]);
 		}
