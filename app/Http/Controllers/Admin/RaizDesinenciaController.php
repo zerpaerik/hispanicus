@@ -38,21 +38,6 @@ class RaizDesinenciaController extends Controller
 			}
 
 			$raiz_desinencia_data = array();
-			$inDb = DesinenciaRaiz::all([
-			"pronombre_id",
-			"pronombre_formal_id",
-			"tiempo_verbal_id",
-			"forma_verbal_id",
-			"raiz_id",
-			"desinencia_id",
-			"negativo",
-			"pronombre_reflex_id",
-			"verbo_auxiliar_id",
-			"region",
-			"ctv",
-			"pers_gram",
-			"num"])->toArray();
-			
 			array_shift($data);
 
 			foreach ($data as $key => $value) {
@@ -252,7 +237,7 @@ class RaizDesinenciaController extends Controller
 				array_push($raiz_desinencia_data, $insert);
 			}
 
-			return(self::save($raiz_desinencia_data, $inDb));
+			return(self::save($raiz_desinencia_data));
 
     }
 
@@ -410,7 +395,6 @@ class RaizDesinenciaController extends Controller
     		"region" => $dr->region,
     		"plural" => (int)self::getValue($dr->pronombre_formal_id ?: $dr->pronombre_id, 'personas_gramaticals', ['plural']),
     		"pg" => $dr->pers_gram,
-    	
     	]);
 			
 			}
@@ -465,19 +449,31 @@ class RaizDesinenciaController extends Controller
     	return null;
     }
 
-    public static function save($data, $inDb){
+    public static function save($data, $inDb=0){
 			$res = false;
 
 			try {
 				foreach ($data as $key => $value) {
-
-					$v = self::unique($inDb, $data[$key]);
-
-					if($v){
+					$v = \DB::table('desinencia_raizs')->select('id')
+						->where("pronombre_id", '=', $data[$key]["pronombre_id"])
+						->where("pronombre_formal_id", '=', $data[$key]["pronombre_formal_id"])
+						->where("tiempo_verbal_id", '=', $data[$key]["tiempo_verbal_id"])
+						->where("forma_verbal_id", '=', $data[$key]["forma_verbal_id"])
+						->where("raiz_id", '=', $data[$key]["raiz_id"])
+						->where("desinencia_id", '=', $data[$key]["desinencia_id"])
+						->where("negativo", '=', $data[$key]["negativo"])
+						->where("pronombre_reflex_id", '=', $data[$key]["pronombre_reflex_id"])
+						->where("verbo_auxiliar_id", '=', $data[$key]["verbo_auxiliar_id"])
+						->where("region", '=', $data[$key]["region"])
+						->where("ctv", '=', $data[$key]["ctv"])
+						->where("pers_gram", '=', $data[$key]["pers_gram"])
+						->where("num", '=', $data[$key]["num"])->get();
+					
+					if(sizeof($v) > 0){
 						continue;
 					}else{
 						DesinenciaRaiz::insert($data[$key]);
-						array_push($inDb, $data[$key]);
+						//array_push($inDb, $data[$key]);
 						$res = true;
 					}
 				}
