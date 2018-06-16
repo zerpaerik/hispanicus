@@ -39,14 +39,14 @@ class DataStatica extends Controller
     	$inDbPg   = PersonasGramatical::get(["*"])->toArray();
     	$inDbPr   = PronombreReflex::get(["pronombre_reflex"])->toArray();
     	$inDbVa   = VerboAuxiliar::get(["verbo_auxiliar"])->toArray();
-    	$inDbRule = Regla::get(["regla", "region", "lang", "verbo_id"])->toArray();
+    	//$inDbRule = Regla::get(["regla", "region", "lang", "verbo_id"])->toArray();
 
     	$dataFv 	= array();
     	$dataTv 	= array();
     	$dataPg 	= array();
     	$dataPr 	= array();
     	$dataVa 	= array();
-    	$dataRule   = array();
+    	$dataRule = array();
 
 		foreach ($data as $key => $value) {
 
@@ -149,15 +149,15 @@ class DataStatica extends Controller
 				"forma"    => $data[$key][$FvIdx]
 			];
 
-			if (!self::unique($inDbRule, ["regla" => utf8_encode($data[$key][$RuleIdx]), "region" => $region, "lang" => $lang, "verbo_id" => $verbo_id, "tiempo" => $data[$key][$TvIdx], "forma" => $data[$key][$FvIdx] ])) {
+			//if (!self::unique($inDbRule, ["regla" => utf8_encode($data[$key][$RuleIdx]), "region" => $region, "lang" => $lang, "verbo_id" => $verbo_id, "tiempo" => $data[$key][$TvIdx], "forma" => $data[$key][$FvIdx] ])) {
 				array_push($dataRule, $insert);
-			}
+			//}
 		}
 
 		return [
-			self::saveRule($dataRule, $inDbRule),
+			self::saveRule($dataRule),
 			self::save($dataVa,   $inDbVa,   new VerboAuxiliar, 	"verbo_auxiliar"),
-			self::save($dataPr,   $inDbPr,   new PronombreReflex,   "pronombre_reflex"),
+			self::save($dataPr,   $inDbPr,   new PronombreReflex, "pronombre_reflex"),
 			self::save($dataTv,   $inDbTv,   new TiempoVerbal, 		"tiempo"),
 			self::save($dataFv,   $inDbFv,   new FormaVerbal, 		"forma_verbal")
 		];
@@ -187,19 +187,27 @@ class DataStatica extends Controller
 			return $res;	    	
     }
 
-    public static function saveRule($data, $inDb){
+    public static function saveRule($data, $inDb=0){
 			$res = false;
 
 			try {
 				foreach ($data as $key => $value) {
 
-					$v = self::unique($inDb, $data[$key]);
-
-					if($v){
+					//$v = self::unique($inDb, $data[$key]);
+					$v = \DB::table('reglas')->select('id')
+					->where("regla", '=', $data[$key]["regla"])
+					->where("region", '=', $data[$key]["region"])
+					->where("lang", '=', $data[$key]["lang"])
+					->where("verbo_id", '=', $data[$key]["verbo_id"])
+					->where("tiempo", '=', $data[$key]["tiempo"])
+					->where("forma", '=', $data[$key]["forma"])
+					->get();
+					
+					if(sizeof($v) > 0){
 						continue;
 					}else{
 						Regla::insert($data[$key]);
-						array_push($inDb, $data[$key]);
+						//array_push($inDb, $data[$key]);
 						$res = true;
 					}
 				}
