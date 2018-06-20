@@ -309,6 +309,7 @@ class VerbosController extends Controller
 		foreach ($data as $d) {
 			$def = Tutorial::where('verbo_id', '=', $d->id)->where('lang', '=', $lang)->get(['def'])->first();
 			if ($def) { $def = $def->def;	}else{ $def = null; }
+			if (sizeof($ordered[$d->infinitivo[0]]) > 9) continue;			
 			array_push($ordered[$d->infinitivo[0]], [
 				"id" => $d->id,
 				"infinitivo" => $d->infinitivo,
@@ -363,7 +364,7 @@ class VerbosController extends Controller
 
 			$def = Tutorial::where('verbo_id', '=', $d->id)->where('lang', '=', $lang)->get(['def', 'model'])->first();
 			if ($def) { $deft = $def->def; $d->modelo = $def->model;	}else{ $deft = null; $d->modelo = $other[$lang]; }
-
+			if (sizeof($ordered[$d->modelo]) > 9) continue; 
 			array_push($ordered[$d->modelo], [
 				"id" => $d->id,
 				"infinitivo" => $d->infinitivo,
