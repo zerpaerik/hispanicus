@@ -31,6 +31,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     //Passport
     Route::get('clients', 'Admin\ClientsController@index')->name('clients');
     Route::get('personal', 'Admin\ClientsController@personal')->name('personal');
+    Route::get('access-code', 'Admin\ClientsController@accessCode')->name('access-code');
+    Route::get('codes', 'Api\Clients\ClientsController@getCodes')->name('codes');
+    Route::get('make-code', 'Api\Clients\ClientsController@generateCode')->name('codes');
 
     //Verbos
     Route::get('verbos_create', 'Admin\VerbosController@showUploadView')->name('verbos.create');

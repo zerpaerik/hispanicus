@@ -76,6 +76,13 @@
                         </a>
                     </li>
 
+                    <li class="{{ $request->segment(2) == 'codigos' ? 'active active-sub' : '' }}">
+                        <a href="{{ route('admin.access-code') }}">
+                            <i class="fa fa-exchange"></i>
+                            <span class="title">Codigos de acceso</span>
+                        </a>
+                    </li>                    
+
                 </ul>
             </li>
             

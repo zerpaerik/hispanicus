@@ -31,5 +31,12 @@ class ClientsController extends Controller
         return view('admin.passport.personal');
     }
 
+    public function accessCode(){
+        if (! Gate::allows('users_manage')) {
+            return abort(401);
+        }
+
+        return view('admin.users.access-code');
+    }
 
 }

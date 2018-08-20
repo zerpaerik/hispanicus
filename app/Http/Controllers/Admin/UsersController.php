@@ -3,6 +3,7 @@
 namespace hispanicus\Http\Controllers\Admin;
 
 use hispanicus\User;
+use hispanicus\AppCode;
 use Silber\Bouncer\Database\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;

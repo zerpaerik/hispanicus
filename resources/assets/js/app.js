@@ -21,6 +21,13 @@ Vue.use(BootstrapVue);
 
 Vue.component('example', require('./components/Example.vue'));
 
+//Access Codes Generator
+
+Vue.component(
+    'access-code',
+    require('./components/clients/GenerateAccessCode.vue')
+    );
+
 //Passport Components
 Vue.component(
     'passport-clients',
