@@ -33,7 +33,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('personal', 'Admin\ClientsController@personal')->name('personal');
     Route::get('access-code', 'Admin\ClientsController@accessCode')->name('access-code');
     Route::get('codes', 'Api\Clients\ClientsController@getCodes')->name('codes');
-    Route::get('make-code', 'Api\Clients\ClientsController@generateCode')->name('codes');
+    Route::get('make-code', 'Api\Clients\ClientsController@generateCode');
+    Route::post('revoke-code', 'Api\Clients\ClientsController@revokeCode');
 
     //Verbos
     Route::get('verbos_create', 'Admin\VerbosController@showUploadView')->name('verbos.create');

@@ -30,6 +30,17 @@ class ClientsController extends Controller
 
 	}
 
+	public function check(){
+		return response()->json([true], 200);	
+	}
+
+	public function revokeCode(Request $request){
+		$code = AppCode::where('id', '=', $request->code)->get()->first();
+		$code->revoked = 1;
+		$res = $code->save();
+		return response()->json(["success" => $res]);
+	}
+
 	public function consumeCode(Request $request){
 
 		$code = AppCode::where('code', '=', $request->code)->where('device_id', '=', null)->get()->first();
@@ -44,15 +55,15 @@ class ClientsController extends Controller
 	}
 
 	public function getCodes(){
-		$codes = AppCode::all();
+		$codes = AppCode::where('revoked', '=', '0')->get();
 		return response()->json($codes, 200);
 	}
 
-  public function generateCode(){
-    $code = AppCode::create([
-        "code" => str_random(6)
-    ]);
-    return response()->json($code, 200);
+    public function generateCode(){
+	    $code = AppCode::create([
+	        "code" => str_random(6)
+	    ]);
+	    return response()->json($code, 200);
 	}
 
 	public function store(Request $request){

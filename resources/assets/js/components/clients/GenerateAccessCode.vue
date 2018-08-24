@@ -14,7 +14,7 @@
 
     <div class="alert alert-success alert-dismissible" role="alert" v-if="lastCode">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <strong>{{lastCode.code}}</strong> Este es el codigo que se ha generado.
+      Este es el codigo que se ha generado: <span style="font-size: 20px; font-weight: bold;">{{lastCode.code}}</span>
     </div>
 
         <div>
@@ -37,34 +37,37 @@
                             <tr>
                                 <th>Codigo</th>
                                 <th>ID del dispositivo</th>
-                                <th>Usuario</th>
+                                <!--<th>Usuario</th>-->
                                 <th>Creado</th>
+                                <th>Consumido</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr v-for="code in codes">
-                                <!-- Client Name -->
+                                
                                 <td style="vertical-align: middle;">
-                                    {{ code.code }}
+                                    <code style="font-size: 18px;">{{ code.code }}</code>
                                 </td>
 
-                                <!-- Scopes -->
                                 <td style="vertical-align: middle;">
-                                    {{ code.device_id || 'Codigo no asignado'}}
+                                    {{ code.device_id || '-'}}
                                 </td>
-
+                                <!--
                                 <td style="vertical-align: middle;">
                                     {{ code.user_id || 'Codigo no asignado'}}
                                 </td>  
-
+                                -->
                                 <td style="vertical-align: middle;">
                                     {{ code.created_at }}
-                                </td>                                                            
-
-                                <!-- Revoke Button -->
+                                </td>    
+                                
                                 <td style="vertical-align: middle;">
-                                    <a class="action-link text-danger" @click="revoke(code)">
+                                    {{ (code.created_at == code.updated_at) ? '-' : code.updated_at }}
+                                </td>                                                                                            
+
+                                <td style="vertical-align: middle;">
+                                    <a class="action-link text-danger" @click="revoke(code.id)">
                                         Revocar
                                     </a>
                                 </td>
@@ -135,11 +138,16 @@
             /**
              * Revoke the given token.
              */
-            revoke(token) {
-                axios.delete('/oauth/tokens/' + token.id)
-                        .then(response => {
-                            this.getCodes();
-                        });
+            revoke(code) {
+                let result = confirm('¿Desea revocar este codigo? Si lo hace no podra revertirlo.');
+                if(result){
+                    axios.post('/admin/revoke-code/', {
+                        code : code
+                    })
+                    .then(response => {
+                        this.getCodes();
+                    });
+                }
             }
         }
     }

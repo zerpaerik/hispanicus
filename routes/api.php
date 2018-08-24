@@ -7,7 +7,8 @@
 		Route::post('checkemail', 'Auth\AuthController@checkEmail');
 		Route::get('api_clients', 'Clients\ClientsController@index');
 		Route::post('api_clients', 'Clients\ClientsController@store');
-		Route::post('consume_code', 'ClientsController@consumeCode');
+		Route::post('consume_code', 'Clients\ClientsController@consumeCode');
+		Route::get('checkuuid', 'Clients\ClientsController@check')->middleware('checkuuid');
 		
 		Route::group(['middleware' => 'auth:api'], function () {
 	    	Route::post('logout', 'Auth\AuthController@logout');
