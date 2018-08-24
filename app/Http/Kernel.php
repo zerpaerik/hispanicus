@@ -57,5 +57,6 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \hispanicus\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'checkuuid' => \hispanicus\Http\Middleware\checkUuid::class,
     ];
 }

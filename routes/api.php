@@ -7,6 +7,7 @@
 		Route::post('checkemail', 'Auth\AuthController@checkEmail');
 		Route::get('api_clients', 'Clients\ClientsController@index');
 		Route::post('api_clients', 'Clients\ClientsController@store');
+		Route::post('consume_code', 'ClientsController@consumeCode');
 		
 		Route::group(['middleware' => 'auth:api'], function () {
 	    	Route::post('logout', 'Auth\AuthController@logout');
@@ -24,7 +25,7 @@
     	Route::post('info/', 'Admin\VerbosController@storeInfo');
     	Route::get('info/{lang}/{tipo}', 'Admin\VerbosController@getInfo');
     	Route::post('verbos/regular_oc', 'Admin\VerbosController@storeRegularOrthChange');
-    	Route::get('verbos/{tipo}/{lang}', 'Admin\VerbosController@listVerbs');
+    	Route::get('verbos/{tipo}/{lang}', 'Admin\VerbosController@listVerbs')->middleware('checkuuid');
     	Route::post('verbo/{id}', 'Admin\VerbosController@getVerb');
     	Route::post('free/verbo/{id}', 'Admin\VerbosController@getFreeVerb');
     	Route::post('delete', 'Admin\VerbosController@delRaices');
