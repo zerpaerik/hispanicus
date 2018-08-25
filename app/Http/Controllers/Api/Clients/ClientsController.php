@@ -55,7 +55,7 @@ class ClientsController extends Controller
 	}
 
 	public function getCodes(){
-		$codes = AppCode::where('revoked', '=', '0')->get();
+		$codes = AppCode::where('revoked', '=', '0')->orderBy('id', 'desc')->get();
 		return response()->json($codes, 200);
 	}
 

@@ -15,27 +15,11 @@ class AuthController extends Controller
 {
 	public function register(Request $request)
 	{
-	    $validator = Validator::make($request->all(), [
-	        'name' => 'required',
-	        'email' => 'required|email|unique:users',
-	        'password' => 'required',
-	        'confirm_password' => 'required|same:password',
-	    ], [
-
-	    	'required' => ':attribute',
-	    	'unique' => ':attribute',
-	    	'same' => ':attribute' 
-
-	    ]);
-
-	    if ($validator->fails()) {
-	        return response()->json(['error'=>$validator->errors()], 422);
-	    }
 
 	    $input = $request->all();
 	    $input['password'] = bcrypt($request->get('password'));
 	    $user = User::create($input);
-	    $token =  $user->createToken('hispanicus')->accessToken;
+	    $token =  $user->createToken($request->get('origin'))->accessToken;
 	    $conf = ConfigRegion::insert(["user_id" => $user->id, "lang" => "en", "modo" => "1"]);
 
 	    return response()->json([
@@ -76,7 +60,7 @@ class AuthController extends Controller
 	            'favs' => $favs          
 	        ], 200);
 	    } else {
-	        return response()->json(['error' => 'Unauthorized'], 401);
+	        $this->register($request);
 	    }
 	}	
 
