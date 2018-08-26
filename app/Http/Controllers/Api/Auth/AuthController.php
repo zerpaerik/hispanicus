@@ -22,7 +22,7 @@ class AuthController extends Controller
 	    $token =  $user->createToken($request->get('origin'))->accessToken;
 	    $conf = ConfigRegion::insert(["user_id" => $user->id, "lang" => "en", "modo" => "1"]);
 
-	    return response()->json([
+	    return [
 	        'token' => $token,
 	        'user' => [
             	"name" => $user->name,
@@ -31,7 +31,7 @@ class AuthController extends Controller
 	        'lang' => 'en',
 	        'modo' => '1',
 	        'favs' => []
-	    ], 200);
+	    ];
 	}
 
 	public function login(Request $request)
@@ -60,7 +60,7 @@ class AuthController extends Controller
 	            'favs' => $favs          
 	        ], 200);
 	    } else {
-	        $this->register($request);
+	        return response()->json($this->register($request), 200);
 	    }
 	}	
 
